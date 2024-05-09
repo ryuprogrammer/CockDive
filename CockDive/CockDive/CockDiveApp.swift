@@ -13,8 +13,8 @@ struct CockDiveApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            CockCardView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
