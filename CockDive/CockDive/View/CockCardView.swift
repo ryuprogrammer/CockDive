@@ -72,7 +72,6 @@ struct CockCardView: View {
                 }
             }
         }
-        .padding(.horizontal)
     }
 }
 
