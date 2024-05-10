@@ -7,9 +7,15 @@ struct MainView: View {
             CockCardsView()
                 .tabItem {
                     Image(systemName: "fork.knife")
+                    Text("ご飯")
                 }
                 .tag(ViewType.cockCard)
-            Text("Tab Content 2").tabItem { /*@START_MENU_TOKEN@*/Text("Tab Label 2")/*@END_MENU_TOKEN@*/ }.tag(2)
+            
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("ホーム")
+                }.tag(ViewType.home)
         }
     }
 }
