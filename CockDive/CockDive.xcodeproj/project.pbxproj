@@ -16,6 +16,7 @@
 		422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69D82BED1FE10012FB8F /* CockCardView.swift */; };
 		4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockCardsView.swift */; };
 		4298D8442BEDE54F005AB08F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8432BEDE54F005AB08F /* MainView.swift */; };
+		4298D8462BEDE782005AB08F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		422C69D82BED1FE10012FB8F /* CockCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardView.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardsView.swift; sourceTree = "<group>"; };
 		4298D8432BEDE54F005AB08F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		4298D8452BEDE782005AB08F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				422C69CB2BED1C570012FB8F /* ContentView.swift */,
 				4298D8432BEDE54F005AB08F /* MainView.swift */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
+				4298D8452BEDE782005AB08F /* HomeView.swift */,
 				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
 			);
 			path = View;
@@ -167,6 +170,7 @@
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
 				422C69C72BED1C570012FB8F /* Persistence.swift in Sources */,
+				4298D8462BEDE782005AB08F /* HomeView.swift in Sources */,
 				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
 			);
