@@ -9,31 +9,44 @@ import SwiftUI
 
 struct CockCardView: View {
     @State private var userName: String = "momo"
-    @State private var title: String = "カレー"
+    @State private var title: String = "定食"
+    @State private var explain: String = """
+ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
+"""
     
     var body: some View {
-        ZStack {
-            Image("cockImage")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 350, height: 300)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+        VStack {
+            ZStack {
+                Image("cockImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 300)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                
+                VStack(alignment: .leading) {
+                    Image(systemName: "heart")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 40)
+                        .foregroundStyle(Color.white)
+                }
+                .frame(maxWidth: .infinity)
+            }
             
             VStack {
-                Spacer()
-                    .frame(height: 230)
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .frame(width: 320, height: 50)
-                        .foregroundStyle(Color.white.opacity(0.5))
-                    
-                    
+                HStack(alignment: .bottom) {
+                    Text(title)
+                        .font(.title)
+                    Spacer()
+                    Text("\(userName)さん")
                 }
-                .padding()
+                
+                Text(explain)
+                    .font(.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .frame(width: 350, height: 300)
+        .padding(.horizontal)
     }
 }
 
