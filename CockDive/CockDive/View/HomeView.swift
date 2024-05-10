@@ -2,7 +2,13 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text("HomeView")
+        NavigationStack {
+            VStack {
+                
+            }
+            .navigationTitle("ホーム")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
