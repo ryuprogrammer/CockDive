@@ -62,9 +62,7 @@
 			children = (
 				422C69C42BED1C570012FB8F /* CockDiveApp.swift */,
 				422C69C62BED1C570012FB8F /* Persistence.swift */,
-				422C69CB2BED1C570012FB8F /* ContentView.swift */,
-				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
-				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
+				4298D8422BEDDD65005AB08F /* View */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
 				422C69CF2BED1C590012FB8F /* CockDive.entitlements */,
 				422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */,
@@ -79,6 +77,16 @@
 				422C69D12BED1C590012FB8F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4298D8422BEDDD65005AB08F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				422C69CB2BED1C570012FB8F /* ContentView.swift */,
+				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
+				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

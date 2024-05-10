@@ -1,10 +1,3 @@
-//
-//  CockCardView.swift
-//  CockDive
-//
-//  Created by トム・クルーズ on 2024/05/10.
-//
-
 import SwiftUI
 
 struct CockCardView: View {
