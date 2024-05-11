@@ -31,6 +31,8 @@ struct CockCardsView: View {
                 .padding()
             }
             .navigationTitle("みんなのご飯")
+            .toolbarBackground(Color("main"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

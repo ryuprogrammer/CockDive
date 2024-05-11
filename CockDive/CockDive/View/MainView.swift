@@ -13,6 +13,7 @@ struct MainView: View {
             
             HomeView()
                 .tabItem {
+                    
                     Image(systemName: "house")
                     Text("ホーム")
                 }.tag(ViewType.home)

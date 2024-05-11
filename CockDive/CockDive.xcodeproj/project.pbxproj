@@ -18,6 +18,8 @@
 		4298D8442BEDE54F005AB08F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8432BEDE54F005AB08F /* MainView.swift */; };
 		4298D8462BEDE782005AB08F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* HomeView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddCockView.swift */; };
+		4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84A2BEF4E40005AB08F /* Color+.swift */; };
+		4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		4298D8432BEDE54F005AB08F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddCockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCockView.swift; sourceTree = "<group>"; };
+		4298D84A2BEF4E40005AB08F /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongBarButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				422C69C42BED1C570012FB8F /* CockDiveApp.swift */,
 				422C69C62BED1C570012FB8F /* Persistence.swift */,
 				4298D8422BEDDD65005AB08F /* View */,
+				4298D84F2BEF50CE005AB08F /* ViewComponent */,
+				4298D8492BEF4E1D005AB08F /* Extantions */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
 				422C69CF2BED1C590012FB8F /* CockDive.entitlements */,
 				422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */,
@@ -91,11 +97,27 @@
 				422C69CB2BED1C570012FB8F /* ContentView.swift */,
 				4298D8432BEDE54F005AB08F /* MainView.swift */,
 				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
-				4298D8472BEE6C35005AB08F /* AddCockView.swift */,
 				4298D8452BEDE782005AB08F /* HomeView.swift */,
+				4298D8472BEE6C35005AB08F /* AddCockView.swift */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		4298D8492BEF4E1D005AB08F /* Extantions */ = {
+			isa = PBXGroup;
+			children = (
+				4298D84A2BEF4E40005AB08F /* Color+.swift */,
+			);
+			path = Extantions;
+			sourceTree = "<group>";
+		};
+		4298D84F2BEF50CE005AB08F /* ViewComponent */ = {
+			isa = PBXGroup;
+			children = (
+				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
+			);
+			path = ViewComponent;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +191,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */,
+				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
+				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */,
 				4298D8442BEDE54F005AB08F /* MainView.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
@@ -320,7 +344,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
@@ -358,7 +382,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
