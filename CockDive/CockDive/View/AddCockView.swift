@@ -58,6 +58,13 @@ struct AddCockView: View {
                     }
                     .listRowSeparator(.hidden)
                     
+                    Section {
+                        Text("自炊")
+                    } header: {
+                        Text("③自炊: 自炊？外食？")
+                    }
+                    .listRowSeparator(.hidden)
+                    
                     Spacer()
                         .frame(height: 800)
                 }
