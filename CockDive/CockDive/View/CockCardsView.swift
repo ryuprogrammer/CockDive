@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct CockCardsView: View {
+    // 投稿追加画面の表示有無
+    @State private var isShowSheet: Bool = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -12,7 +14,7 @@ struct CockCardsView: View {
                 .listStyle(.plain)
                 
                 Button(action: {
-                    
+                    isShowSheet = true
                 }, label: {
                     Image(systemName: "plus")
                         .resizable()
@@ -34,6 +36,9 @@ struct CockCardsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("main"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .sheet(isPresented: $isShowSheet) {
+            AddCockView()
         }
     }
 }
