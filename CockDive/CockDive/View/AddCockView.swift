@@ -7,7 +7,7 @@ struct AddCockView: View {
                 Text("追加画面")
             }
             .navigationTitle("ご飯を投稿")
-            .toolbarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
