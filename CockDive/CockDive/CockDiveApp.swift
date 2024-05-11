@@ -13,7 +13,7 @@ struct CockDiveApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            AddCockView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
