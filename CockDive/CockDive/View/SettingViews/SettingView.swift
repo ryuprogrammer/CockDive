@@ -5,15 +5,25 @@ struct SettingView: View {
     @Binding var path: [SettingViewPath]
     
     var body: some View {
-        NavigationStack {
-            List {
-                Text("settingView")
-            }
-            .navigationTitle("設定")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color("main"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
+        List {
+            Button(action: {
+                path.append(.newsView)
+            }, label: {
+                HStack {
+                    Text("お知らせ")
+                        .foregroundStyle(Color.black)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(Color.gray)
+                }
+            })
         }
+        .navigationTitle("設定")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color("main"), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 
