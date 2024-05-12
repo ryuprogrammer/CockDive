@@ -20,6 +20,7 @@
 		4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddCockView.swift */; };
 		4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84A2BEF4E40005AB08F /* Color+.swift */; };
 		4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */; };
+		4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8552BF0984E005AB08F /* ImageCalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		4298D8472BEE6C35005AB08F /* AddCockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCockView.swift; sourceTree = "<group>"; };
 		4298D84A2BEF4E40005AB08F /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongBarButton.swift; sourceTree = "<group>"; };
+		4298D8552BF0984E005AB08F /* ImageCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				4298D8432BEDE54F005AB08F /* MainView.swift */,
 				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
 				4298D8452BEDE782005AB08F /* HomeView.swift */,
+				4298D8542BF097BA005AB08F /* HomeView */,
 				4298D8472BEE6C35005AB08F /* AddCockView.swift */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
 			);
@@ -118,6 +121,14 @@
 				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
 			);
 			path = ViewComponent;
+			sourceTree = "<group>";
+		};
+		4298D8542BF097BA005AB08F /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				4298D8552BF0984E005AB08F /* ImageCalendarView.swift */,
+			);
+			path = HomeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +207,7 @@
 				4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */,
 				4298D8442BEDE54F005AB08F /* MainView.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
+				4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */,
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
 				422C69C72BED1C570012FB8F /* Persistence.swift in Sources */,
 				4298D8462BEDE782005AB08F /* HomeView.swift in Sources */,
