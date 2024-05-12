@@ -24,7 +24,7 @@ struct StrokeButton: View {
                 .foregroundStyle(Color.mainColor)
                 .frame(
                     width: (window?.screen.bounds.width ?? 400) / 4,
-                    height: (window?.screen.bounds.height ?? 800) / 26
+                    height: (window?.screen.bounds.height ?? 800) / 28
                 )
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
