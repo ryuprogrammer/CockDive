@@ -11,7 +11,7 @@ struct MainView: View {
                 }
                 .tag(ViewType.cockCard)
             
-            HomeView()
+            MyPageView()
                 .tabItem {
                     
                     Image(systemName: "house")
