@@ -1,10 +1,3 @@
-//
-//  SmallImageView.swift
-//  CockDive
-//
-//  Created by トム・クルーズ on 2024/05/12.
-//
-
 import SwiftUI
 
 struct SmallImageView: View {
@@ -24,12 +17,20 @@ struct SmallImageView: View {
                     height: (window?.screen.bounds.height ?? 800) / 10
                 )
             
+            
+            
             VStack {
                 Spacer()
                 
                 Text("\(day)日")
                     .fontWeight(.bold)
                     .foregroundStyle(Color.white)
+                    .frame(
+                        width: (window?.screen.bounds.width ?? 400) / 7 - 5
+                    )
+                    .background(
+                        Color.black.blur(radius: 10)
+                    )
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -43,3 +44,4 @@ struct SmallImageView: View {
 #Preview {
     SmallImageView(day: 12)
 }
+
