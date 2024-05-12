@@ -32,6 +32,7 @@
 		4298D86A2BF1075B005AB08F /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8692BF1075B005AB08F /* ContactView.swift */; };
 		4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D86B2BF107C4005AB08F /* LogoutView.swift */; };
 		4298D86E2BF107DB005AB08F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D86D2BF107DB005AB08F /* DeleteAccountView.swift */; };
+		4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		4298D8692BF1075B005AB08F /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		4298D86B2BF107C4005AB08F /* LogoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		4298D86D2BF107DB005AB08F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
 				4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */,
+				4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				4298D86A2BF1075B005AB08F /* ContactView.swift in Sources */,
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
+				4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */,
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,

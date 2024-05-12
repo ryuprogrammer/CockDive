@@ -6,19 +6,57 @@ struct SettingView: View {
     
     var body: some View {
         List {
-            Button(action: {
-                path.append(.newsView)
-            }, label: {
-                HStack {
-                    Text("お知らせ")
-                        .foregroundStyle(Color.black)
-                    
-                    Spacer()
-                    
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(Color.gray)
+            Section {
+                NavigationLinkButtonView(text: "お知らせ") {
+                    path.append(.newsView)
                 }
-            })
+                
+                NavigationLinkButtonView(text: "プライバシーポリシー") {
+                    path.append(.privacyPolicyView)
+                }
+                
+                NavigationLinkButtonView(text: "利用規約") {
+                    path.append(.termsOfServiceView)
+                }
+            } header: {
+                Text("アプリ情報")
+            }
+            
+            Section {
+                NavigationLinkButtonView(text: "ブロックリスト") {
+                    path.append(.blockListView)
+                }
+            } header: {
+                Text("友達")
+            }
+            
+            Section {
+                NavigationLinkButtonView(text: "レビューを書く") {
+                    path.append(.contactView)
+                }
+                
+                NavigationLinkButtonView(text: "アプリをシェア") {
+                    path.append(.contactView)
+                }
+                
+                NavigationLinkButtonView(text: "お問合せ") {
+                    path.append(.contactView)
+                }
+            } header: {
+                Text("フィードバック")
+            }
+            
+            Section {
+                NavigationLinkButtonView(text: "ログアウト") {
+                    path.append(.logoutView)
+                }
+                
+                NavigationLinkButtonView(text: "退会") {
+                    path.append(.deleteAccountView)
+                }
+            } header: {
+                Text("アカウント")
+            }
         }
         .navigationTitle("設定")
         .navigationBarTitleDisplayMode(.inline)
