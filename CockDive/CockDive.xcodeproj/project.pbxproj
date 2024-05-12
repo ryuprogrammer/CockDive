@@ -23,6 +23,7 @@
 		4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8552BF0984E005AB08F /* ImageCalendarView.swift */; };
 		4298D8582BF0A908005AB08F /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8572BF0A908005AB08F /* Date+.swift */; };
 		4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8592BF0BD8C005AB08F /* SmallImageView.swift */; };
+		4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		4298D8552BF0984E005AB08F /* ImageCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCalendarView.swift; sourceTree = "<group>"; };
 		4298D8572BF0A908005AB08F /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		4298D8592BF0BD8C005AB08F /* SmallImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallImageView.swift; sourceTree = "<group>"; };
+		4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
+				4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */,
+				4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */,
 				4298D8442BEDE54F005AB08F /* MainView.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */,

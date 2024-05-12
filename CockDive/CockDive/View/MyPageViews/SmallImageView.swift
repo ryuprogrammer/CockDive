@@ -17,8 +17,6 @@ struct SmallImageView: View {
                     height: (window?.screen.bounds.height ?? 800) / 10
                 )
             
-            
-            
             VStack {
                 Spacer()
                 
