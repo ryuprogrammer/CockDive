@@ -1,10 +1,3 @@
-//
-//  CockDiveApp.swift
-//  CockDive
-//
-//  Created by トム・クルーズ on 2024/05/09.
-//
-
 import SwiftUI
 
 @main

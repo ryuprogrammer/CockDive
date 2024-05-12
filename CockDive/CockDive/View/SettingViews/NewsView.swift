@@ -7,6 +7,23 @@ struct NewsView: View {
     
     var body: some View {
         Text("NewsView")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbarBackground(Color("main"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    ToolBarBackButtonView {
+                        path.removeLast()
+                    }
+                }
+                ToolbarItem(placement: .principal) {
+                    Text("お知らせ")
+                        .foregroundStyle(Color.white)
+                        .fontWeight(.bold)
+                        .font(.title3)
+                }
+            }
     }
 }
 

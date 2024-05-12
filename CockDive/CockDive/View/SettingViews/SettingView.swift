@@ -58,10 +58,23 @@ struct SettingView: View {
                 Text("アカウント")
             }
         }
-        .navigationTitle("設定")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
         .toolbarBackground(Color("main"), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                ToolBarBackButtonView {
+                    path.removeLast()
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("設定")
+                    .foregroundStyle(Color.white)
+                    .fontWeight(.bold)
+                    .font(.title3)
+            }
+        }
     }
 }
 

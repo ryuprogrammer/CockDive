@@ -39,11 +39,16 @@ struct MyPageView: View {
                 
                 ImageCalendarView()
             }
-            .navigationTitle("マイページ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("main"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("マイページ")
+                        .foregroundStyle(Color.white)
+                        .fontWeight(.bold)
+                        .font(.title3)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         navigationPath.append(.settingView)

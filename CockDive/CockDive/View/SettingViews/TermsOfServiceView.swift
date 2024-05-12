@@ -7,6 +7,23 @@ struct TermsOfServiceView: View {
     
     var body: some View {
         Text("TermsOfServiceView")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbarBackground(Color("main"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    ToolBarBackButtonView {
+                        path.removeLast()
+                    }
+                }
+                ToolbarItem(placement: .principal) {
+                    Text("利用規約")
+                        .foregroundStyle(Color.white)
+                        .fontWeight(.bold)
+                        .font(.title3)
+                }
+            }
     }
 }
 
