@@ -2,10 +2,11 @@ import SwiftUI
 
 struct MyPageView: View {
     
-    
+    // 画面遷移用
+    @State private var navigationPath: [SettingViewPath] = []
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ScrollView {
                 HStack(alignment: .bottom) {
                     Spacer()
@@ -45,7 +46,7 @@ struct MyPageView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        
+                        navigationPath.append(.settingView)
                     }, label: {
                         Image(systemName: "gearshape")
                             .resizable()
@@ -55,16 +56,36 @@ struct MyPageView: View {
                     })
                 }
             }
+            .navigationDestination(for: SettingViewPath.self) { value in
+                switch value {
+                case .settingView:
+                    SettingView(path: $navigationPath)
+                case .newsView:
+                    NewsView(path: $navigationPath)
+                case .privacyPolicyView:
+                    PrivacyPolicyView(path: $navigationPath)
+                case .termsOfServiceView:
+                    TermsOfServiceView(path: $navigationPath)
+                case .blockListView:
+                    BlockListView(path: $navigationPath)
+                case .contactView:
+                    ContactView(path: $navigationPath)
+                case .logoutView:
+                    LogoutView(path: $navigationPath)
+                case .deleteAccountView:
+                    DeleteAccountView(path: $navigationPath)
+                }
+            }
         }
     }
 }
 
-enum SettingViewType {
-    case notificationsView
+enum SettingViewPath {
+    case settingView
+    case newsView
     case privacyPolicyView
     case termsOfServiceView
-    case blockList
-    case writeReview
+    case blockListView
     case contactView
     case logoutView
     case deleteAccountView
