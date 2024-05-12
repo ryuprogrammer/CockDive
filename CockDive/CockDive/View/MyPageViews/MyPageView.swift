@@ -1,10 +1,13 @@
 import SwiftUI
 
 struct MyPageView: View {
+    
+    
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
+                HStack(alignment: .bottom) {
                     Spacer()
                         .frame(width: 30)
                     VStack {
@@ -35,14 +38,39 @@ struct MyPageView: View {
                 
                 ImageCalendarView()
             }
-            .navigationTitle("ホーム")
+            .navigationTitle("マイページ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("main"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        
+                    }, label: {
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 35)
+                            .foregroundStyle(Color.white)
+                    })
+                }
+            }
         }
     }
+}
+
+enum SettingViewType {
+    case notificationsView
+    case privacyPolicyView
+    case termsOfServiceView
+    case blockList
+    case writeReview
+    case contactView
+    case logoutView
+    case deleteAccountView
 }
 
 #Preview {
     MyPageView()
 }
+
