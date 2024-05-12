@@ -21,6 +21,7 @@
 		4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84A2BEF4E40005AB08F /* Color+.swift */; };
 		4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */; };
 		4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8552BF0984E005AB08F /* ImageCalendarView.swift */; };
+		4298D8582BF0A908005AB08F /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8572BF0A908005AB08F /* Date+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		4298D84A2BEF4E40005AB08F /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongBarButton.swift; sourceTree = "<group>"; };
 		4298D8552BF0984E005AB08F /* ImageCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCalendarView.swift; sourceTree = "<group>"; };
+		4298D8572BF0A908005AB08F /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				4298D84A2BEF4E40005AB08F /* Color+.swift */,
+				4298D8572BF0A908005AB08F /* Date+.swift */,
 			);
 			path = Extantions;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
 				4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */,
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
