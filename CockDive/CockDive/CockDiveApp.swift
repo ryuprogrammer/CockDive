@@ -18,7 +18,6 @@ struct CockDiveApp: App {
                 
                 MyPageView()
                     .tabItem {
-                        
                         Image(systemName: "house")
                         Text("ホーム")
                     }.tag(ViewType.home)
