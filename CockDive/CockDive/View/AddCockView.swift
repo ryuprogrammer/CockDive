@@ -3,13 +3,14 @@ import SwiftUI
 struct AddCockView: View {
     @State private var title: String = ""
     @State private var memo: String = ""
+    @State private var canSeeEveryone: Bool = true
     
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // キーボード制御
     @FocusState private var keybordFocuse: Bool
-    
-    
+    // モーダル制御
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -25,7 +26,7 @@ struct AddCockView: View {
                                     .fontWeight(.bold)
                                     .foregroundStyle(Color.white)
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: 250)
+                                    .frame(height: 200)
                                     .background(Color.black)
                                     .clipShape(RoundedRectangle(cornerRadius: 20))
                             })
@@ -55,7 +56,7 @@ struct AddCockView: View {
                                         .stroke(Color.gray, lineWidth: 0.6)
                                 )
                                 .overlay(alignment: .topLeading) {
-                                    Text("ご飯のメモ\n 例） 旬の野菜を取り入れてみました。")
+                                    Text(memo == "" ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
                                         .foregroundStyle(Color.gray.opacity(0.5))
                                         .padding(5)
                                 }
@@ -74,9 +75,10 @@ struct AddCockView: View {
                         .listRowSeparator(.hidden)
                         
                         Section {
-                            Text("自炊")
+                            Toggle(canSeeEveryone ? "みんなに公開" : "非公開", isOn: $canSeeEveryone)
+                                .toggleStyle(.switch)
                         } header: {
-                            Text("③自炊: 自炊？外食？")
+                            Text("③公開範囲: 誰に見てもらう？")
                         }
                         .listRowSeparator(.hidden)
                         
@@ -91,7 +93,7 @@ struct AddCockView: View {
                     Spacer()
                     // 投稿ボタン
                     LongBarButton(text: "投稿する") {
-                        
+                        dismiss()
                     }
                 }
             }
