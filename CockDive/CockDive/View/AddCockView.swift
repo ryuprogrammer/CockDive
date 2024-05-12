@@ -79,6 +79,10 @@ struct AddCockView: View {
                             Text("③自炊: 自炊？外食？")
                         }
                         .listRowSeparator(.hidden)
+                        
+                        Spacer()
+                            .frame(height: 10)
+                            .listRowSeparator(.hidden)
                     }
                     .listStyle(.plain)
                 }
