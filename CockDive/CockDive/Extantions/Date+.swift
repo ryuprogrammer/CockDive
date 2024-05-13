@@ -74,7 +74,27 @@ extension Date {
     func dateString() -> String {
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M月d日H:mm"
+        
+        // 今年以外なら、年月日を書く
+        if calendar.component(.year, from: self) != calendar.component(.year, from: Date()) {
+            dateFormatter.dateFormat = "yyyy年M月d日H:mm"
+            return dateFormatter.string(from: self)
+        }
+        
+        // 今年で今日と昨日以外なら、月+日+時間を書く
+        if !calendar.isDateInToday(self) && !calendar.isDateInYesterday(self) {
+            dateFormatter.dateFormat = "M月d日H:mm"
+            return dateFormatter.string(from: self)
+        }
+        
+        // 昨日なら、「"昨日"+時間」を書く
+        if calendar.isDateInYesterday(self) {
+            dateFormatter.dateFormat = "'昨日 'HH:mm"
+            return dateFormatter.string(from: self)
+        }
+        
+        // 今日なら、「"今日"+時間」を書く
+        dateFormatter.dateFormat = "'今日 'HH:mm"
         return dateFormatter.string(from: self)
     }
 }

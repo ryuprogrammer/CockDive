@@ -27,13 +27,45 @@ struct PostCommentView: View {
                     HStack {
                         Text("名前")
                         
+                        Text(Date().dateString())
+                            .font(.caption)
+                        
+                        Spacer()
+                        
+                        Menu {
+                            Button(action: {
+                                
+                            }, label: {
+                                HStack {
+                                    Image(systemName: "nosign")
+                                    Spacer()
+                                    Text("ブロック")
+                                }
+                            })
+                            
+                            Button(action: {
+                                
+                            }, label: {
+                                HStack {
+                                    Image(systemName: "exclamationmark.bubble")
+                                    Spacer()
+                                    Text("通報")
+                                }
+                            })
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .foregroundStyle(Color.black)
+                        }
                     }
+                    
                     Text(comment)
                 }
                 
                 Spacer()
             }
             .padding(.horizontal)
+            
+            Divider()
         }
     }
 }
