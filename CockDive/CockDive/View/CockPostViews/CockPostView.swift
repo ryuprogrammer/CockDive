@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CockCardsView: View {
+struct CockPostView: View {
     // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
     var body: some View {
@@ -38,11 +38,11 @@ struct CockCardsView: View {
             .toolbarBackground(.visible, for: .navigationBar)
         }
         .sheet(isPresented: $isShowSheet) {
-            AddCockView()
+            AddPostView()
         }
     }
 }
 
 #Preview {
-    CockCardsView()
+    CockPostView()
 }

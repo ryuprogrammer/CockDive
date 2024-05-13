@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AddCockView: View {
+struct AddPostView: View {
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var canSeeEveryone: Bool = true
@@ -112,7 +112,8 @@ struct AddCockView: View {
 }
 
 #Preview {
-    AddCockView()
+    AddPostView()
 }
+
 
 

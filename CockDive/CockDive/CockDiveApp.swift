@@ -31,7 +31,7 @@ struct CockDiveApp: App {
     var body: some Scene {
         WindowGroup {
             TabView(selection: $viewSelection) {
-                CockCardsView()
+                CockPostView()
                     .tabItem {
                         Image(systemName: "fork.knife")
                         Text("ご飯")

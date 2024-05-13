@@ -14,9 +14,9 @@
 		422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 422C69CD2BED1C590012FB8F /* Assets.xcassets */; };
 		422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 422C69D12BED1C590012FB8F /* Preview Assets.xcassets */; };
 		422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69D82BED1FE10012FB8F /* CockCardView.swift */; };
-		4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockCardsView.swift */; };
+		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
-		4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddCockView.swift */; };
+		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
 		4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84A2BEF4E40005AB08F /* Color+.swift */; };
 		4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */; };
 		4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8552BF0984E005AB08F /* ImageCalendarView.swift */; };
@@ -46,9 +46,9 @@
 		422C69CF2BED1C590012FB8F /* CockDive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CockDive.entitlements; sourceTree = "<group>"; };
 		422C69D12BED1C590012FB8F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		422C69D82BED1FE10012FB8F /* CockCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardView.swift; sourceTree = "<group>"; };
-		4298D8402BEDA30C005AB08F /* CockCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardsView.swift; sourceTree = "<group>"; };
+		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		4298D8472BEE6C35005AB08F /* AddCockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCockView.swift; sourceTree = "<group>"; };
+		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		4298D84A2BEF4E40005AB08F /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongBarButton.swift; sourceTree = "<group>"; };
 		4298D8552BF0984E005AB08F /* ImageCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCalendarView.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				422C69CB2BED1C570012FB8F /* ContentView.swift */,
-				4298D8602BF101FF005AB08F /* CockCardViews */,
+				4298D8602BF101FF005AB08F /* CockPostViews */,
 				4298D8542BF097BA005AB08F /* MyPageViews */,
 				4298D85D2BF10194005AB08F /* SettingViews */,
 			);
@@ -176,14 +176,14 @@
 			path = SettingViews;
 			sourceTree = "<group>";
 		};
-		4298D8602BF101FF005AB08F /* CockCardViews */ = {
+		4298D8602BF101FF005AB08F /* CockPostViews */ = {
 			isa = PBXGroup;
 			children = (
-				4298D8402BEDA30C005AB08F /* CockCardsView.swift */,
-				4298D8472BEE6C35005AB08F /* AddCockView.swift */,
+				4298D8402BEDA30C005AB08F /* CockPostView.swift */,
+				4298D8472BEE6C35005AB08F /* AddPostView.swift */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
 			);
-			path = CockCardViews;
+			path = CockPostViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +259,7 @@
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
-				4298D8482BEE6C35005AB08F /* AddCockView.swift in Sources */,
+				4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */,
 				4298D86A2BF1075B005AB08F /* ContactView.swift in Sources */,
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
@@ -267,7 +267,7 @@
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
-				4298D8412BEDA30C005AB08F /* CockCardsView.swift in Sources */,
+				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
 				4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8682BF1073D005AB08F /* BlockListView.swift in Sources */,
