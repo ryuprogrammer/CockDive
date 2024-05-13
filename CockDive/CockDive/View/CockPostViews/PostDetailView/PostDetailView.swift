@@ -86,7 +86,7 @@ struct PostDetailView: View {
                     })
                 }
                 .padding(.horizontal)
-                .padding(.top, 5)
+                .padding(.vertical, 5)
                 .background(Color.mainColor)
             }
         }

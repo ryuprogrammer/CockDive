@@ -10,27 +10,23 @@ struct CockCardView: View {
     @State private var isLike: Bool = false
     @State private var likeCount: Int = 200
     
+    // 続きを読む
+    @State private var isLineLimit: Bool = false
+    
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [CockPostViewPath]
     
     var body: some View {
         VStack {
-            HStack(alignment: .bottom) {
+            HStack {
                 Text(title)
                     .font(.title)
                 Text("\(userName)さん")
                 
-                Button(action: {
+                StrokeButton(text: "フォロー") {
                     
-                }, label: {
-                    Text("フォロー")
-                        .font(.callout)
-                        .padding(.horizontal, 3)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 6)
-                                .stroke(Color.blue, lineWidth: 1.5)
-                        )
-                })
+                }
+                
                 Spacer()
                 
                 Image(systemName: "ellipsis")
@@ -40,18 +36,29 @@ struct CockCardView: View {
                     .foregroundStyle(Color.primary)
             }
             
-            ZStack {
-                Image("cockImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
-            }
+            Image("cockImage")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
             
             HStack {
-                Text(explain)
-                    .font(.callout)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack {
+                    Text(explain)
+                        .font(.callout)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(isLineLimit ? 2 : nil)
+                    
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            
+                        }, label: {
+                            Text("...続きを読む")
+                                .foregroundStyle(Color.black)
+                        })
+                    }
+                }
                 
                 VStack(spacing: 1) {
                     Image(systemName: isLike ? "heart" : "heart.fill")

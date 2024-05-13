@@ -37,6 +37,7 @@
 		42DB945A2BF20B5A00ECDD84 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */; };
 		42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */; };
 		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
+		42DB94602BF2562E00ECDD84 /* LongCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945F2BF2562E00ECDD84 /* LongCommentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentView.swift; sourceTree = "<group>"; };
 		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
+		42DB945F2BF2562E00ECDD84 /* LongCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongCommentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */,
 				4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */,
 				42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */,
+				42DB945F2BF2562E00ECDD84 /* LongCommentView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
+				42DB94602BF2562E00ECDD84 /* LongCommentView.swift in Sources */,
 				4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8682BF1073D005AB08F /* BlockListView.swift in Sources */,
