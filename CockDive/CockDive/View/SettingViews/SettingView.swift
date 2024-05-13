@@ -9,15 +9,15 @@ struct SettingView: View {
     var body: some View {
         List {
             Section {
-                NavigationLinkButtonView(text: "お知らせ") {
+                NavigationLinkButtonView(icon: "bell", text: "お知らせ") {
                     path.append(.newsView)
                 }
                 
-                NavigationLinkButtonView(text: "プライバシーポリシー") {
+                NavigationLinkButtonView(icon: "book.pages", text: "プライバシーポリシー") {
                     path.append(.privacyPolicyView)
                 }
                 
-                NavigationLinkButtonView(text: "利用規約") {
+                NavigationLinkButtonView(icon: "book.pages", text: "利用規約") {
                     path.append(.termsOfServiceView)
                 }
             } header: {
@@ -25,7 +25,7 @@ struct SettingView: View {
             }
             
             Section {
-                NavigationLinkButtonView(text: "ブロックリスト") {
+                NavigationLinkButtonView(icon: "nosign", text: "ブロックリスト") {
                     path.append(.blockListView)
                 }
             } header: {
@@ -33,15 +33,15 @@ struct SettingView: View {
             }
             
             Section {
-                NavigationLinkButtonView(text: "レビューを書く") {
+                NavigationLinkButtonView(icon: "star", text: "レビューを書く") {
                     path.append(.contactView)
                 }
                 
-                NavigationLinkButtonView(text: "アプリをシェア") {
+                NavigationLinkButtonView(icon: "square.and.arrow.up", text: "アプリをシェア") {
                     path.append(.contactView)
                 }
                 
-                NavigationLinkButtonView(text: "お問合せ") {
+                NavigationLinkButtonView(icon: "envelope", text: "お問合せ") {
                     path.append(.contactView)
                 }
             } header: {
@@ -49,11 +49,11 @@ struct SettingView: View {
             }
             
             Section {
-                NavigationLinkButtonView(text: "ログアウト") {
+                NavigationLinkButtonView(icon: "person.crop.circle.badge.minus", text: "ログアウト") {
                     path.append(.logoutView)
                 }
                 
-                NavigationLinkButtonView(text: "退会") {
+                NavigationLinkButtonView(icon: "person.crop.circle.badge.xmark", text: "退会") {
                     path.append(.deleteAccountView)
                 }
             } header: {
