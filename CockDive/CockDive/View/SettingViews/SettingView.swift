@@ -3,6 +3,8 @@ import SwiftUI
 struct SettingView: View {
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [SettingViewPath]
+    // TabBar用
+    @State var flag: Visibility = .hidden
     
     var body: some View {
         List {
@@ -58,6 +60,8 @@ struct SettingView: View {
                 Text("アカウント")
             }
         }
+        // TabBar非表示
+        .toolbar(flag, for: .tabBar)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(Color("main"), for: .navigationBar)
