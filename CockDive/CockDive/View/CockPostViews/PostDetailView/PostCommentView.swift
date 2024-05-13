@@ -56,6 +56,7 @@ struct PostCommentView: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundStyle(Color.black)
+                                .frame(width: 20, height: 20)
                         }
                     }
                     

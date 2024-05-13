@@ -10,12 +10,12 @@ struct CockPostView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
-                List {
+                ScrollView {
                     ForEach(0..<10) { _ in
                         CockCardView(path: $navigationPath)
                     }
+                    .padding()
                 }
-                .listStyle(.plain)
                 
                 Button(action: {
                     isShowSheet = true

@@ -55,15 +55,13 @@ struct CockCardView: View {
                     })
                 } label: {
                     Image(systemName: "ellipsis")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(Color.primary)
+                        .foregroundStyle(Color.black)
+                        .frame(width: 30, height: 30)
                 }
                 
                 Spacer()
                 StrokeButton(text: "フォロー") {
-                    
+                    print("フォロー")
                 }
             }
             
@@ -118,6 +116,9 @@ struct CockCardView: View {
             
             // 説明文
             DynamicHeightCommentView(message: explain, maxTextCount: maxTextCount)
+            
+            // 区切り線
+            Divider()
         }
     }
 }
