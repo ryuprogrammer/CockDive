@@ -20,6 +20,7 @@ struct ToolBarBackButtonView: View {
                     .foregroundStyle(Color.white)
                 Text("戻る")
                     .foregroundStyle(Color.white)
+                    .fontWeight(.bold)
                     .font(.title3)
             }
         })
@@ -27,9 +28,13 @@ struct ToolBarBackButtonView: View {
 }
 
 #Preview {
-    ToolBarBackButtonView(
-        action: {
-            // 何もしない
-        }
-    )
+    ZStack {
+        Color.mainColor
+        
+        ToolBarBackButtonView(
+            action: {
+                // 何もしない
+            }
+        )
+    }
 }

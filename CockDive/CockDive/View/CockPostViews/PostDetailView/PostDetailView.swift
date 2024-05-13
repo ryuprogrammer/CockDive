@@ -81,11 +81,12 @@ struct PostDetailView: View {
                         Image(systemName: "paperplane.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 30)
+                            .frame(width: 34)
                             .foregroundStyle(Color.white)
                     })
                 }
                 .padding(.horizontal)
+                .padding(.top, 5)
                 .background(Color.mainColor)
             }
         }
