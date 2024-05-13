@@ -13,36 +13,86 @@ struct CockCardView: View {
     
     // 続きを読む
     @State private var isLineLimit: Bool = false
-    
+    // 画面サイズ取得
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [CockPostViewPath]
     
     var body: some View {
         VStack {
+            // アイコン、名前、通報ボタン、フォローボタン
             HStack {
-                Text(title)
-                    .font(.title)
-                Text("\(userName)さん")
-                
-                Image(systemName: "ellipsis")
+                Image("cockImage")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 20)
-                    .foregroundStyle(Color.primary)
+                    .frame(
+                        width: (window?.screen.bounds.width ?? 50) / 10,
+                        height: (window?.screen.bounds.width ?? 50) / 10
+                    )
+                    .clipShape(Circle())
+                
+                Text("\(userName)さん")
+                
+                Menu {
+                    Button(action: {
+                        
+                    }, label: {
+                        HStack {
+                            Image(systemName: "nosign")
+                            Spacer()
+                            Text("ブロック")
+                        }
+                    })
+                    
+                    Button(action: {
+                        
+                    }, label: {
+                        HStack {
+                            Image(systemName: "exclamationmark.bubble")
+                            Spacer()
+                            Text("通報")
+                        }
+                    })
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(Color.primary)
+                }
+                
                 Spacer()
                 StrokeButton(text: "フォロー") {
                     
                 }
             }
             
+            // 写真
             Image("cockImage")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
             
-            HStack {
-                DynamicHeightCommentView(message: explain, maxTextCount: maxTextCount)
+            // タイトル、コメントへの遷移ボタン、ハート
+            HStack(alignment: .top, spacing: 20) {
+                Text(title)
+                    .font(.title)
+                
+                Spacer()
+                VStack(spacing: 1) {
+                    Image(systemName: "message")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 25)
+                        .onTapGesture {
+                            // コメント画面へ遷移
+                            path.append(.postDetailView)
+                        }
+                    
+                    Text(String(likeCount))
+                        .font(.footnote)
+                }
                 
                 VStack(spacing: 1) {
                     Image(systemName: isLike ? "heart" : "heart.fill")
@@ -65,9 +115,9 @@ struct CockCardView: View {
                         .font(.footnote)
                 }
             }
-        }
-        .onTapGesture {
-            path.append(.postDetailView)
+            
+            // 説明文
+            DynamicHeightCommentView(message: explain, maxTextCount: maxTextCount)
         }
     }
 }
