@@ -1,13 +1,6 @@
-//
-//  LongCommentView.swift
-//  CockDive
-//
-//  Created by トム・クルーズ on 2024/05/13.
-//
-
 import SwiftUI
 
-struct LongCommentView: View {
+struct DynamicHeightCommentView: View {
     // 表示するメッセージを定義します。
       let message: String
       
@@ -51,10 +44,10 @@ struct LongCommentView: View {
 #Preview {
     VStack {
         // 長いバージョン
-        LongCommentView(message: "長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示")
+        DynamicHeightCommentView(message: "長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示長い文章を表示")
         Spacer()
             .frame(height: 200)
         // 15文字以下のバージョン
-        LongCommentView(message: "長い文章を表")
+        DynamicHeightCommentView(message: "長い文章を表")
     }
 }
