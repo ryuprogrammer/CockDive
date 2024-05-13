@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CockCardView: View {
+    let maxTextCount = 15
     @State private var userName: String = "momo"
     @State private var title: String = "定食"
     @State private var explain: String = """
@@ -23,17 +24,15 @@ struct CockCardView: View {
                     .font(.title)
                 Text("\(userName)さん")
                 
-                StrokeButton(text: "フォロー") {
-                    
-                }
-                
-                Spacer()
-                
                 Image(systemName: "ellipsis")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20)
                     .foregroundStyle(Color.primary)
+                Spacer()
+                StrokeButton(text: "フォロー") {
+                    
+                }
             }
             
             Image("cockImage")
@@ -43,22 +42,7 @@ struct CockCardView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
             
             HStack {
-                VStack {
-                    Text(explain)
-                        .font(.callout)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .lineLimit(isLineLimit ? 2 : nil)
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            
-                        }, label: {
-                            Text("...続きを読む")
-                                .foregroundStyle(Color.black)
-                        })
-                    }
-                }
+                DynamicHeightCommentView(message: explain, maxTextCount: maxTextCount)
                 
                 VStack(spacing: 1) {
                     Image(systemName: isLike ? "heart" : "heart.fill")

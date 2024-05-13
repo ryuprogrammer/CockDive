@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct PostCommentView: View {
+    let maxTextCount: Int = 50
     @State private var comments: [String] = [
         "美味しそう！",
         "レシピを教えてください！",
-        "最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中",
+        "最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中",
         "お腹すいた"
     ]
     
@@ -58,7 +59,7 @@ struct PostCommentView: View {
                         }
                     }
                     
-                    Text(comment)
+                    DynamicHeightCommentView(message: comment, maxTextCount: maxTextCount)
                 }
                 
                 Spacer()
