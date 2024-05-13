@@ -69,4 +69,12 @@ extension Date {
         }
         return previousMonthDate
     }
+    
+    /// 日時のStringを取得
+    func dateString() -> String {
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M月d日H:mm"
+        return dateFormatter.string(from: self)
+    }
 }
