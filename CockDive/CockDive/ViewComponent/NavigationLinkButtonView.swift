@@ -21,6 +21,8 @@ struct NavigationLinkButtonView: View {
         }, label: {
             HStack {
                 Image(systemName: icon)
+                    .foregroundStyle(Color.black)
+                    .padding(.trailing, 5)
                 
                 Text(text)
                     .foregroundStyle(Color.black)

@@ -33,6 +33,7 @@
 		4298D86E2BF107DB005AB08F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D86D2BF107DB005AB08F /* DeleteAccountView.swift */; };
 		4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */; };
 		4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */; };
+		4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		4298D86D2BF107DB005AB08F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkButtonView.swift; sourceTree = "<group>"; };
 		4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarBackButtonView.swift; sourceTree = "<group>"; };
+		4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarAddButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 				4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */,
 				4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */,
 				4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */,
+				4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
 				422C69C72BED1C570012FB8F /* Persistence.swift in Sources */,
 				4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */,
+				4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */,
 				4298D8642BF106BD005AB08F /* PrivacyPolicyView.swift in Sources */,
 				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
