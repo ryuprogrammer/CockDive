@@ -8,18 +8,14 @@ struct ImageCalendarView: View {
         VStack {
             HStack {
                 StrokeButton(text: "\(showingDate.previousMonth().month())月") {
-                    withAnimation {
-                        showingDate = showingDate.previousMonth()
-                    }
+                    showingDate = showingDate.previousMonth()
                 }
                 
                 Text(showingDate.yearAndMonth())
                     .padding()
                 
                 StrokeButton(text: "\(showingDate.nextMonth().month())月") {
-                    withAnimation {
-                        showingDate = showingDate.nextMonth()
-                    }
+                    showingDate = showingDate.nextMonth()
                 }
             }
             
@@ -41,6 +37,7 @@ struct ImageCalendarView: View {
                     }
                 }
             }
+            .animation(.linear, value: showingDate)
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 5)
         }
@@ -50,3 +47,4 @@ struct ImageCalendarView: View {
 #Preview {
     ImageCalendarView()
 }
+
