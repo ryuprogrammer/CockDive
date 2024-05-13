@@ -3,12 +3,16 @@ import SwiftUI
 struct CockPostView: View {
     // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
+    
+    // 画面遷移用
+    @State private var navigationPath: [CockPostViewPath] = []
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 List {
                     ForEach(0..<10) { _ in
-                        CockCardView()
+                        CockCardView(path: $navigationPath)
                     }
                 }
                 .listStyle(.plain)
@@ -32,10 +36,24 @@ struct CockPostView: View {
                 )
                 .padding()
             }
-            .navigationTitle("みんなのご飯")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("main"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("みんなのご飯")
+                        .foregroundStyle(Color.white)
+                        .fontWeight(.bold)
+                        .font(.title3)
+                }
+            }
+            
+            .navigationDestination(for: CockPostViewPath.self) { value in
+                switch value {
+                case .postDetailView:
+                    PostDetailView(path: $navigationPath)
+                }
+            }
         }
         .sheet(isPresented: $isShowSheet) {
             AddPostView()
@@ -43,6 +61,11 @@ struct CockPostView: View {
     }
 }
 
+enum CockPostViewPath {
+    case postDetailView
+}
+
 #Preview {
     CockPostView()
 }
+

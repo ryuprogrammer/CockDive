@@ -10,6 +10,9 @@ struct CockCardView: View {
     @State private var isLike: Bool = false
     @State private var likeCount: Int = 200
     
+    // ルート階層から受け取った配列パスの参照
+    @Binding var path: [CockPostViewPath]
+    
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
@@ -65,16 +68,26 @@ struct CockCardView: View {
                                     likeCount += 1
                                 }
                             }
-                    }
+                        }
                     
                     Text(String(likeCount))
                         .font(.footnote)
                 }
             }
         }
+        .onTapGesture {
+            path.append(.postDetailView)
+        }
     }
 }
 
 #Preview {
-    CockCardView()
+    struct PreviewView: View {
+        @State private var path: [CockPostViewPath] = []
+        
+        var body: some View {
+            CockCardView(path: $path)
+        }
+    }
+    return PreviewView()
 }

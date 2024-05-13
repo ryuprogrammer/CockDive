@@ -36,6 +36,7 @@
 		4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */; };
 		42DB945A2BF20B5A00ECDD84 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */; };
 		42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */; };
+		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarAddButtonView.swift; sourceTree = "<group>"; };
 		42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentView.swift; sourceTree = "<group>"; };
+		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 				4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */,
 				4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */,
 				4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */,
+				42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
+				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

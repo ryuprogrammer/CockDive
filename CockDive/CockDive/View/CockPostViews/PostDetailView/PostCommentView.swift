@@ -63,9 +63,6 @@ struct PostCommentView: View {
                 
                 Spacer()
             }
-            .padding(.horizontal)
-            
-            Divider()
         }
     }
 }
