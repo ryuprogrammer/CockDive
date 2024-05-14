@@ -46,6 +46,8 @@
 		42DB94792BF3009900ECDD84 /* FirebaseOAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94782BF3009900ECDD84 /* FirebaseOAuthUI */; };
 		42DB947B2BF3187300ECDD84 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB947A2BF3187300ECDD84 /* FirstView.swift */; };
 		42DB947D2BF323FD00ECDD84 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */; };
+		42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */; };
+		42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +88,8 @@
 		42DB947A2BF3187300ECDD84 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
 		42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		42DB947E2BF3244D00ECDD84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				42DB94622BF2F8E600ECDD84 /* StartView.swift */,
+				42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */,
 			);
 			path = StartViews;
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 		42DB947F2BF3280C00ECDD84 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -341,6 +347,7 @@
 				4298D86A2BF1075B005AB08F /* ContactView.swift in Sources */,
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
+				42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */,
 				4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */,
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
@@ -350,6 +357,7 @@
 				4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8682BF1073D005AB08F /* BlockListView.swift in Sources */,
+				42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */,
 				4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */,
 				4298D86E2BF107DB005AB08F /* DeleteAccountView.swift in Sources */,
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
