@@ -4,8 +4,6 @@ import SwiftUI
 struct CockDiveApp: App {
     let persistenceController = PersistenceController.shared
     
-    @State private var viewSelection: ViewType = .cockCard
-    
     init() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
@@ -30,26 +28,8 @@ struct CockDiveApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TabView(selection: $viewSelection) {
-                CockPostView()
-                    .tabItem {
-                        Image(systemName: "fork.knife")
-                        Text("ご飯")
-                    }
-                    .tag(ViewType.cockCard)
-                
-                MyPageView()
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("ホーム")
-                    }.tag(ViewType.home)
-            }
+            FirstView()
             //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
-}
-
-enum ViewType {
-    case cockCard
-    case home
 }
