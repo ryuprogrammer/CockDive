@@ -39,13 +39,13 @@
 		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
 		42DB94602BF2562E00ECDD84 /* DynamicHeightCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */; };
 		42DB94632BF2F8E600ECDD84 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94622BF2F8E600ECDD84 /* StartView.swift */; };
-		42DB94652BF2FB2B00ECDD84 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */; };
 		42DB94702BF3001000ECDD84 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB946F2BF3001000ECDD84 /* FirebaseAuth */; };
 		42DB94722BF3001000ECDD84 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94712BF3001000ECDD84 /* FirebaseFirestore */; };
 		42DB94752BF3009800ECDD84 /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94742BF3009800ECDD84 /* FirebaseAuthUI */; };
 		42DB94772BF3009900ECDD84 /* FirebaseGoogleAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94762BF3009900ECDD84 /* FirebaseGoogleAuthUI */; };
 		42DB94792BF3009900ECDD84 /* FirebaseOAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94782BF3009900ECDD84 /* FirebaseOAuthUI */; };
 		42DB947B2BF3187300ECDD84 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB947A2BF3187300ECDD84 /* FirstView.swift */; };
+		42DB947D2BF323FD00ECDD84 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,8 +83,9 @@
 		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
 		42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCommentView.swift; sourceTree = "<group>"; };
 		42DB94622BF2F8E600ECDD84 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
-		42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		42DB947A2BF3187300ECDD84 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
+		42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		42DB947E2BF3244D00ECDD84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,13 +123,14 @@
 		422C69C32BED1C570012FB8F /* CockDive */ = {
 			isa = PBXGroup;
 			children = (
+				42DB947E2BF3244D00ECDD84 /* Info.plist */,
 				422C69C42BED1C570012FB8F /* CockDiveApp.swift */,
 				422C69C62BED1C570012FB8F /* Persistence.swift */,
 				4298D8422BEDDD65005AB08F /* View */,
 				4298D84F2BEF50CE005AB08F /* ViewComponent */,
 				4298D8492BEF4E1D005AB08F /* Extantions */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
-				42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */,
+				42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */,
 				422C69CF2BED1C590012FB8F /* CockDive.entitlements */,
 				422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */,
 				422C69D02BED1C590012FB8F /* Preview Content */,
@@ -302,9 +304,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42DB947D2BF323FD00ECDD84 /* GoogleService-Info.plist in Resources */,
 				422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */,
 				422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */,
-				42DB94652BF2FB2B00ECDD84 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +481,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CockDive/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -517,6 +520,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CockDive/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
