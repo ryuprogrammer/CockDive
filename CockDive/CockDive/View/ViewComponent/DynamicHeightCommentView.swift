@@ -50,3 +50,4 @@ struct DynamicHeightCommentView: View {
         DynamicHeightCommentView(message: "長い文章を表", maxTextCount: 15)
     }
 }
+

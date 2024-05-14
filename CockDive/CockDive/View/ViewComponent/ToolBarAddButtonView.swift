@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// 横長の丸みを帯びたボタン
-struct StrokeButton: View {
+struct ToolBarAddButtonView: View {
     // ボタンに表示する文言
     let text: String
     // タップ処理
@@ -20,28 +19,30 @@ struct StrokeButton: View {
             action()
         }, label: {
             Text(text)
+                .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(Color.mainColor)
+                .foregroundStyle(Color.white)
                 .frame(
-                    width: (window?.screen.bounds.width ?? 400) / 4,
+                    width: (window?.screen.bounds.width ?? 400) / 5,
                     height: (window?.screen.bounds.height ?? 800) / 28
                 )
-                .background(Color.white)
+                .background(Color.mainColor)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(lineWidth: 1.5)
-                        .foregroundStyle(Color.mainColor)
+                        .stroke(lineWidth: 3)
+                        .foregroundStyle(Color.white)
                 )
         })
     }
 }
 
 #Preview {
-    StrokeButton(
-        text: "ボタン",
+    ToolBarAddButtonView(
+        text: "投稿",
         action: {
             // 何もしない
         }
     )
 }
+

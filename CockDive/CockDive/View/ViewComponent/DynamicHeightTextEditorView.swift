@@ -61,3 +61,4 @@ struct DynamicHeightTextEditorView: View {
     }
     return PreviewView()
 }
+

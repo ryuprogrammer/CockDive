@@ -127,7 +127,8 @@
 				422C69C42BED1C570012FB8F /* CockDiveApp.swift */,
 				422C69C62BED1C570012FB8F /* Persistence.swift */,
 				4298D8422BEDDD65005AB08F /* View */,
-				4298D84F2BEF50CE005AB08F /* ViewComponent */,
+				42DB947F2BF3280C00ECDD84 /* ViewModel */,
+				42DB94802BF3282D00ECDD84 /* Model */,
 				4298D8492BEF4E1D005AB08F /* Extantions */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
 				42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */,
@@ -155,6 +156,7 @@
 				4298D8602BF101FF005AB08F /* CockPostViews */,
 				4298D8542BF097BA005AB08F /* MyPageViews */,
 				4298D85D2BF10194005AB08F /* SettingViews */,
+				4298D84F2BEF50CE005AB08F /* ViewComponent */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -233,6 +235,20 @@
 				42DB94622BF2F8E600ECDD84 /* StartView.swift */,
 			);
 			path = StartViews;
+			sourceTree = "<group>";
+		};
+		42DB947F2BF3280C00ECDD84 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		42DB94802BF3282D00ECDD84 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

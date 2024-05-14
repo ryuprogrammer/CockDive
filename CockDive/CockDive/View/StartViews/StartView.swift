@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// SingInまたはLogIn
 struct StartView: View {
     var body: some View {
         ZStack {
