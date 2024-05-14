@@ -1,29 +1,34 @@
 import SwiftUI
 
 struct FirstView: View {
-    // LoginStatus
-    @State private var isLogin: Bool = true
     // TabViewのViewSelection
     @State private var viewSelection: ViewType = .cockCard
+    private var authenticationManager = AuthenticationManager()
     
     var body: some View {
-        if isLogin {
-            TabView(selection: $viewSelection) {
-                CockPostView()
-                    .tabItem {
-                        Image(systemName: "fork.knife")
-                        Text("ご飯")
-                    }
-                    .tag(ViewType.cockCard)
-                
-                MyPageView()
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("ホーム")
-                    }.tag(ViewType.home)
+        VStack {
+            if authenticationManager.isSignIn {
+                TabView(selection: $viewSelection) {
+                    CockPostView()
+                        .tabItem {
+                            Image(systemName: "fork.knife")
+                            Text("ご飯")
+                        }
+                        .tag(ViewType.cockCard)
+                    
+                    MyPageView()
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("ホーム")
+                        }.tag(ViewType.home)
+                }
+            } else {
+                SingInView()
             }
-        } else {
-            StartView()
+            
+            LongBarButton(text: "開発者ボタン", isStroke: false) {
+                
+            }
         }
     }
 }
