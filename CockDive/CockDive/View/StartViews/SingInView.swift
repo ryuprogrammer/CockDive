@@ -45,7 +45,7 @@ struct SingInView: View {
                     TextField("ニックネームを入力", text: $nickName)
                         .padding(8)
                         .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
                         .padding(.horizontal, 20)
                     
                     Spacer()
