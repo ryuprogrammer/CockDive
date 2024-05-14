@@ -39,6 +39,7 @@
 		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
 		42DB94602BF2562E00ECDD84 /* DynamicHeightCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */; };
 		42DB94632BF2F8E600ECDD84 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94622BF2F8E600ECDD84 /* StartView.swift */; };
+		42DB94652BF2FB2B00ECDD84 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
 		42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCommentView.swift; sourceTree = "<group>"; };
 		42DB94622BF2F8E600ECDD84 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				4298D84F2BEF50CE005AB08F /* ViewComponent */,
 				4298D8492BEF4E1D005AB08F /* Extantions */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
+				42DB94642BF2FB2B00ECDD84 /* GoogleService-Info.plist */,
 				422C69CF2BED1C590012FB8F /* CockDive.entitlements */,
 				422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */,
 				422C69D02BED1C590012FB8F /* Preview Content */,
@@ -277,6 +280,7 @@
 			files = (
 				422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */,
 				422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */,
+				42DB94652BF2FB2B00ECDD84 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
