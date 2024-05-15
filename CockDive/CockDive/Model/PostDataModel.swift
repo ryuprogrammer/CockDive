@@ -5,7 +5,8 @@ import FirebaseStorage
 
 class PostDataModel {
     /// コレクション名
-    private let postCollection: String = "postData"
+    private let postDataCollection: String = "postData"
+    private let postCollection: String = "post"
     
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
@@ -18,25 +19,27 @@ class PostDataModel {
         
         do {
             // 指定したUIDを持つドキュメントデータに追加（または更新）
-            try db.collection(postCollection).document(uid).setData(from: post)
+            try db.collection(postDataCollection).document(uid).collection(postCollection).addDocument(from: post)
             
-            // storageに画像をアップロード
-            await addUserIconImage(iconImage: post.image, uid: uid)
+            if let postImage = post.postImage {
+                // storageに画像をアップロード
+                await addUserIconImage(postImage: postImage, uid: uid)
+            }
         } catch {
             print("Error adding/updating user: \(error)")
         }
     }
     
     /// iconImageを追加/ 更新
-    func addUserIconImage(iconImage: Data, uid: String) async {
+    func addUserIconImage(postImage: Data, uid: String) async {
         // storageに画像をアップロード
         let storageRef = self.storage.reference()
         
         // iconImageのアップロード
-        let iconImageRef = storageRef.child("iconImage/\(uid)/icon.jpg")
+        let PostImageRef = storageRef.child("postImage/\(uid)/icon.jpg")
         
         do {
-            _ = try await iconImageRef.putDataAsync(iconImage, metadata: nil)
+            _ = try await PostImageRef.putDataAsync(postImage, metadata: nil)
         } catch {
             print("Error uploading icon image: \(error)")
         }
@@ -49,9 +52,9 @@ class PostDataModel {
     }
     
     /// uidを指定してuserDataを取得: IconImage以外取得
-    func fetchUserData(uid: String) async -> UserElement? {
+    func fetchPostData(uid: String) async -> UserElement? {
         do {
-            let document = try await db.collection(postCollection).document(uid).getDocument()
+            let document = try await db.collection(postDataCollection).document(uid).getDocument()
             
             guard let data = document.data() else {
                 print("Document does not exist")

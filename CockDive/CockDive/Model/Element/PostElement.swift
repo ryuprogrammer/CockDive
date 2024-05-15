@@ -6,7 +6,7 @@ struct PostElement: Encodable {
     /// uid
     var uid: String
     /// 写真
-    var image: Data
+    var postImage: Data?
     /// ご飯のタイトル
     var title: String
     /// ご飯のメモ
