@@ -12,7 +12,7 @@ class PostDataModel {
     private var storage = Storage.storage()
     
     // MARK: - データ追加
-    /// Post追加/ 更新
+    /// Post追加
     func addPost(post: PostElement) async {
         // uid取得
         guard let uid = fetchUid() else { return }
@@ -28,6 +28,11 @@ class PostDataModel {
         } catch {
             print("Error adding/updating user: \(error)")
         }
+    }
+    
+    /// Post更新
+    func updatePost(post: PostElement) async {
+        
     }
     
     /// iconImageを追加/ 更新
