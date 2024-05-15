@@ -1,10 +1,12 @@
 import Foundation
 import FirebaseFirestore
 
-struct PostElement {
+struct PostElement: Encodable {
     @DocumentID var id: String?
     /// uid
     var uid: String
+    /// 写真
+    var image: Data
     /// ご飯のタイトル
     var title: String
     /// ご飯のメモ

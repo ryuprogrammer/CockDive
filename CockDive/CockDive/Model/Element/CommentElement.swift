@@ -1,6 +1,6 @@
 import Foundation
 
-struct CommentElement {
+struct CommentElement: Encodable {
     var id: String
     /// uid
     var uid: String

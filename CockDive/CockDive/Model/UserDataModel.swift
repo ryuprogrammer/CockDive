@@ -11,7 +11,7 @@ class UserDataModel {
     private var storage = Storage.storage()
     
     // MARK: - データ追加
-    /// User追加
+    /// User追加/ 更新
     func addUser(user: UserElement) async {
         // uid取得
         guard let uid = fetchUid() else { return }
@@ -26,25 +26,6 @@ class UserDataModel {
             }
             
             print("addUser完了")
-        } catch {
-            print("Error adding/updating user: \(error)")
-        }
-    }
-    
-    /// Userの更新
-    func updateUser(user: UserElement) async {
-        // uid取得
-        guard let uid = fetchUid() else { return }
-        
-        let docRef = db.collection(userCollection).document(uid)
-        
-        do {
-            try docRef.setData(from: user)
-            
-            if let iconImage = user.iconImage {
-                // storageに画像をアップロード
-                await addUserIconImage(iconImage: iconImage, uid: uid)
-            }
         } catch {
             print("Error adding/updating user: \(error)")
         }
