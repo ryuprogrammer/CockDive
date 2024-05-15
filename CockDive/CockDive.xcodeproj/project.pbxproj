@@ -261,9 +261,17 @@
 		42DB94802BF3282D00ECDD84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				42DB948B2BF4603E00ECDD84 /* UserElement.swift */,
+				42DB948D2BF470B600ECDD84 /* Element */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		42DB948D2BF470B600ECDD84 /* Element */ = {
+			isa = PBXGroup;
+			children = (
+				42DB948B2BF4603E00ECDD84 /* UserElement.swift */,
+			);
+			path = Element;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
