@@ -20,4 +20,9 @@ struct UserDefaultsDataModel {
         }
         return nil
     }
+    
+    /// userデータが存在するか判定するメソッド
+    func userDataExists() -> Bool {
+        return UserDefaults.standard.object(forKey: userKey) != nil
+    }
 }
