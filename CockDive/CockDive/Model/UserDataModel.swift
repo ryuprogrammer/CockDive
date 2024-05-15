@@ -11,7 +11,7 @@ class UserDataModel {
     private var storage = Storage.storage()
     
     // MARK: - データ追加
-    /// User追加/ 更新
+    /// User追加
     func addUser(user: UserElement) async {
         // uid取得
         guard let uid = fetchUid() else { return }

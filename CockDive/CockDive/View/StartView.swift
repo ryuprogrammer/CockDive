@@ -1,21 +1,23 @@
 import SwiftUI
 
 struct StartView: View {
-    @ObservedObject var authenticationManager = AuthenticationManager()
+    @ObservedObject var startViewModel = StartViewModel()
     // 登録するニックネーム
     @State private var nickName: String = ""
     // キーボード制御
     @FocusState private var keybordFocuse: Bool
     
     var body: some View {
-        switch authenticationManager.userStatus {
+        switch startViewModel.userStatus {
         case .signInRequired:
             // サインイン
             SignInView()
         case .registrationRequired:
             // 登録
             RegistrationView(nickName: $nickName) {
-                authenticationManager.register()
+                Task {
+                    await startViewModel.addUser(nickName: nickName)
+                }
             }
         case .normalUser:
             // メイン画面
