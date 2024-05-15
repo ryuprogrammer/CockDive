@@ -49,6 +49,7 @@
 		42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */; };
 		42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */; };
 		42DB94882BF3C30100ECDD84 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94872BF3C30000ECDD84 /* MainTabView.swift */; };
+		42DB948A2BF45E5200ECDD84 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94892BF45E5200ECDD84 /* RegistrationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthUIView.swift; sourceTree = "<group>"; };
 		42DB94872BF3C30000ECDD84 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		42DB94892BF45E5200ECDD84 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				42DB94622BF2F8E600ECDD84 /* SignInView.swift */,
+				42DB94892BF45E5200ECDD84 /* RegistrationView.swift */,
 				42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */,
 			);
 			path = StartViews;
@@ -366,6 +369,7 @@
 				4298D86E2BF107DB005AB08F /* DeleteAccountView.swift in Sources */,
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
 				422C69C72BED1C570012FB8F /* Persistence.swift in Sources */,
+				42DB948A2BF45E5200ECDD84 /* RegistrationView.swift in Sources */,
 				42DB94632BF2F8E600ECDD84 /* SignInView.swift in Sources */,
 				4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */,
 				4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */,
