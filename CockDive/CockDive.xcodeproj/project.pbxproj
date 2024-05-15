@@ -50,6 +50,7 @@
 		42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */; };
 		42DB94882BF3C30100ECDD84 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94872BF3C30000ECDD84 /* MainTabView.swift */; };
 		42DB948A2BF45E5200ECDD84 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94892BF45E5200ECDD84 /* RegistrationView.swift */; };
+		42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB948B2BF4603E00ECDD84 /* UserElement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthUIView.swift; sourceTree = "<group>"; };
 		42DB94872BF3C30000ECDD84 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		42DB94892BF45E5200ECDD84 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		42DB948B2BF4603E00ECDD84 /* UserElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserElement.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +261,7 @@
 		42DB94802BF3282D00ECDD84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				42DB948B2BF4603E00ECDD84 /* UserElement.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
+				42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
 				42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */,
