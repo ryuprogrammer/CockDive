@@ -10,3 +10,13 @@ struct UserElement: Encodable, Decodable {
     /// アイコン画像
     var iconImage: Data?
 }
+
+/// UserDefaults用
+struct UserElementForUserDefaults: Encodable, Decodable {
+    /// ニックネーム
+    var nickName: String
+    /// 自己紹介文
+    var introduction: String?
+    /// アイコン画像
+    var iconImage: Data?
+}

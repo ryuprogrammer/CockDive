@@ -15,10 +15,13 @@ class StartViewModel: ObservableObject {
             guard let self = self else { return }
             if let _ = user {
                 print("Sign-in")
+                print("userStatus: \(userStatus)")
                 if userDefaultsDataModel.userDataExists() {
                     userStatus = .normalUser
+                    print("userStatus: \(userStatus)")
                 } else {
                     userStatus = .registrationRequired
+                    print("userStatus: \(userStatus)")
                 }
             } else {
                 print("Sign-out")
@@ -48,11 +51,9 @@ class StartViewModel: ObservableObject {
                 id: uid,
                 nickName: nickName
             ))
-        }
-        
-        DispatchQueue.main.async {
-            // Publishで変更→UI処理なので、メインスレッドで処理する
-            self.userStatus = .normalUser
+            DispatchQueue.main.async {
+                self.userStatus = .normalUser
+            }
         }
     }
 }
