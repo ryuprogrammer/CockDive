@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserFriendElement {
+struct UserFriendElement: Codable {
     @DocumentID var id: String?
     /// フォロー数
     var followCount: Int

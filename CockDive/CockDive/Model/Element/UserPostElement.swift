@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserPostElement {
+struct UserPostElement: Codable {
     @DocumentID var id: String?
     /// 投稿数
     var postCount: Int
