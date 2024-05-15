@@ -14,48 +14,9 @@ struct StartView: View {
             SignInView()
         case .registrationRequired:
             // 登録
-            ZStack {
-                Color.mainColor
-                VStack {
-                    Text("みんなのご飯")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.white)
-                    
-                    Spacer()
-                    
-                    Text("ニックネームを登録")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.white)
-                    
-                    Text("8文字以内で入力してね")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.white)
-                    
-                    // 名前入力欄
-                    TextField("ニックネームを入力", text: $nickName)
-                        .padding(8)
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .padding(.horizontal, 20)
-                    
-                    Spacer()
-                    
-                    // Sign-In状態なので登録画面に遷移
-                    LongBarButton(text: "ユーザー登録", isStroke: true) {
-                        withAnimation {
-                            authenticationManager.register()
-                            print("stats: \(authenticationManager.userStatus)")
-                        }
-                    }
-                    
-                    Spacer()
-                        .frame(height: 100)
-                }
+            RegistrationView(nickName: $nickName) {
+                authenticationManager.register()
             }
-            .ignoresSafeArea(.all)
         case .normalUser:
             // メイン画面
             MainTabView()
