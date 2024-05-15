@@ -5,6 +5,7 @@ import Combine
 class AuthenticationManager: ObservableObject {
     // iOS16でも使うので、Publuish
     @Published private(set) var isSignIn: Bool = false
+    @Published private(set) var userStatus: UserStatus = .signInRequired
     private var handle: AuthStateDidChangeListenerHandle!
     
     init() {
@@ -14,9 +15,11 @@ class AuthenticationManager: ObservableObject {
             if let _ = user {
                 print("Sign-in")
                 self.isSignIn = true
+                self.userStatus = .registrationRequired
             } else {
                 print("Sign-out")
                 self.isSignIn = false
+                self.userStatus = .signInRequired
             }
         }
     }
@@ -33,4 +36,10 @@ class AuthenticationManager: ObservableObject {
             print("Error signing out: \(error.localizedDescription)")
         }
     }
+    
+    /// 登録終わって、Statusを通常ユーザーに変更
+    func register() {
+        self.userStatus = .normalUser
+    }
 }
+

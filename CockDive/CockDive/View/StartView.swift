@@ -1,35 +1,28 @@
 import SwiftUI
 
-/// SingInまたはLogIn
-struct SingInView: View {
-    private var authenticationManager = AuthenticationManager()
-    @State private var isShowSheet = false
+struct StartView: View {
+    @ObservedObject var authenticationManager = AuthenticationManager()
+    // 登録するニックネーム
     @State private var nickName: String = ""
     // キーボード制御
     @FocusState private var keybordFocuse: Bool
     
     var body: some View {
-        ZStack {
-            Color.mainColor
-            VStack {
-                Spacer()
-                
-                if authenticationManager.isSignIn {
-                    
+        switch authenticationManager.userStatus {
+        case .signInRequired:
+            // サインイン
+            SignInView()
+        case .registrationRequired:
+            // 登録
+            ZStack {
+                Color.mainColor
+                VStack {
                     Text("みんなのご飯")
-                        .font(.largeTitle)
+                        .font(.title3)
                         .fontWeight(.bold)
                         .foregroundStyle(Color.white)
                     
                     Spacer()
-                    
-                    // Sign-Out状態なのでSign-Inボタンを表示する
-                    LongBarButton(text: "サインイン", isStroke: true) {
-                        self.isShowSheet.toggle()
-                    }
-                } else {
-                    Spacer()
-                        .frame(height: 100)
                     
                     Text("ニックネームを登録")
                         .font(.largeTitle)
@@ -52,21 +45,39 @@ struct SingInView: View {
                     
                     // Sign-In状態なので登録画面に遷移
                     LongBarButton(text: "ユーザー登録", isStroke: true) {
-                        
+                        withAnimation {
+                            authenticationManager.register()
+                            print("stats: \(authenticationManager.userStatus)")
+                        }
                     }
+                    
+                    Spacer()
+                        .frame(height: 100)
                 }
-                
-                Spacer()
-                    .frame(height: 100)
             }
-        }
-        .ignoresSafeArea(.all)
-        .sheet(isPresented: $isShowSheet) {
-            FirebaseAuthUIView()
+            .ignoresSafeArea(.all)
+        case .normalUser:
+            // メイン画面
+            MainTabView()
+        case .bannedUser:
+            Text("垢BANしてるお")
         }
     }
 }
 
-#Preview {
-    SingInView()
+// UserStatus
+enum UserStatus {
+    /// SingInが必要
+    case signInRequired
+    /// 登録が必要
+    case registrationRequired
+    /// 通常のユーザー
+    case normalUser
+    /// 垢BANされたユーザー
+    case bannedUser
 }
+
+#Preview {
+    StartView()
+}
+
