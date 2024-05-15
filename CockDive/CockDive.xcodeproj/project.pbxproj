@@ -58,6 +58,7 @@
 		42DB94982BF48C7C00ECDD84 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 42DB94972BF48C7C00ECDD84 /* FirebaseStorage */; };
 		42DB949A2BF4A2AE00ECDD84 /* UserFriendElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94992BF4A2AE00ECDD84 /* UserFriendElement.swift */; };
 		42DB949C2BF4A2D100ECDD84 /* UserPostElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949B2BF4A2D100ECDD84 /* UserPostElement.swift */; };
+		42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		42DB94942BF48A5E00ECDD84 /* PostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataModel.swift; sourceTree = "<group>"; };
 		42DB94992BF4A2AE00ECDD84 /* UserFriendElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriendElement.swift; sourceTree = "<group>"; };
 		42DB949B2BF4A2D100ECDD84 /* UserPostElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostElement.swift; sourceTree = "<group>"; };
+		42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
+				42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				42DB948F2BF470E100ECDD84 /* PostElement.swift in Sources */,
+				42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
 				42DB94602BF2562E00ECDD84 /* DynamicHeightCommentView.swift in Sources */,
