@@ -15,7 +15,11 @@ class StartViewModel: ObservableObject {
             guard let self = self else { return }
             if let _ = user {
                 print("Sign-in")
-                self.userStatus = .registrationRequired
+                if userDefaultsDataModel.userDataExists() {
+                    userStatus = .normalUser
+                } else {
+                    userStatus = .registrationRequired
+                }
             } else {
                 print("Sign-out")
                 self.userStatus = .signInRequired
