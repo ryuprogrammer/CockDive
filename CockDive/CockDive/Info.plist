@@ -13,5 +13,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>ご飯を撮影するためにカメラを使います。</string>
 </dict>
 </plist>
