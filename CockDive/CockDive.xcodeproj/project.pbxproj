@@ -61,6 +61,7 @@
 		42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */; };
 		42DB94A02BF503A300ECDD84 /* UserDefaultsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */; };
 		42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */; };
+		42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A32BF662E600ECDD84 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,7 @@
 		42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataModel.swift; sourceTree = "<group>"; };
 		42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostViewModel.swift; sourceTree = "<group>"; };
+		42DB94A32BF662E600ECDD84 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */,
 				42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */,
 				42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */,
+				42DB94A32BF662E600ECDD84 /* CameraView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				42DB947B2BF3187300ECDD84 /* StartView.swift in Sources */,
 				4298D8642BF106BD005AB08F /* PrivacyPolicyView.swift in Sources */,
 				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
+				42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
 				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,
