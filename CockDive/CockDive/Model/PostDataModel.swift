@@ -6,7 +6,6 @@ import FirebaseStorage
 class PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "postData"
-    private let postCollection: String = "post"
     
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
@@ -18,21 +17,45 @@ class PostDataModel {
         guard let uid = fetchUid() else { return }
         
         do {
-            // 指定したUIDを持つドキュメントデータに追加（または更新）
-            try db.collection(postDataCollection).document(uid).collection(postCollection).addDocument(from: post)
+            // ドキュメントIDを生成
+            let newDocRef = db.collection("users").document(uid).collection("posts").document()
+            
+            var postWithId = post
+            postWithId.id = newDocRef.documentID
+            
+            // Firestoreにデータを保存
+            try newDocRef.setData(from: postWithId)
             
             if let postImage = post.postImage {
-                // storageに画像をアップロード
-                await addUserIconImage(postImage: postImage, uid: uid)
+                // Storageに画像をアップロード
+                if let postImageURL = await uploadPostImage(postImage: postImage, uid: uid, postId: newDocRef.documentID) {
+                    // 画像のURLをFirestoreに更新
+                    try await newDocRef.updateData(["postImageURL": postImageURL])
+                }
             }
         } catch {
-            print("Error adding/updating user: \(error)")
+            print("Error adding post: \(error)")
         }
     }
     
-    /// Post更新
-    func updatePost(post: PostElement) async {
+    /// Storageに画像をアップロード
+    func uploadPostImage(postImage: Data, uid: String, postId: String) async -> String? {
+        let storageRef = Storage.storage().reference().child("postImages/\(uid)/\(postId)/icon.jpg")
         
+        do {
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            let _ = try await storageRef.putDataAsync(postImage, metadata: metadata)
+            
+            // 画像のダウンロードURLを取得
+            let downloadURL = try await storageRef.downloadURL()
+            
+            return downloadURL.absoluteString
+        } catch {
+            print("Error uploading post image: \(error)")
+            return nil
+        }
     }
     
     /// iconImageを追加/ 更新
