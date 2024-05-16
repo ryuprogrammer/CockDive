@@ -95,22 +95,17 @@ struct PostDataModel {
     // TODO: データ取得できるか確認 - uidとcreateAtが違うからエラーかな、、、
     /// Postを取得（Uid/ 件数指定）
     func fetchPostFromUid(uid: String) async -> [PostElement] {
-        // 日付順に並び替えて、Uidを指定して取得
         let docRef = db.collection(postDataCollection)
             .whereField("uid", isEqualTo: uid)
-        // ↓これがuidのフィールドでないためエラー出るかも: https://firebase.google.com/docs/firestore/query-data/order-limit-data?hl=ja&_gl=1*ralp11*_up*MQ..*_ga*MTMzNDU2NjA1MS4xNzE1ODI4MDU4*_ga_CW55HF8NVT*MTcxNTgyODA1Ny4xLjAuMTcxNTgyODA1Ny4wLjAuMA..#limitations
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
         var postData: [PostElement] = []
-        let decoder = JSONDecoder()
         
         do {
             let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
-                let data = document.data()
-                let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-                let decodedPost = try decoder.decode(PostElement.self, from: jsonData)
-                postData.append(decodedPost)
+                let result = try document.data(as: PostElement.self)
+                postData.append(result)
             }
         } catch {
             print("Error getting documents: \(error)")
