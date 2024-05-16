@@ -60,6 +60,7 @@
 		42DB949C2BF4A2D100ECDD84 /* UserPostElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949B2BF4A2D100ECDD84 /* UserPostElement.swift */; };
 		42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */; };
 		42DB94A02BF503A300ECDD84 /* UserDefaultsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */; };
+		42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,7 @@
 		42DB949B2BF4A2D100ECDD84 /* UserPostElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostElement.swift; sourceTree = "<group>"; };
 		42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataModel.swift; sourceTree = "<group>"; };
+		42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +276,7 @@
 			children = (
 				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
 				42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */,
+				42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 			files = (
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
 				42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */,
+				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
 				42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */,

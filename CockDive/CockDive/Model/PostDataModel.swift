@@ -3,7 +3,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
-class PostDataModel {
+struct PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "postData"
     /// Postを取得するリミット
