@@ -5,7 +5,7 @@ import FirebaseStorage
 
 struct PostDataModel {
     /// コレクション名
-    private let postDataCollection: String = "postData"
+    private let postDataCollection: String = "posts"
     /// Postを取得するリミット
     private let fetchPostLimit: Int = 20
     private var db = Firestore.firestore()
@@ -74,35 +74,23 @@ struct PostDataModel {
     
     /// Postを取得（件数指定）
     func fetchPostData() async -> [PostElement] {
-        print("データ取得スタート")
-        // 日付順に並び替えて取得
-        let docRef = db.collection(postDataCollection)
-//            .order(by: "createAt", descending: true)
-//            .limit(to: fetchPostLimit)
-        var postData: [PostElement] = []
-        let decoder = JSONDecoder()
-        
-        do {
-            let querySnapshot = try await docRef.getDocuments()
-            print("querySnapshot: \(querySnapshot)")
-            print("querySnapshot.count: \(querySnapshot.count)")
-            for document in querySnapshot.documents {
-                print("docment: \(document)")
-                let data = document.data()
-                print("data: \(data)")
-                let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-                print("jsonData: \(jsonData)")
-                let decodedPost = try decoder.decode(PostElement.self, from: jsonData)
-                print("decodedPost \(decodedPost)")
-                postData.append(decodedPost)
-                print("postData: \(postData)")
+            let docRef = db.collection(postDataCollection)
+                .order(by: "createAt", descending: true)
+                .limit(to: fetchPostLimit)
+            var postData: [PostElement] = []
+            
+            do {
+                let querySnapshot = try await docRef.getDocuments()
+                for document in querySnapshot.documents {
+                    let result = try document.data(as: PostElement.self)
+                    postData.append(result)
+                }
+            } catch {
+                print("Error getting documents: \(error)")
             }
-        } catch {
-            print("Error getting documents: \(error)")
+            
+            return postData
         }
-        
-        return postData
-    }
     
     // TODO: データ取得できるか確認 - uidとcreateAtが違うからエラーかな、、、
     /// Postを取得（Uid/ 件数指定）
@@ -110,7 +98,7 @@ struct PostDataModel {
         // 日付順に並び替えて、Uidを指定して取得
         let docRef = db.collection(postDataCollection)
             .whereField("uid", isEqualTo: uid)
-            // ↓これがuidのフィールドでないためエラー出るかも: https://firebase.google.com/docs/firestore/query-data/order-limit-data?hl=ja&_gl=1*ralp11*_up*MQ..*_ga*MTMzNDU2NjA1MS4xNzE1ODI4MDU4*_ga_CW55HF8NVT*MTcxNTgyODA1Ny4xLjAuMTcxNTgyODA1Ny4wLjAuMA..#limitations
+        // ↓これがuidのフィールドでないためエラー出るかも: https://firebase.google.com/docs/firestore/query-data/order-limit-data?hl=ja&_gl=1*ralp11*_up*MQ..*_ga*MTMzNDU2NjA1MS4xNzE1ODI4MDU4*_ga_CW55HF8NVT*MTcxNTgyODA1Ny4xLjAuMTcxNTgyODA1Ny4wLjAuMA..#limitations
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
         var postData: [PostElement] = []
