@@ -6,6 +6,9 @@ struct AddPostView: View {
     @State private var memo: String = ""
     @State private var isPrivate: Bool = true
     
+    @State private var isPresentedCameraView: Bool = false
+    @State private var image: UIImage?
+    
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // キーボード制御
@@ -18,6 +21,13 @@ struct AddPostView: View {
             ScrollViewReader { reader in
                 List {
                     Section {
+                        // アルバムから選択
+                        
+                        // カメラで撮影
+                        LongBarButton(text: "写真を撮る", isStroke: true) {
+                            isPresentedCameraView = true
+                        }
+                        
                         Button(action: {
                             
                         }, label: {
@@ -120,6 +130,10 @@ struct AddPostView: View {
                     }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $isPresentedCameraView) {
+            CameraView(image: $image)
+                .ignoresSafeArea(.all)
         }
     }
 }
