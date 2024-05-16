@@ -3,7 +3,7 @@ import SwiftUI
 struct CockPostView: View {
     // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
-    
+    @ObservedObject var cockPostVM = CockPostViewModel()
     // 画面遷移用
     @State private var navigationPath: [CockPostViewPath] = []
     
@@ -11,8 +11,8 @@ struct CockPostView: View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 ScrollView {
-                    ForEach(0..<10) { _ in
-                        CockCardView(path: $navigationPath)
+                    ForEach(cockPostVM.postData, id: \.self) { postData in
+                        CockCardView(postData: postData, path: $navigationPath)
                     }
                     .padding()
                 }
@@ -57,6 +57,11 @@ struct CockPostView: View {
         }
         .sheet(isPresented: $isShowSheet) {
             AddPostView()
+        }
+        .onAppear {
+            Task {
+                await cockPostVM.fetchPost()
+            }
         }
     }
 }

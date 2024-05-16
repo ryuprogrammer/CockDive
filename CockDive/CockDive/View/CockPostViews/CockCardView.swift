@@ -1,16 +1,9 @@
 import SwiftUI
 
 struct CockCardView: View {
-    let maxTextCount = 15
-    @State private var userName: String = "momo"
-    @State private var title: String = "定食"
-    @State private var explain: String = """
-ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
-"""
-    
+    let maxTextCount = 20
+    let postData: PostElement
     @State private var isLike: Bool = false
-    @State private var likeCount: Int = 200
-    
     // 続きを読む
     @State private var isLineLimit: Bool = false
     // 画面サイズ取得
@@ -31,7 +24,7 @@ struct CockCardView: View {
                     )
                     .clipShape(Circle())
                 
-                Text("\(userName)さん")
+                Text("\(postData.uid)さん")
                 
                 Menu {
                     Button(action: {
@@ -74,7 +67,7 @@ struct CockCardView: View {
             
             // タイトル、コメントへの遷移ボタン、ハート
             HStack(alignment: .top, spacing: 20) {
-                Text(title)
+                Text(postData.title)
                     .font(.title)
                 
                 Spacer()
@@ -88,7 +81,7 @@ struct CockCardView: View {
                             path.append(.postDetailView)
                         }
                     
-                    Text(String(likeCount))
+                    Text(String(postData.likeCount))
                         .font(.footnote)
                 }
                 
@@ -102,20 +95,22 @@ struct CockCardView: View {
                             withAnimation {
                                 isLike.toggle()
                                 if isLike == true {
-                                    likeCount -= 1
+                                    // ライクカウントダウン
                                 } else {
-                                    likeCount += 1
+                                    // ライクカウントアップ
                                 }
                             }
                         }
                     
-                    Text(String(likeCount))
+                    Text(String(postData.likeCount))
                         .font(.footnote)
                 }
             }
             
-            // 説明文
-            DynamicHeightCommentView(message: explain, maxTextCount: maxTextCount)
+            if let memo = postData.memo {
+                // 説明文
+                DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
+            }
             
             // 区切り線
             Divider()
@@ -127,8 +122,12 @@ struct CockCardView: View {
     struct PreviewView: View {
         @State private var path: [CockPostViewPath] = []
         
+        let postData: PostElement = PostElement(uid: "",postImageURL: "https://cdn.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/https://www.filepicker.io/api/file/fposFrXQZ2iL3vBY9pQS", title: "定食", memo: """
+ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
+""", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
+        
         var body: some View {
-            CockCardView(path: $path)
+            CockCardView(postData: postData, path: $path)
         }
     }
     return PreviewView()

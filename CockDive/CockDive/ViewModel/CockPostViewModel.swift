@@ -13,6 +13,15 @@ class CockPostViewModel: ObservableObject {
     // MARK: - データ取得
     /// Postを取得
     func fetchPost() async {
-        postData = await postDataModel.fetchPostData()
+        let data = await postDataModel.fetchPostData()
+        DispatchQueue.main.async {
+            print("data: \(data)")
+            self.postData = data
+        }
+    }
+    
+    /// uid取得
+    func fetchUid() -> String {
+        return postDataModel.fetchUid() ?? ""
     }
 }

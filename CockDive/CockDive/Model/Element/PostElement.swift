@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct PostElement: Codable {
+struct PostElement: Codable, Hashable, Equatable {
     @DocumentID var id: String?
     /// uid
     var uid: String

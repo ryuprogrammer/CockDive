@@ -1,6 +1,6 @@
 import Foundation
 
-struct CommentElement: Codable {
+struct CommentElement: Codable, Equatable, Hashable {
     var id: String
     /// uid
     var uid: String

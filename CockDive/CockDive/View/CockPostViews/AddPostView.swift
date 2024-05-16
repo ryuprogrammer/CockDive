@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct AddPostView: View {
+    let cockPostVM = CockPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
-    @State private var canSeeEveryone: Bool = true
+    @State private var isPrivate: Bool = true
     
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -77,7 +78,7 @@ struct AddPostView: View {
                     .listRowSeparator(.hidden)
                     
                     Section {
-                        Toggle(canSeeEveryone ? "みんなに公開" : "非公開", isOn: $canSeeEveryone)
+                        Toggle(isPrivate ? "みんなに公開" : "非公開", isOn: $isPrivate)
                             .toggleStyle(.switch)
                     } header: {
                         Text("③公開範囲: 誰に見てもらう？")
@@ -103,6 +104,18 @@ struct AddPostView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
+                        Task {
+                            await cockPostVM.addPost(post: PostElement(
+                                uid: cockPostVM.fetchUid(),
+                                title: title,
+                                memo: memo,
+                                isPrivate: isPrivate,
+                                createAt: Date(),
+                                likeCount: 0,
+                                likedUser: [],
+                                comment: []
+                            ))
+                        }
                         dismiss()
                     }
                 }

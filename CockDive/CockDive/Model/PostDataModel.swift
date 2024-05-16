@@ -20,8 +20,6 @@ struct PostDataModel {
     // MARK: - データ追加
     /// Post追加/ 更新
     func addPost(post: PostElement) async {
-        // uid取得
-        guard let uid = fetchUid() else { return }
         // リファレンスを作成
         var docRef: DocumentReference = db.collection("posts").document()
         
@@ -76,20 +74,28 @@ struct PostDataModel {
     
     /// Postを取得（件数指定）
     func fetchPostData() async -> [PostElement] {
+        print("データ取得スタート")
         // 日付順に並び替えて取得
         let docRef = db.collection(postDataCollection)
-            .order(by: "createAt", descending: true)
-            .limit(to: fetchPostLimit)
+//            .order(by: "createAt", descending: true)
+//            .limit(to: fetchPostLimit)
         var postData: [PostElement] = []
         let decoder = JSONDecoder()
         
         do {
-            let querySnapshot = try await db.collection(postDataCollection).getDocuments()
+            let querySnapshot = try await docRef.getDocuments()
+            print("querySnapshot: \(querySnapshot)")
+            print("querySnapshot.count: \(querySnapshot.count)")
             for document in querySnapshot.documents {
+                print("docment: \(document)")
                 let data = document.data()
+                print("data: \(data)")
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+                print("jsonData: \(jsonData)")
                 let decodedPost = try decoder.decode(PostElement.self, from: jsonData)
+                print("decodedPost \(decodedPost)")
                 postData.append(decodedPost)
+                print("postData: \(postData)")
             }
         } catch {
             print("Error getting documents: \(error)")
@@ -111,7 +117,7 @@ struct PostDataModel {
         let decoder = JSONDecoder()
         
         do {
-            let querySnapshot = try await db.collection(postDataCollection).getDocuments()
+            let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
                 let data = document.data()
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
