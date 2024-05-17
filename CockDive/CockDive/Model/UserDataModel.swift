@@ -57,7 +57,7 @@ class UserDataModel {
         do {
             let document = try await db.collection(userCollection).document(uid).getDocument()
             
-            guard let data = document.data() else {
+            guard document.data() != nil else {
                 print("Document does not exist")
                 return nil
             }
