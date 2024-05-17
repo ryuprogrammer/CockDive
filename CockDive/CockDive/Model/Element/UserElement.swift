@@ -7,8 +7,10 @@ struct UserElement: Encodable, Decodable {
     var nickName: String
     /// 自己紹介文
     var introduction: String?
-    /// アイコン画像
+    /// アイコン画像: 入力で必要
     var iconImage: Data?
+    /// アイコンのURL: 取得で必要
+    var iconURL: String?
 }
 
 /// UserDefaults用
@@ -17,8 +19,10 @@ struct UserElementForUserDefaults: Encodable, Decodable {
     var nickName: String
     /// 自己紹介文
     var introduction: String?
-    /// アイコン画像
+    /// アイコン画像: 入力で必要
     var iconImage: Data?
+    /// アイコンのURL: 取得で必要
+    var iconURL: String?
 }
 
 /// UserStatus

@@ -3,6 +3,7 @@ import SwiftUI
 struct CockCardView: View {
     let maxTextCount = 20
     let postData: PostElement
+    let cockCardVM = CockCardViewModel()
     @State private var isLike: Bool = false
     // 続きを読む
     @State private var isLineLimit: Bool = false
@@ -10,21 +11,32 @@ struct CockCardView: View {
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [CockPostViewPath]
+    // アイコンのURL
+    @State private var iconImageURL: URL?
+    // 投稿者の名前
+    @State private var nickName: String = "読み込み中..."
     
     var body: some View {
         VStack {
             // アイコン、名前、通報ボタン、フォローボタン
             HStack {
-                Image("cockImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 50) / 10,
-                        height: (window?.screen.bounds.width ?? 50) / 10
-                    )
-                    .clipShape(Circle())
+                // アイコン画像のURL
+                AsyncImage(url: iconImageURL) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(
+                            width: (window?.screen.bounds.width ?? 50) / 10,
+                            height: (window?.screen.bounds.width ?? 50) / 10
+                        )
+                        .clipShape(Circle())
+                } placeholder: {
+                    ProgressView()
+                        .frame(height: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
                 
-                Text("\(postData.uid)さん")
+                Text("\(nickName)さん")
                 
                 Menu {
                     Button(action: {
@@ -122,6 +134,19 @@ struct CockCardView: View {
             
             // 区切り線
             Divider()
+        }
+        .onAppear {
+            Task {
+                if let userData = await cockCardVM.fetchUserData(uid: postData.uid) {
+                    print("投稿者データ: \(userData)")
+                    // ニックネーム取得
+                    nickName = userData.nickName
+                    // アイコンURL取得
+                    iconImageURL = URL(string: userData.iconURL ?? "")
+                } else {
+                    print("投稿者のデータ取得失敗")
+                }
+            }
         }
     }
 }

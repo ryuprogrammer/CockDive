@@ -35,6 +35,7 @@
 		4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */; };
 		4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */; };
 		42C02AC62BF79077000D7CE4 /* SectioinTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C02AC52BF79077000D7CE4 /* SectioinTitleView.swift */; };
+		42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */; };
 		42DB945A2BF20B5A00ECDD84 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */; };
 		42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */; };
 		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
@@ -97,6 +98,7 @@
 		4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarBackButtonView.swift; sourceTree = "<group>"; };
 		4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarAddButtonView.swift; sourceTree = "<group>"; };
 		42C02AC52BF79077000D7CE4 /* SectioinTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectioinTitleView.swift; sourceTree = "<group>"; };
+		42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardViewModel.swift; sourceTree = "<group>"; };
 		42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentView.swift; sourceTree = "<group>"; };
 		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
 				42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */,
 				42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */,
+				42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 			files = (
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
 				42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */,
+				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,

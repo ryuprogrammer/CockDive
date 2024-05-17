@@ -62,9 +62,7 @@ class UserDataModel {
                 return nil
             }
             
-            let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-            let decoder = JSONDecoder()
-            let decodedUserData = try decoder.decode(UserElement.self, from: jsonData)
+            let decodedUserData = try document.data(as: UserElement.self)
             
             // 使用するデータに応じて処理を追加
             print(decodedUserData)
