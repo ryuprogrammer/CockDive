@@ -1,4 +1,5 @@
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct AddPostView: View {
     let cockPostVM = CockPostViewModel()
@@ -8,7 +9,7 @@ struct AddPostView: View {
     
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
-    
+    @State private var selectedImage: [PhotosPickerItem] = []
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // キーボード制御
@@ -22,7 +23,29 @@ struct AddPostView: View {
                 List {
                     Section {
                         // アルバムから選択
-                        
+                        PhotosPicker(
+                            selection: $selectedImage,
+                            maxSelectionCount: 1,
+                            matching: .images,
+                            preferredItemEncoding: .current, // エンコードの種類(基本currentでいいはず)
+                            photoLibrary: .shared()) {
+                                Image(systemName: "photo")
+                            }
+                            .onChange(of: selectedImage) { newPhotoPickerItems in
+                                Task {
+                                    do {
+                                        for photoPickerItem in newPhotoPickerItems {
+                                            if let data = try await photoPickerItem.loadTransferable(type: Data.self) {
+                                                if let uiImage = UIImage(data: data) {
+                                                    image = uiImage
+                                                }
+                                            }
+                                        }
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            }
                         // カメラで撮影
                         LongBarButton(text: "写真を撮る", isStroke: false) {
                             isPresentedCameraView = true
