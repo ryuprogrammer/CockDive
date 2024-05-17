@@ -23,48 +23,49 @@ struct AddPostView: View {
             ScrollViewReader { reader in
                 VStack(spacing: 15) {
                     SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
-                    .padding(.top)
+                        .padding(.top)
                     
-                    // アルバムから選択
-                    PhotosPicker(
-                        selection: $selectedImage,
-                        maxSelectionCount: 1,
-                        matching: .images,
-                        preferredItemEncoding: .current,
-                        photoLibrary: .shared()) {
-                            StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled")
-                        }
-                        .onChange(of: selectedImage) { newPhotoPickerItems in
-                            Task {
-                                guard let uiImage = await cockPostVM.castImageType(images: newPhotoPickerItems) else {
-                                    return
-                                }
-                                image = uiImage
+                    if let image {
+                        // 写真
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 200)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                        
+                        HStack {
+                            Spacer()
+                            StrokeButton(text: "写真を選び直す", size: .small) {
+                                self.image = nil
                             }
                         }
+                    } else {
+                        // アルバムから選択
+                        PhotosPicker(
+                            selection: $selectedImage,
+                            maxSelectionCount: 1,
+                            matching: .images,
+                            preferredItemEncoding: .current,
+                            photoLibrary: .shared()) {
+                                StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled")
+                            }
+                            .onChange(of: selectedImage) { newPhotoPickerItems in
+                                Task {
+                                    guard let uiImage = await cockPostVM.castImageType(images: newPhotoPickerItems) else {
+                                        return
+                                    }
+                                    image = uiImage
+                                }
+                            }
                         
-                    // カメラで撮影
-                    Button {
-                        isPresentedCameraView = true
-                    } label: {
-                        StrokeIconButtonUI(text: "写真を撮る", icon: "camera")
+                        // カメラで撮影
+                        Button {
+                            isPresentedCameraView = true
+                        } label: {
+                            StrokeIconButtonUI(text: "写真を撮る", icon: "camera")
+                        }
                     }
-                    
-                    //                        Button(action: {
-                    //
-                    //                        }, label: {
-                    //                            Text("写真を追加")
-                    //                                .font(.title)
-                    //                                .fontWeight(.bold)
-                    //                                .foregroundStyle(Color.mainColor)
-                    //                                .frame(maxWidth: .infinity)
-                    //                                .frame(height: 200)
-                    //                                .background(
-                    //                                    RoundedRectangle(cornerRadius: 20)
-                    //                                        .stroke(lineWidth: 2)
-                    //                                        .foregroundStyle(Color.mainColor)
-                    //                                )
-                    //                        })
                     
                     SectioinTitleView(text: "料理名を入力", isRequired: true)
                     

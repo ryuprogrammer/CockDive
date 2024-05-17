@@ -26,10 +26,8 @@ struct StrokeButton: View {
                 Text(text)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.mainColor)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 400) / 4,
-                        height: (window?.screen.bounds.height ?? 800) / 28
-                    )
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 5)
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 30))
                     .overlay(
