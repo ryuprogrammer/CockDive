@@ -66,52 +66,43 @@ struct AddPostView: View {
                     //                                )
                     //                        })
                     
-                    Section {
-                        TextField("料理名を入力", text: $title)
-                            .padding(6)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 0.6)
-                            )
-                    } header: {
-                        Text("②料理名: 何を食べたの？ 必須")
-                    }
-                    .listRowSeparator(.hidden)
+                    SectioinTitleView(text: "料理名を入力", isRequired: true)
                     
-                    Section {
-                        TextEditor(text: $memo)
-                            .focused($keybordFocuse)
-                            .frame(height: 100)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 0.6)
-                            )
-                            .overlay(alignment: .topLeading) {
-                                Text(memo == "" ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
-                                    .foregroundStyle(Color.gray.opacity(0.5))
-                                    .padding(5)
-                            }
-                            .onTapGesture {
-                                keybordFocuse.toggle()
-                            }
-                            .id(1)
-                            .onChange(of: keybordFocuse) {_ in
-                                withAnimation {
-                                    reader.scrollTo(1, anchor: .top)
-                                }
-                            }
-                    } header: {
-                        Text("③メモ: ご飯のメモをしよう")
-                    }
-                    .listRowSeparator(.hidden)
+                    TextField("料理名を入力", text: $title)
+                        .padding(6)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray, lineWidth: 0.6)
+                        )
                     
-                    Section {
-                        Toggle(isPrivate ? "みんなに公開" : "非公開", isOn: $isPrivate)
-                            .toggleStyle(.switch)
-                    } header: {
-                        Text("③公開範囲: 誰に見てもらう？")
-                    }
-                    .listRowSeparator(.hidden)
+                    SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
+                    
+                    TextEditor(text: $memo)
+                        .focused($keybordFocuse)
+                        .frame(height: 100)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray, lineWidth: 0.6)
+                        )
+                        .overlay(alignment: .topLeading) {
+                            Text(memo == "" ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
+                                .foregroundStyle(Color.gray.opacity(0.5))
+                                .padding(5)
+                        }
+                        .onTapGesture {
+                            keybordFocuse.toggle()
+                        }
+                        .id(1)
+                        .onChange(of: keybordFocuse) {_ in
+                            withAnimation {
+                                reader.scrollTo(1, anchor: .top)
+                            }
+                        }
+                    
+                    SectioinTitleView(text: "誰に見てもらう？", isRequired: false)
+                    
+                    Toggle(isPrivate ? "みんなに向けて投稿する" : "非公開", isOn: $isPrivate)
+                        .toggleStyle(.switch)
                     
                     Spacer()
                         .frame(height: 10)
