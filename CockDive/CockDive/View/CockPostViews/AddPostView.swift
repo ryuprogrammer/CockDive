@@ -21,7 +21,25 @@ struct AddPostView: View {
     var body: some View {
         NavigationStack {
             ScrollViewReader { reader in
-                List {
+                VStack(spacing: 15) {
+                    HStack {
+                        Text("① まずは写真を追加しよう")
+                            .font(.headline)
+                            
+                        Text("必須")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.pink)
+                            .frame(width: 40, height: 24)
+                            .background(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(lineWidth: 2)
+                                    .foregroundStyle(Color.pink)
+                            )
+                        Spacer()
+                    }
+                    .padding(.top)
+                    
                     Section {
                         // アルバムから選択
                         PhotosPicker(
@@ -40,6 +58,7 @@ struct AddPostView: View {
                                     image = uiImage
                                 }
                             }
+                            
                         // カメラで撮影
                         Button {
                             isPresentedCameraView = true
@@ -47,25 +66,22 @@ struct AddPostView: View {
                             StrokeIconButtonUI(text: "写真を撮る", icon: "camera")
                         }
                         
-//                        Button(action: {
-//                            
-//                        }, label: {
-//                            Text("写真を追加")
-//                                .font(.title)
-//                                .fontWeight(.bold)
-//                                .foregroundStyle(Color.mainColor)
-//                                .frame(maxWidth: .infinity)
-//                                .frame(height: 200)
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 20)
-//                                        .stroke(lineWidth: 2)
-//                                        .foregroundStyle(Color.mainColor)
-//                                )
-//                        })
-                    } header: {
-                        Text("①写真: まずは写真を追加しよう 必須")
+                        //                        Button(action: {
+                        //
+                        //                        }, label: {
+                        //                            Text("写真を追加")
+                        //                                .font(.title)
+                        //                                .fontWeight(.bold)
+                        //                                .foregroundStyle(Color.mainColor)
+                        //                                .frame(maxWidth: .infinity)
+                        //                                .frame(height: 200)
+                        //                                .background(
+                        //                                    RoundedRectangle(cornerRadius: 20)
+                        //                                        .stroke(lineWidth: 2)
+                        //                                        .foregroundStyle(Color.mainColor)
+                        //                                )
+                        //                        })
                     }
-                    .listRowSeparator(.hidden)
                     
                     Section {
                         TextField("料理名を入力", text: $title)
@@ -117,8 +133,10 @@ struct AddPostView: View {
                     Spacer()
                         .frame(height: 10)
                         .listRowSeparator(.hidden)
+                    
+                    Spacer()
                 }
-                .listStyle(.plain)
+                .padding(.horizontal)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
