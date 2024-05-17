@@ -30,7 +30,7 @@ struct AddPostView: View {
                             matching: .images,
                             preferredItemEncoding: .current,
                             photoLibrary: .shared()) {
-                                Image(systemName: "photo")
+                                Text("アルバムから選ぶ")
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
