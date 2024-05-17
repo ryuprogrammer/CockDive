@@ -24,7 +24,7 @@ struct AddPostView: View {
                         // アルバムから選択
                         
                         // カメラで撮影
-                        LongBarButton(text: "写真を撮る", isStroke: true) {
+                        LongBarButton(text: "写真を撮る", isStroke: false) {
                             isPresentedCameraView = true
                         }
                         
