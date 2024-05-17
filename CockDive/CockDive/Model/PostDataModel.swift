@@ -46,6 +46,24 @@ struct PostDataModel {
         }
     }
     
+    /// Like押す
+    func changeLikeToPost(post: PostElement, uid: String, isLike: Bool) async {
+        do {
+            guard let postId = post.id else { return }
+            // リファレンス
+            let docRef = db.collection("posts").document(postId)
+            // 追加するLikeの数
+            let addLikeCount = isLike ? 1 : -1
+            // 新しいLikeの数
+            let newLikeCount = post.likeCount + addLikeCount
+            // 追加する前のLikeしたUser
+            let likedUser = post.likedUser
+            // TODO: - isLikeによってlikedUserを編集
+        } catch {
+            print("Error addHeartToPost: \(error)")
+        }
+    }
+    
     /// Storageに画像をアップロード
     func uploadPostImage(postImage: Data, postId: String) async -> String? {
         let storageRef = Storage.storage().reference().child("postImages/\(postId)/post.jpg")
