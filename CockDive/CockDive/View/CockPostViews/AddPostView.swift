@@ -30,7 +30,7 @@ struct AddPostView: View {
                             matching: .images,
                             preferredItemEncoding: .current,
                             photoLibrary: .shared()) {
-                                Text("アルバムから選ぶ")
+                                StrokeIconButton(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled") {}
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
@@ -41,7 +41,7 @@ struct AddPostView: View {
                                 }
                             }
                         // カメラで撮影
-                        LongBarButton(text: "写真を撮る", isStroke: false) {
+                        StrokeIconButton(text: "写真を撮る", icon: "camera") {
                             isPresentedCameraView = true
                         }
                         
