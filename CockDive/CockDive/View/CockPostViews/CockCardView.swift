@@ -31,12 +31,14 @@ struct CockCardView: View {
                         )
                         .clipShape(Circle())
                 } placeholder: {
-                    ProgressView()
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.gray)
                         .frame(
                             width: (window?.screen.bounds.width ?? 50) / 10,
                             height: (window?.screen.bounds.width ?? 50) / 10
                         )
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
                 
                 Text("\(nickName)さん")
