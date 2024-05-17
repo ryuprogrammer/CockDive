@@ -143,6 +143,15 @@ struct AddPostView: View {
                         dismiss()
                     }
                 }
+                
+                if keybordFocuse {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("完了") {
+                            self.keybordFocuse = false
+                        }
+                    }
+                }
             }
         }
         .fullScreenCover(isPresented: $isPresentedCameraView) {
