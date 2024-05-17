@@ -9,6 +9,7 @@ struct AddPostView: View {
     
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
+    // PhotosPickerで選択された写真
     @State private var selectedImage: [PhotosPickerItem] = []
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -27,23 +28,16 @@ struct AddPostView: View {
                             selection: $selectedImage,
                             maxSelectionCount: 1,
                             matching: .images,
-                            preferredItemEncoding: .current, // エンコードの種類(基本currentでいいはず)
+                            preferredItemEncoding: .current,
                             photoLibrary: .shared()) {
                                 Image(systemName: "photo")
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
-                                    do {
-                                        for photoPickerItem in newPhotoPickerItems {
-                                            if let data = try await photoPickerItem.loadTransferable(type: Data.self) {
-                                                if let uiImage = UIImage(data: data) {
-                                                    image = uiImage
-                                                }
-                                            }
-                                        }
-                                    } catch {
-                                        print(error)
+                                    guard let uiImage = await cockPostVM.castImageType(images: newPhotoPickerItems) else {
+                                        return
                                     }
+                                    image = uiImage
                                 }
                             }
                         // カメラで撮影

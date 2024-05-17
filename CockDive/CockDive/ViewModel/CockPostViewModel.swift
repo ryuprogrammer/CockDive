@@ -1,4 +1,5 @@
 import Foundation
+import _PhotosUI_SwiftUI
 
 class CockPostViewModel: ObservableObject {
     @Published var postData: [PostElement] = []
@@ -23,5 +24,23 @@ class CockPostViewModel: ObservableObject {
     /// uid取得
     func fetchUid() -> String {
         return postDataModel.fetchUid() ?? ""
+    }
+    
+    // MARK: - 写真処理
+    /// 写真処理
+    func castImageType(images: [PhotosPickerItem]) async -> UIImage? {
+        var resultImage: UIImage?
+        do {
+            for photoPickerItem in images {
+                if let data = try await photoPickerItem.loadTransferable(type: Data.self) {
+                    if let uiImage = UIImage(data: data) {
+                        resultImage = uiImage
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+        return resultImage
     }
 }
