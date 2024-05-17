@@ -129,8 +129,10 @@ struct AddPostView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
                         Task {
+                            guard let dataImage = cockPostVM.castUIImageToData(uiImage: image) else { return }
                             await cockPostVM.addPost(post: PostElement(
                                 uid: cockPostVM.fetchUid(),
+                                postImage: dataImage,
                                 title: title,
                                 memo: memo,
                                 isPrivate: isPrivate,

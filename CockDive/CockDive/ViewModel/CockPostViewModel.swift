@@ -43,4 +43,11 @@ class CockPostViewModel: ObservableObject {
         }
         return resultImage
     }
+    
+    /// UIImageをDataにキャスト
+    func castUIImageToData(uiImage: UIImage?) -> Data? {
+        guard let image = uiImage else { return nil }
+        let data = image.jpegData(compressionQuality: 0.5)
+        return data
+    }
 }

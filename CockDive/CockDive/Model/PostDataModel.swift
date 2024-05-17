@@ -48,7 +48,7 @@ struct PostDataModel {
     
     /// Storageに画像をアップロード
     func uploadPostImage(postImage: Data, postId: String) async -> String? {
-        let storageRef = Storage.storage().reference().child("postImages/\(postId)/icon.jpg")
+        let storageRef = Storage.storage().reference().child("postImages/\(postId)/post.jpg")
         
         do {
             let metadata = StorageMetadata()
