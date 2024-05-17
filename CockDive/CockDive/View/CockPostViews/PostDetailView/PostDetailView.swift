@@ -40,7 +40,7 @@ struct PostDetailView: View {
                         
                         Spacer()
                         
-                        StrokeButton(text: "フォロー") {
+                        StrokeButton(text: "フォロー", size: .small) {
                             
                         }
                         .onTapGesture {

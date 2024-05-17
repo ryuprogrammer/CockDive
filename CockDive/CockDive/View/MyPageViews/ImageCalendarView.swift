@@ -7,14 +7,14 @@ struct ImageCalendarView: View {
     var body: some View {
         VStack {
             HStack {
-                StrokeButton(text: "\(showingDate.previousMonth().month())月") {
+                StrokeButton(text: "\(showingDate.previousMonth().month())月", size: .small) {
                     showingDate = showingDate.previousMonth()
                 }
                 
                 Text(showingDate.yearAndMonth())
                     .padding()
                 
-                StrokeButton(text: "\(showingDate.nextMonth().month())月") {
+                StrokeButton(text: "\(showingDate.nextMonth().month())月", size: .small) {
                     showingDate = showingDate.nextMonth()
                 }
             }

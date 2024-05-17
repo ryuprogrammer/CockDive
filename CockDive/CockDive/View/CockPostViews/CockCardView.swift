@@ -53,7 +53,7 @@ struct CockCardView: View {
                 }
                 
                 Spacer()
-                StrokeButton(text: "フォロー") {
+                StrokeButton(text: "フォロー", size: .small) {
                     print("フォロー")
                 }
             }
