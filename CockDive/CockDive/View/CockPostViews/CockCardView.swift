@@ -58,12 +58,20 @@ struct CockCardView: View {
                 }
             }
             
-            // 写真
-            Image("cockImage")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+            // 写真のURL
+            let imageURL = URL(string: postData.postImageURL ?? "")
+            
+            AsyncImage(url: imageURL) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+            } placeholder: {
+                ProgressView()
+                    .frame(height: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+            }
             
             // タイトル、コメントへの遷移ボタン、ハート
             HStack(alignment: .top, spacing: 20) {
