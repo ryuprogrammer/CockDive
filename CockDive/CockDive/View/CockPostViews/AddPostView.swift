@@ -45,21 +45,21 @@ struct AddPostView: View {
                             isPresentedCameraView = true
                         }
                         
-                        Button(action: {
-                            
-                        }, label: {
-                            Text("写真を追加")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.mainColor)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 200)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(lineWidth: 2)
-                                        .foregroundStyle(Color.mainColor)
-                                )
-                        })
+//                        Button(action: {
+//                            
+//                        }, label: {
+//                            Text("写真を追加")
+//                                .font(.title)
+//                                .fontWeight(.bold)
+//                                .foregroundStyle(Color.mainColor)
+//                                .frame(maxWidth: .infinity)
+//                                .frame(height: 200)
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 20)
+//                                        .stroke(lineWidth: 2)
+//                                        .foregroundStyle(Color.mainColor)
+//                                )
+//                        })
                     } header: {
                         Text("①写真: まずは写真を追加しよう 必須")
                     }
