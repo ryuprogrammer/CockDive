@@ -62,7 +62,7 @@
 		42DB94A02BF503A300ECDD84 /* UserDefaultsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */; };
 		42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */; };
 		42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A32BF662E600ECDD84 /* CameraView.swift */; };
-		42DB94A62BF6E39D00ECDD84 /* StrokeIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A52BF6E39D00ECDD84 /* StrokeIconButton.swift */; };
+		42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,7 +118,7 @@
 		42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataModel.swift; sourceTree = "<group>"; };
 		42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostViewModel.swift; sourceTree = "<group>"; };
 		42DB94A32BF662E600ECDD84 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		42DB94A52BF6E39D00ECDD84 /* StrokeIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeIconButton.swift; sourceTree = "<group>"; };
+		42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeIconButtonUI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +211,7 @@
 			children = (
 				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
 				4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */,
-				42DB94A52BF6E39D00ECDD84 /* StrokeIconButton.swift */,
+				42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */,
 				4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */,
 				4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */,
 				4298D8752BF2050D005AB08F /* ToolBarAddButtonView.swift */,
@@ -417,7 +417,7 @@
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				42DB948F2BF470E100ECDD84 /* PostElement.swift in Sources */,
-				42DB94A62BF6E39D00ECDD84 /* StrokeIconButton.swift in Sources */,
+				42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */,
 				42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,

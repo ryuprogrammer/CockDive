@@ -1,5 +1,5 @@
 import SwiftUI
-import _PhotosUI_SwiftUI
+import PhotosUI
 
 struct AddPostView: View {
     let cockPostVM = CockPostViewModel()
@@ -30,7 +30,7 @@ struct AddPostView: View {
                             matching: .images,
                             preferredItemEncoding: .current,
                             photoLibrary: .shared()) {
-                                StrokeIconButton(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled") {}
+                                StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled")
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
@@ -41,8 +41,10 @@ struct AddPostView: View {
                                 }
                             }
                         // カメラで撮影
-                        StrokeIconButton(text: "写真を撮る", icon: "camera") {
+                        Button {
                             isPresentedCameraView = true
+                        } label: {
+                            StrokeIconButtonUI(text: "写真を撮る", icon: "camera")
                         }
                         
 //                        Button(action: {
