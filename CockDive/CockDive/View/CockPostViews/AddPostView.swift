@@ -48,7 +48,7 @@ struct AddPostView: View {
                             matching: .images,
                             preferredItemEncoding: .current,
                             photoLibrary: .shared()) {
-                                StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled")
+                                StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled", size: .large)
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
@@ -63,7 +63,7 @@ struct AddPostView: View {
                         Button {
                             isPresentedCameraView = true
                         } label: {
-                            StrokeIconButtonUI(text: "写真を撮る", icon: "camera")
+                            StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
                         }
                     }
                     
