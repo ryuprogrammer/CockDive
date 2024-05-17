@@ -36,8 +36,10 @@ struct AddPostView: View {
                         
                         HStack {
                             Spacer()
-                            StrokeButton(text: "写真を選び直す", size: .small) {
+                            Button {
                                 self.image = nil
+                            } label: {
+                                StrokeIconButtonUI(text: "写真を選び直す", icon: "gobackward", size: .small)
                             }
                         }
                     } else {
