@@ -15,7 +15,7 @@ struct PostDetailView: View {
     
     var body: some View {
         ZStack {
-            List {
+            ScrollView {
                 VStack {
                     HStack {
                         let imageURL = URL(string: postData.postImageURL ?? "")
@@ -40,15 +40,6 @@ struct PostDetailView: View {
                                 )
                         }
                         
-                        Image("cockImage")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(
-                                width: (window?.screen.bounds.width ?? 50) / 12,
-                                height: (window?.screen.bounds.width ?? 50) / 10
-                            )
-                            .clipShape(Circle())
-                        
                         Text("\(postDetailVM.nickName)さん")
                         
                         Spacer()
@@ -57,7 +48,9 @@ struct PostDetailView: View {
                             
                         }
                         .onTapGesture {
-                            print("フォロー処理")
+                            Task {
+                                await postDetailVM.followUser(friendUid: postData.uid)
+                            }
                         }
                     }
                     
@@ -73,8 +66,10 @@ struct PostDetailView: View {
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .padding()
                 
                 PostCommentView()
+                    .padding(.horizontal)
             }
             
             VStack {
@@ -130,11 +125,15 @@ struct PostDetailView: View {
             
             // 通報
             ToolbarItem(placement: .topBarTrailing) {
-                Image(systemName: "ellipsis")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 25)
-                    .foregroundStyle(Color.white)
+                Button {
+                    postDetailVM.reportUser(friendUid: postData.uid)
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 25)
+                        .foregroundStyle(Color.white)
+                }
             }
         }
     }
