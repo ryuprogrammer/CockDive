@@ -73,11 +73,15 @@ struct PostDetailView: View {
                 
                 ForEach(postData.comment, id: \.self) { comment in
                     PostCommentView(comment: comment) {
-                        // ブロック
-                        
+                        Task {
+                            // ブロック
+                            await postDetailVM.blockUser(friendUid: comment.uid)
+                        }
                     } reportAction: {
-                        // 通報
-                        
+                        Task {
+                            // 通報
+                            await postDetailVM.reportUser(friendUid: comment.uid)
+                        }
                     }
 
                 }
@@ -138,7 +142,9 @@ struct PostDetailView: View {
             // 通報
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    postDetailVM.reportUser(friendUid: postData.uid)
+                    Task {
+                        await postDetailVM.reportUser(friendUid: postData.uid)
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                         .resizable()

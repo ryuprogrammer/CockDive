@@ -44,7 +44,7 @@ class PostDetailViewModel: ObservableObject {
     }
     
     /// 通報
-    func reportUser(friendUid: String) {
+    func reportUser(friendUid: String) async {
         // TODO: 通報処理書く
     }
     
