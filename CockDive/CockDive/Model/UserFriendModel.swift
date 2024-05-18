@@ -10,40 +10,98 @@ class UserFriendModel {
     
     // MARK: - データ追加
     /// UserFriendDataを編集
-    func addMUserFriend(friendUid: String, friendType: FriendType) async {
+    func addUserFriend(friendUid: String, friendType: FriendType) async {
         // uid取得
         guard let myUid = fetchUid() else { return }
-        // フォローしているか
-        var isFollow: Bool = false
-        // ブロックしているか
-        var isBlock: Bool = false
-        // フォローしてる数
-        var followCount = 0
+        // 自分のUserFriendElement: 初期値
+        var myNewUserFriendElement = UserFriendElement(
+            id: myUid,
+            followCount: 0,
+            follow: [],
+            followerCount: 0,
+            follower: [],
+            block: [],
+            blockedByFriend: []
+        )
         
-        // UserFriendElement取得
-        if let userFriend = await fetchUserFriendData(uid: myUid) {
-            if userFriend.follow.contains(friendUid) {
-                isFollow = true
+        // UserFriendElement取得: 自分
+        if let myUserFriend = await fetchUserFriendData(uid: myUid) {
+            myNewUserFriendElement = myUserFriend
+            if friendType == .follow {
+                // フォローしているか
+                if myNewUserFriendElement.follow.contains(friendUid) {
+                    myNewUserFriendElement.followCount = myUserFriend.followCount - 1
+                    myNewUserFriendElement.follow.removeAll(where: {$0 == friendUid})
+                } else {
+                    myNewUserFriendElement.followCount = myUserFriend.followCount + 1
+                    myNewUserFriendElement.follow.append(friendUid)
+                }
+            } else if friendType == .block {
+                // ブロックしているか
+                if myNewUserFriendElement.block.contains(friendUid) {
+                    myNewUserFriendElement.block.removeAll(where: {$0 == friendUid})
+                } else {
+                    myNewUserFriendElement.block.append(friendUid)
+                }
             }
-            
-            followCount = userFriend.followCount
-            
-            if userFriend.block.contains(friendUid) {
-                isBlock = true
+        } else { // 元々データがない場合は新規追加
+            if friendType == .follow {
+                myNewUserFriendElement.followCount = 1
+                myNewUserFriendElement.follow.append(friendUid)
+            } else if friendType == .block {
+                myNewUserFriendElement.block.append(friendUid)
             }
         }
         
-        if friendType == .follow {
-            
-        } else if friendType == .block {
-            
+        // 自分のUserFriendElementを追加/ 更新
+        await addUserFriendByUid(uid: myUid, userFriend: myNewUserFriendElement)
+        
+        // 相手のUserFriendElement: 初期値
+        var friendNewUserFriendElement = UserFriendElement(
+            id: friendUid,
+            followCount: 0,
+            follow: [],
+            followerCount: 0,
+            follower: [],
+            block: [],
+            blockedByFriend: []
+        )
+        
+        // UserFriendElement取得: 相手
+        if let friendUserFriend = await fetchUserFriendData(uid: friendUid) {
+            friendNewUserFriendElement = friendUserFriend
+            if friendType == .follow {
+                // 相手視点で、自分にフォローされてるか
+                if friendNewUserFriendElement.follower.contains(myUid) {
+                    friendNewUserFriendElement.followerCount = friendUserFriend.followerCount - 1
+                    friendNewUserFriendElement.follower.removeAll(where: {$0 == myUid})
+                } else {
+                    friendNewUserFriendElement.followerCount = friendUserFriend.followerCount + 1
+                    friendNewUserFriendElement.follower.append(myUid)
+                }
+            } else if friendType == .block {
+                // ブロックしているか
+                if friendNewUserFriendElement.blockedByFriend.contains(myUid) {
+                    friendNewUserFriendElement.blockedByFriend.removeAll(where: {$0 == myUid})
+                } else {
+                    friendNewUserFriendElement.blockedByFriend.append(myUid)
+                }
+            }
+        } else { // 元々データがない場合は新規追加
+            if friendType == .follow {
+                friendNewUserFriendElement.followerCount = 1
+                friendNewUserFriendElement.follower.append(myUid)
+            } else if friendType == .block {
+                friendNewUserFriendElement.blockedByFriend.append(myUid)
+            }
         }
+        
+        // 相手のUserFriendElementを追加/ 更新
+        await addUserFriendByUid(uid: friendUid, userFriend: friendNewUserFriendElement)
     }
-    /// UserFriend追加/ 更新
-    func addUserFriend(userFriend: UserFriendElement) async {
-        // uid取得
-        guard let uid = fetchUid() else { return }
-        
+    
+    /// Uidを元にUserFriend追加/ 更新
+    func addUserFriendByUid(uid: String, userFriend: UserFriendElement) async {
         do {
             // 指定したUIDを持つドキュメントデータに追加（または更新）
             try db.collection(userFriendCollection).document(uid).setData(from: userFriend)

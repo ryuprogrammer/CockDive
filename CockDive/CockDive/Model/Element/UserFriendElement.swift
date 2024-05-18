@@ -13,6 +13,8 @@ struct UserFriendElement: Codable {
     var follower: [String]
     /// ブロック
     var block: [String]
+    /// ブロックされてるUser
+    var blockedByFriend: [String]
 }
 
 enum FriendType {
