@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    let postData: PostElement// コメント
+    let postData: PostElement
+    // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
     // TabBar用
@@ -40,14 +41,16 @@ struct PostDetailView: View {
                                 )
                         }
                         
-                        Text("\(postDetailVM.nickName)さん")
+                        VStack(alignment: .leading) {
+                            Text("\(postDetailVM.nickName)さん")
+                            
+                            Text(postData.createAt.dateString())
+                                .font(.footnote)
+                        }
                         
                         Spacer()
                         
                         StrokeButton(text: "フォロー", size: .small) {
-                            
-                        }
-                        .onTapGesture {
                             Task {
                                 await postDetailVM.followUser(friendUid: postData.uid)
                             }
