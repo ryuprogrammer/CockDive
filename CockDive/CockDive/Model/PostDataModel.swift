@@ -47,18 +47,27 @@ struct PostDataModel {
     }
     
     /// Like押す
-    func changeLikeToPost(post: PostElement, uid: String, isLike: Bool) async {
+    func changeLikeToPost(post: PostElement, uid: String) async {
+        // Likeの数
+        var likeCount = post.likeCount
+        // LikeしたUser
+        var likedUser = post.likedUser
+        // いいねを押しているか判定
+        if post.likedUser.contains(uid) { // ライクから削除
+            likeCount -= 1
+            likedUser.removeAll(where: {$0 == uid})
+        } else { // ライクに追加
+            likeCount += 1
+            likedUser.append(uid)
+        }
+        
+        guard let postId = post.id else { return }
+        // リファレンス
+        let docRef = db.collection("posts").document(postId)
+        
         do {
-            guard let postId = post.id else { return }
-            // リファレンス
-            let docRef = db.collection("posts").document(postId)
-            // 追加するLikeの数
-            let addLikeCount = isLike ? 1 : -1
-            // 新しいLikeの数
-            let newLikeCount = post.likeCount + addLikeCount
-            // 追加する前のLikeしたUser
-            let likedUser = post.likedUser
-            // TODO: - isLikeによってlikedUserを編集
+            try await docRef.updateData(["likeCount": likeCount])
+            try await docRef.updateData(["likedUser": likedUser])
         } catch {
             print("Error addHeartToPost: \(error)")
         }
