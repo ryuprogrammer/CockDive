@@ -3,7 +3,7 @@ import SwiftUI
 struct CockCardView: View {
     let maxTextCount = 20
     let postData: PostElement
-    let cockCardVM = CockCardViewModel()
+    let cockCardVM = CockCardViewModel(friendUid: "")
     @State private var isLike: Bool = false
     // 続きを読む
     @State private var isLineLimit: Bool = false
