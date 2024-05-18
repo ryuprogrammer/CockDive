@@ -14,3 +14,8 @@ struct UserFriendElement: Codable {
     /// ブロック
     var block: [String]
 }
+
+enum FriendType {
+    case follow
+    case block
+}
