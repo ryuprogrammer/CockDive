@@ -7,12 +7,12 @@ struct PostDetailView: View {
     let postDetailVM = PostDetailViewModel()
     // TabBar用
     @State var flag: Visibility = .hidden
-    // ルート階層から受け取った配列パスの参照
-    @Binding var path: [CockPostViewPath]
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // キーボード制御
     @FocusState private var keybordFocuse: Bool
+    // 画面遷移戻る
+    @Environment(\.presentationMode) var presentation
     
     var body: some View {
         ZStack {
@@ -127,7 +127,7 @@ struct PostDetailView: View {
             // 戻るボタン
             ToolbarItem(placement: .topBarLeading) {
                 ToolBarBackButtonView {
-                    path.removeLast()
+                    self.presentation.wrappedValue.dismiss()
                 }
             }
             
@@ -159,8 +159,6 @@ struct PostDetailView: View {
 
 #Preview {
     struct PreviewView: View {
-        @State private var path: [CockPostViewPath] = []
-        
         var body: some View {
             NavigationStack {
                 PostDetailView(
@@ -182,8 +180,7 @@ struct PostDetailView: View {
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date()),
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date())
                         ]
-                    ),
-                    path: $path
+                    )
                 )
             }
         }

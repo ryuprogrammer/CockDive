@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct CockCardView: View {
-    let maxTextCount = 20
     let postData: PostElement
+    let maxTextCount = 20
     @State private var cockCardVM = CockCardViewModel()
     @State private var isLike: Bool = false
     @State private var isLineLimit: Bool = false
@@ -15,12 +15,6 @@ struct CockCardView: View {
             .first?.windows
             .first?.screen.bounds.width ?? 50
         #endif
-    }
-    @Binding var path: [CockPostViewPath]
-
-    init(postData: PostElement, path: Binding<[CockPostViewPath]>) {
-        self.postData = postData
-        self._path = path
     }
 
     var body: some View {
@@ -103,32 +97,14 @@ struct CockCardView: View {
                     .font(.title)
                 
                 Spacer()
-                VStack(spacing: 1) {
-                    // メッセージ画面への遷移ボタン
-                    Image(systemName: "message")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
-                        .onTapGesture {
-                            path.append(.postDetailView)
-                            print("postData: \(postData)")
-                            print("navigateAction")
-                        }
-                    
-                    Text(String(postData.comment.count))
-                        .font(.footnote)
-                }
                 
                 VStack(spacing: 1) {
-                    Image(systemName: isLike ? "heart" : "heart.fill")
+                    Image(systemName: postData.likedUser.contains("") ? "heart" : "heart.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
+                        .frame(width: 30)
                         .foregroundStyle(Color.pink)
                         .onTapGesture {
-                            withAnimation {
-                                isLike.toggle()
-                            }
                             Task {
                                 await cockCardVM.likePost(post: postData)
                             }
@@ -147,6 +123,8 @@ struct CockCardView: View {
         }
         .onAppear {
             Task {
+                print("-------------------------------------------------------------------------")
+                print("cockCardView postData: \(postData)\n\n")
                 await cockCardVM.initData(friendUid: postData.uid)
                 await cockCardVM.isFollowFriend(friendUid: postData.uid)
             }
@@ -156,12 +134,11 @@ struct CockCardView: View {
 
 #Preview {
     struct PreviewView: View {
-        @State private var path: [CockPostViewPath] = []
         
         let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
         
         var body: some View {
-            CockCardView(postData: postData, path: $path)
+            CockCardView(postData: postData)
         }
     }
     return PreviewView()

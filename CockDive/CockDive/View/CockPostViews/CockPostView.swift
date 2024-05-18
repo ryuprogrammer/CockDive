@@ -4,21 +4,24 @@ struct CockPostView: View {
     // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
     @ObservedObject var cockPostVM = CockPostViewModel()
-    // 画面遷移用
-    @State private var navigationPath: [CockPostViewPath] = []
+    let cockCardVM = CockCardViewModel()
     // postDetail用のpostデータ
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ZStack {
-                ScrollView {
-                    ForEach(cockPostVM.postData, id: \.self) { postData in
-                        CockCardView(postData: postData, path: $navigationPath)
-
+                List(cockPostVM.postData, id: \.id) { postData in
+                    VStack {
+                        CockCardView(postData: postData)
+                        // メッセージ画面への遷移ボタン
+                        NavigationLink(destination: PostDetailView(postData: postData)) {
+                            Text("コメント")
+                            Text("\(postData.comment.count)件")
+                        }
                     }
-                    .padding()
                 }
+                .padding()
                 
                 Button(action: {
                     isShowSheet = true
@@ -50,12 +53,6 @@ struct CockPostView: View {
                         .font(.title3)
                 }
             }
-            .navigationDestination(for: CockPostViewPath.self) { value in
-                switch value {
-                case .postDetailView:
-                    PostDetailView(postData: detailPost, path: $navigationPath)
-                }
-            }
         }
         .sheet(isPresented: $isShowSheet) {
             AddPostView()
@@ -66,10 +63,6 @@ struct CockPostView: View {
             }
         }
     }
-}
-
-enum CockPostViewPath {
-    case postDetailView
 }
 
 #Preview {
