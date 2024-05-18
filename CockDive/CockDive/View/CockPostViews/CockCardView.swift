@@ -5,7 +5,6 @@ struct CockCardView: View {
     let postData: PostElement
     @State private var cockCardVM = CockCardViewModel()
     @State private var isLike: Bool = false
-    @State private var isFollow: Bool = false
     @State private var isLineLimit: Bool = false
     var screenWidth: CGFloat {
         #if DEBUG
@@ -81,8 +80,11 @@ struct CockCardView: View {
                 }
                 
                 Spacer()
-                StrokeButton(text: "フォロー", size: .small) {
-                    followAction()
+                
+                if !cockCardVM.isFollow {
+                    StrokeButton(text: "フォロー", size: .small) {
+                        followAction()
+                    }
                 }
             }
             
