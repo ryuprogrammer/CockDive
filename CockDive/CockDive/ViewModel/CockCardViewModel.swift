@@ -1,32 +1,26 @@
 import Foundation
 
 class CockCardViewModel: ObservableObject {
-    let friendUid: String
     @Published var nickName: String = ""
     @Published var iconImageURL: URL? = URL(string: "")
     
     let userDataModel = UserDataModel()
     
-    init(friendUid: String) async {
-        self.friendUid = friendUid
-        
-        Task {
-            await self.initData()
-        }
-    }
-    
     /// データの初期化
-    private func initData() async {
-        if let userData = await fetchUserData(uid: friendUid) {
-            DispatchQueue.main.async {
+    @MainActor
+    func initData(friendUid: String) async {
+        do {
+            if let userData = try await fetchUserData(uid: friendUid) {
                 self.nickName = userData.nickName
                 self.iconImageURL = URL(string: userData.iconURL ?? "")
             }
+        } catch {
+            print("Error fetching user data: \(error)")
         }
     }
     
     /// uidからUserData取得
-    func fetchUserData(uid: String) async -> UserElement? {
+    func fetchUserData(uid: String) async throws -> UserElement? {
         return await userDataModel.fetchUserData(uid: uid)
     }
 }
