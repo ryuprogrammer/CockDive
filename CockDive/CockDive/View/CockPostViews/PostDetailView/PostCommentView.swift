@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PostCommentView: View {
     let maxTextCount: Int = 50
+    let comment: CommentElement
     @State private var comments: [String] = [
         "美味しそう！",
         "レシピを教えてください！",
@@ -13,62 +14,60 @@ struct PostCommentView: View {
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     
     var body: some View {
-        ForEach(comments, id: \.self) { comment in
-            HStack(alignment: .top) {
-                Image("cockImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 50) / 10,
-                        height: (window?.screen.bounds.width ?? 50) / 10
-                    )
-                    .clipShape(Circle())
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("名前")
-                        
-                        Text(Date().dateString())
-                            .font(.caption)
-                        
-                        Spacer()
-                        
-                        Menu {
-                            Button(action: {
-                                
-                            }, label: {
-                                HStack {
-                                    Image(systemName: "nosign")
-                                    Spacer()
-                                    Text("ブロック")
-                                }
-                            })
-                            
-                            Button(action: {
-                                
-                            }, label: {
-                                HStack {
-                                    Image(systemName: "exclamationmark.bubble")
-                                    Spacer()
-                                    Text("通報")
-                                }
-                            })
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .foregroundStyle(Color.black)
-                                .frame(width: 20, height: 20)
-                        }
-                    }
+        HStack(alignment: .top) {
+            Image("cockImage")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(
+                    width: (window?.screen.bounds.width ?? 50) / 10,
+                    height: (window?.screen.bounds.width ?? 50) / 10
+                )
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("名前")
                     
-                    DynamicHeightCommentView(message: comment, maxTextCount: maxTextCount)
+                    Text(Date().dateString())
+                        .font(.caption)
+                    
+                    Spacer()
+                    
+                    Menu {
+                        Button(action: {
+                            
+                        }, label: {
+                            HStack {
+                                Image(systemName: "nosign")
+                                Spacer()
+                                Text("ブロック")
+                            }
+                        })
+                        
+                        Button(action: {
+                            
+                        }, label: {
+                            HStack {
+                                Image(systemName: "exclamationmark.bubble")
+                                Spacer()
+                                Text("通報")
+                            }
+                        })
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.black)
+                            .frame(width: 20, height: 20)
+                    }
                 }
                 
-                Spacer()
+                DynamicHeightCommentView(message: comment, maxTextCount: maxTextCount)
             }
+            
+            Spacer()
         }
     }
 }
 
 #Preview {
-    PostCommentView()
+    PostCommentView(comment: CommentElement(uid: "aaa", comment: "美味しそう", createAt: Date()))
 }
