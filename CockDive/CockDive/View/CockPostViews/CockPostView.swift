@@ -32,6 +32,8 @@ struct CockPostView: View {
                                 /// ライクのオンオフ
                                 await cockPostVM.likePost(post: postData)
                             }
+                        } navigateAction: {
+                            detailPost = postData
                         }
 
                     }

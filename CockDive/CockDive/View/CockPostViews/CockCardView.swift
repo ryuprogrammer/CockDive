@@ -18,14 +18,15 @@ struct CockCardView: View {
     
     // MARK: - アクション
     /// ブロックするアクション
-    let bloclAction: () -> Void
+    let blockAction: () -> Void
     /// 通報するアクション
     let reportAction: () -> Void
     /// フォローする
     let followAction: () -> Void
     /// ライク
     let likeAction: () -> Void
-    
+    /// 画面遷移
+    let navigateAction: () -> Void
     
     var body: some View {
         VStack {
@@ -56,7 +57,7 @@ struct CockCardView: View {
                 
                 Menu {
                     Button(action: {
-                        
+                        blockAction()
                     }, label: {
                         HStack {
                             Image(systemName: "nosign")
@@ -66,7 +67,7 @@ struct CockCardView: View {
                     })
                     
                     Button(action: {
-                        
+                        reportAction()
                     }, label: {
                         HStack {
                             Image(systemName: "exclamationmark.bubble")
@@ -82,7 +83,7 @@ struct CockCardView: View {
                 
                 Spacer()
                 StrokeButton(text: "フォロー", size: .small) {
-                    print("フォロー")
+                    followAction()
                 }
             }
             
@@ -113,6 +114,7 @@ struct CockCardView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 25)
                         .onTapGesture {
+                            navigateAction()
                             // コメント画面へ遷移
                             path.append(.postDetailView)
                         }
@@ -176,7 +178,17 @@ struct CockCardView: View {
 """, isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
         
         var body: some View {
-            CockCardView(postData: postData, path: $path)
+            CockCardView(postData: postData, path: $path) {
+                
+            } reportAction: {
+                
+            } followAction: {
+                
+            } likeAction: {
+                
+            } navigateAction: {
+                
+            }
         }
     }
     return PreviewView()
