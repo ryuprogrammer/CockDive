@@ -17,21 +17,10 @@ struct CockCardView: View {
         #endif
     }
     @Binding var path: [CockPostViewPath]
-    
-    let blockAction: () -> Void
-    let reportAction: () -> Void
-    let followAction: () -> Void
-    let likeAction: () -> Void
-    let navigateAction: () -> Void
 
-    init(postData: PostElement, path: Binding<[CockPostViewPath]>, blockAction: @escaping () -> Void, reportAction: @escaping () -> Void, followAction: @escaping () -> Void, likeAction: @escaping () -> Void, navigateAction: @escaping () -> Void) {
+    init(postData: PostElement, path: Binding<[CockPostViewPath]>) {
         self.postData = postData
         self._path = path
-        self.blockAction = blockAction
-        self.reportAction = reportAction
-        self.followAction = followAction
-        self.likeAction = likeAction
-        self.navigateAction = navigateAction
     }
 
     var body: some View {
@@ -55,7 +44,10 @@ struct CockCardView: View {
                 
                 Menu {
                     Button(action: {
-                        blockAction()
+                        Task {
+                            /// ブロックするアクション
+                            await cockCardVM.blockUser(friendUid: postData.uid)
+                        }
                     }, label: {
                         HStack {
                             Image(systemName: "nosign")
@@ -65,7 +57,8 @@ struct CockCardView: View {
                     })
                     
                     Button(action: {
-                        reportAction()
+                        /// 通報するアクション
+                        cockCardVM.reportUser(friendUid: postData.uid)
                     }, label: {
                         HStack {
                             Image(systemName: "exclamationmark.bubble")
@@ -83,7 +76,10 @@ struct CockCardView: View {
                 
                 if !cockCardVM.isFollow {
                     StrokeButton(text: "フォロー", size: .small) {
-                        followAction()
+                        Task {
+                            /// フォロー
+                            await cockCardVM.followUser(friendUid: postData.uid)
+                        }
                     }
                 }
             }
@@ -109,16 +105,15 @@ struct CockCardView: View {
                 Spacer()
                 VStack(spacing: 1) {
                     // メッセージ画面への遷移ボタン
-                    Button {
-                        path.append(.postDetailView)
-                        print("postData: \(postData)")
-                        print("navigateAction")
-                    } label: {
-                        Image(systemName: "message")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 25)
-                    }
+                    Image(systemName: "message")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 25)
+                        .onTapGesture {
+                            path.append(.postDetailView)
+                            print("postData: \(postData)")
+                            print("navigateAction")
+                        }
                     
                     Text(String(postData.comment.count))
                         .font(.footnote)
@@ -134,7 +129,9 @@ struct CockCardView: View {
                             withAnimation {
                                 isLike.toggle()
                             }
-                            likeAction()
+                            Task {
+                                await cockCardVM.likePost(post: postData)
+                            }
                         }
                     
                     Text(String(postData.likeCount))
@@ -164,17 +161,7 @@ struct CockCardView: View {
         let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
         
         var body: some View {
-            CockCardView(postData: postData, path: $path) {
-                
-            } reportAction: {
-                
-            } followAction: {
-                
-            } likeAction: {
-                
-            } navigateAction: {
-                
-            }
+            CockCardView(postData: postData, path: $path)
         }
     }
     return PreviewView()

@@ -14,30 +14,7 @@ struct CockPostView: View {
             ZStack {
                 ScrollView {
                     ForEach(cockPostVM.postData, id: \.self) { postData in
-                        CockCardView(postData: postData, path: $navigationPath) {
-                            Task {
-                                /// ブロックするアクション
-                                await cockPostVM.blockUser(friendUid: postData.uid)
-                            }
-                        } reportAction: {
-                            /// 通報するアクション
-                            cockPostVM.reportUser(friendUid: postData.uid)
-                        } followAction: {
-                            Task {
-                                /// フォローする
-                                await cockPostVM.followUser(friendUid: postData.uid)
-                            }
-                        } likeAction: {
-                            Task {
-                                /// ライクのオンオフ
-                                await cockPostVM.likePost(post: postData)
-                            }
-                        } navigateAction: {
-                            detailPost = postData
-                            navigationPath.append(.postDetailView)
-                            print("postData: \(postData)")
-                            print("navigateAction")
-                        }
+                        CockCardView(postData: postData, path: $navigationPath)
 
                     }
                     .padding()
