@@ -1,19 +1,9 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    let postData: PostElement
-    @State private var userName: String = "momo"
-    @State private var title: String = "定食"
-    @State private var explain: String = """
-ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
-"""
-    
-    @State private var isLike: Bool = false
-    @State private var likeCount: Int = 200
-    
-    // コメント
+    let postData: PostElement// コメント
     @State private var comment: String = ""
-    
+    let postDetailVM = PostDetailViewModel()
     // TabBar用
     @State var flag: Visibility = .hidden
     // ルート階層から受け取った配列パスの参照
@@ -59,7 +49,7 @@ struct PostDetailView: View {
                             )
                             .clipShape(Circle())
                         
-                        Text("\(userName)さん")
+                        Text("\(postDetailVM.nickName)さん")
                         
                         Spacer()
                         
@@ -79,7 +69,7 @@ struct PostDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
                     
-                    Text(explain)
+                    Text(postData.memo ?? "")
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -99,6 +89,7 @@ struct PostDetailView: View {
                     )
                     
                     Button(action: {
+                        // コメント追加
                         
                     }, label: {
                         Image(systemName: "paperplane.circle")
@@ -131,7 +122,7 @@ struct PostDetailView: View {
             
             // タイトル
             ToolbarItem(placement: .principal) {
-                Text(title)
+                Text(postData.title)
                     .foregroundStyle(Color.white)
                     .fontWeight(.bold)
                     .font(.title3)
