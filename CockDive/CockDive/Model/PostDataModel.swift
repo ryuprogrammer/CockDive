@@ -47,7 +47,8 @@ struct PostDataModel {
     }
     
     /// Like押す
-    func changeLikeToPost(post: PostElement, uid: String) async {
+    func changeLikeToPost(post: PostElement) async {
+        guard let uid = fetchUid() else { return }
         // Likeの数
         var likeCount = post.likeCount
         // LikeしたUser

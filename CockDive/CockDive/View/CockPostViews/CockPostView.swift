@@ -15,13 +15,23 @@ struct CockPostView: View {
                 ScrollView {
                     ForEach(cockPostVM.postData, id: \.self) { postData in
                         CockCardView(postData: postData, path: $navigationPath) {
-                            /// ブロックするアクション
+                            Task {
+                                /// ブロックするアクション
+                                await cockPostVM.blockUser(friendUid: postData.uid)
+                            }
                         } reportAction: {
                             /// 通報するアクション
+                            cockPostVM.reportUser(friendUid: postData.uid)
                         } followAction: {
-                            /// フォローする
+                            Task {
+                                /// フォローする
+                                await cockPostVM.followUser(friendUid: postData.uid)
+                            }
                         } likeAction: {
-                            /// ライク
+                            Task {
+                                /// ライクのオンオフ
+                                await cockPostVM.likePost(post: postData)
+                            }
                         }
 
                     }
