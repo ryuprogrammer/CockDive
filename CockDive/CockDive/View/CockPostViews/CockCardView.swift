@@ -5,6 +5,7 @@ struct CockCardView: View {
     let postData: PostElement
     @State private var cockCardVM = CockCardViewModel()
     @State private var isLike: Bool = false
+    @State private var isFollow: Bool = false
     @State private var isLineLimit: Bool = false
     var screenWidth: CGFloat {
         #if DEBUG
@@ -143,8 +144,10 @@ struct CockCardView: View {
             Divider()
         }
         .onAppear {
+            var isFollow = false
             Task {
                 await cockCardVM.initData(friendUid: postData.uid)
+                await cockCardVM.isFollowFriend(friendUid: postData.uid)
             }
         }
     }

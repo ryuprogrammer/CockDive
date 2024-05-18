@@ -3,6 +3,7 @@ import Foundation
 class CockCardViewModel: ObservableObject {
     @Published var nickName: String = ""
     @Published var iconImageURL: URL? = URL(string: "")
+    @Published var isFollow: Bool = false
     
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
@@ -21,14 +22,15 @@ class CockCardViewModel: ObservableObject {
     }
     
     /// フォローしているか判定
-    func isFollowFriend(friendUid: String) async -> Bool {
-        guard let uid = userDataModel.fetchUid() else { return false }
+    func isFollowFriend(friendUid: String) async {
+        guard let uid = userDataModel.fetchUid() else { return }
         if let userFriendData = await  userFriendModel.fetchUserFriendData(uid: uid) {
             if userFriendData.follow.contains(friendUid) {
-                return true
+                DispatchQueue.main.async {
+                    self.isFollow = true
+                }
             }
         }
-        return false
     }
     
     /// uidからUserData取得
