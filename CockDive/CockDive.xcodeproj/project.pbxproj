@@ -15,6 +15,7 @@
 		422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 422C69D12BED1C590012FB8F /* Preview Assets.xcassets */; };
 		422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69D82BED1FE10012FB8F /* CockCardView.swift */; };
 		423B2A882BF8395300489BCC /* UserFriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A872BF8395300489BCC /* UserFriendModel.swift */; };
+		423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A892BF8605800489BCC /* UserPostDataModel.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -79,6 +80,7 @@
 		422C69D12BED1C590012FB8F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		422C69D82BED1FE10012FB8F /* CockCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardView.swift; sourceTree = "<group>"; };
 		423B2A872BF8395300489BCC /* UserFriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriendModel.swift; sourceTree = "<group>"; };
+		423B2A892BF8605800489BCC /* UserPostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostDataModel.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				42DB948D2BF470B600ECDD84 /* Element */,
 				42DB94922BF48A5200ECDD84 /* UserDataModel.swift */,
 				423B2A872BF8395300489BCC /* UserFriendModel.swift */,
+				423B2A892BF8605800489BCC /* UserPostDataModel.swift */,
 				42DB94942BF48A5E00ECDD84 /* PostDataModel.swift */,
 				42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */,
 			);
@@ -429,6 +432,7 @@
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				42DB948F2BF470E100ECDD84 /* PostElement.swift in Sources */,
 				42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */,
+				423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */,
 				42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
