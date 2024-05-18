@@ -16,6 +16,8 @@ struct CockCardView: View {
             .first?.screen.bounds.width ?? 50
         #endif
     }
+    
+    @Binding var path: [PostElement]
 
     var body: some View {
         VStack {
@@ -99,6 +101,20 @@ struct CockCardView: View {
                 Spacer()
                 
                 VStack(spacing: 1) {
+                    Image(systemName: "message")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30)
+                        .foregroundStyle(Color.pink)
+                        .onTapGesture {
+                            path.append(postData)
+                        }
+                    
+                    Text(String(postData.likeCount))
+                        .font(.footnote)
+                }
+                
+                VStack(spacing: 1) {
                     Image(systemName: postData.likedUser.contains("") ? "heart" : "heart.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -132,14 +148,14 @@ struct CockCardView: View {
     }
 }
 
-#Preview {
-    struct PreviewView: View {
-        
-        let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
-        
-        var body: some View {
-            CockCardView(postData: postData)
-        }
-    }
-    return PreviewView()
-}
+//#Preview {
+//    struct PreviewView: View {
+//        
+//        let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
+//        
+//        var body: some View {
+//            CockCardView(postData: postData)
+//        }
+//    }
+//    return PreviewView()
+//}

@@ -8,20 +8,16 @@ struct CockPostView: View {
     // postDetail用のpostデータ
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
+    @State private var navigationPath: [PostElement] = []
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 List(cockPostVM.postData, id: \.id) { postData in
-                    VStack {
-                        CockCardView(postData: postData)
-                        // メッセージ画面への遷移ボタン
-                        NavigationLink(destination: PostDetailView(postData: postData)) {
-                            Text("コメント")
-                            Text("\(postData.comment.count)件")
-                        }
-                    }
+                    CockCardView(postData: postData, path: $navigationPath)
+                        .listRowSeparator(.hidden)
                 }
-                .padding()
+                .listStyle(.plain)
                 
                 Button(action: {
                     isShowSheet = true
@@ -52,6 +48,9 @@ struct CockPostView: View {
                         .fontWeight(.bold)
                         .font(.title3)
                 }
+            }
+            .navigationDestination(for: PostElement.self) { postData in
+                PostDetailView(postData: postData)
             }
         }
         .sheet(isPresented: $isShowSheet) {
