@@ -3,7 +3,7 @@ import SwiftUI
 struct CockCardView: View {
     let maxTextCount = 20
     let postData: PostElement
-    let cockCardVM = CockCardViewModel(friendUid: "")
+    @State private var cockCardVM: CockCardViewModel?
     @State private var isLike: Bool = false
     // 続きを読む
     @State private var isLineLimit: Bool = false
@@ -27,7 +27,17 @@ struct CockCardView: View {
     let likeAction: () -> Void
     /// 画面遷移
     let navigateAction: () -> Void
-    
+
+    init(postData: PostElement, path: Binding<[CockPostViewPath]>, blockAction: @escaping () -> Void, reportAction: @escaping () -> Void, followAction: @escaping () -> Void, likeAction: @escaping () -> Void, navigateAction: @escaping () -> Void) {
+        self.postData = postData
+        self._path = path
+        self.blockAction = blockAction
+        self.reportAction = reportAction
+        self.followAction = followAction
+        self.likeAction = likeAction
+        self.navigateAction = navigateAction
+    }
+
     var body: some View {
         VStack {
             // アイコン、名前、通報ボタン、フォローボタン
@@ -153,19 +163,12 @@ struct CockCardView: View {
             // 区切り線
             Divider()
         }
-        // TODO: onApperをコメントアウトしないとクラッシュする
-//        .onAppear {
-//            Task {
-//                if let userData = await cockCardVM.fetchUserData(uid: postData.uid) {
-//                    DispatchQueue.main.async {
-//                        // ニックネーム取得
-//                        nickName = userData.nickName
-//                        // アイコンURL取得
-//                        iconImageURL = URL(string: userData.iconURL ?? "")
-//                    }
-//                }
-//            }
-//        }
+        // TODO: onAppearをコメントアウトしないとPreviewがクラッシュする
+        .onAppear {
+            Task {
+                let viewModel = await CockCardViewModel(friendUid: postData.uid)
+            }
+        }
     }
 }
 
@@ -173,7 +176,7 @@ struct CockCardView: View {
     struct PreviewView: View {
         @State private var path: [CockPostViewPath] = []
         
-        let postData: PostElement = PostElement(uid: "",postImageURL: "https://firebasestorage.googleapis.com/v0/b/cockdive.appspot.com/o/postImages%2FrLVTWM5C7BiV3XbJP57G%2Fpost.jpg?alt=media&token=d4879cc3-0022-4afb-9cea-b1fe4afc19ec", title: "定食", memo: """
+        let postData: PostElement = PostElement(uid: "", postImageURL: "https://firebasestorage.googleapis.com/v0/b/cockdive.appspot.com/o/postImages%2FrLVTWM5C7BiV3XbJP57G%2Fpost.jpg?alt=media&token=d4879cc3-0022-4afb-9cea-b1fe4afc19ec", title: "定食", memo: """
 ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
 """, isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
         

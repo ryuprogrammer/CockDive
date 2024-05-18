@@ -7,7 +7,7 @@ struct CockPostView: View {
     // 画面遷移用
     @State private var navigationPath: [CockPostViewPath] = []
     // postDetail用のpostデータ
-    @State var detailPost: PostElement
+    @State var detailPost: PostElement = PostElement(uid: "", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
