@@ -16,6 +16,17 @@ struct CockCardView: View {
     // 投稿者の名前
     @State private var nickName: String = "読み込み中..."
     
+    // MARK: - アクション
+    /// ブロックするアクション
+    let bloclAction: () -> Void
+    /// 通報するアクション
+    let reportAction: () -> Void
+    /// フォローする
+    let followAction: () -> Void
+    /// ライク
+    let likeAction: () -> Void
+    
+    
     var body: some View {
         VStack {
             // アイコン、名前、通報ボタン、フォローボタン

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PostDetailView: View {
+    let postData: PostElement
     @State private var userName: String = "momo"
     @State private var title: String = "定食"
     @State private var explain: String = """
@@ -132,7 +133,28 @@ struct PostDetailView: View {
         
         var body: some View {
             NavigationStack {
-                PostDetailView(path: $path)
+                PostDetailView(
+                    postData: PostElement(
+                        id: "000",
+                        uid: "mmmmmmmm",
+                        postImage: Data(),
+                        postImageURL: "https://firebasestorage.googleapis.com/v0/b/cockdive.appspot.com/o/postImages%2FrLVTWM5C7BiV3XbJP57G%2Fpost.jpg?alt=media&token=d4879cc3-0022-4afb-9cea-b1fe4afc19ec",
+                        title: "定食",
+                        memo: """
+ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入
+""",
+                        isPrivate: false,
+                        createAt: Date(),
+                        likeCount: 10,
+                        likedUser: [],
+                        comment: [
+                            CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date()),
+                            CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date()),
+                            CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date())
+                        ]
+                    ),
+                    path: $path
+                )
             }
         }
     }

@@ -7,7 +7,4 @@ class CockCardViewModel {
     func fetchUserData(uid: String) async -> UserElement? {
         return await userDataModel.fetchUserData(uid: uid)
     }
-    
-    /// ハートを押す
-    
 }

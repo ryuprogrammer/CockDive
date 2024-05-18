@@ -6,13 +6,24 @@ struct CockPostView: View {
     @ObservedObject var cockPostVM = CockPostViewModel()
     // 画面遷移用
     @State private var navigationPath: [CockPostViewPath] = []
+    // postDetail用のpostデータ
+    @State var detailPost: PostElement
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 ScrollView {
                     ForEach(cockPostVM.postData, id: \.self) { postData in
-                        CockCardView(postData: postData, path: $navigationPath)
+                        CockCardView(postData: postData, path: $navigationPath) {
+                            /// ブロックするアクション
+                        } reportAction: {
+                            /// 通報するアクション
+                        } followAction: {
+                            /// フォローする
+                        } likeAction: {
+                            /// ライク
+                        }
+
                     }
                     .padding()
                 }
@@ -47,11 +58,10 @@ struct CockPostView: View {
                         .font(.title3)
                 }
             }
-            
             .navigationDestination(for: CockPostViewPath.self) { value in
                 switch value {
                 case .postDetailView:
-                    PostDetailView(path: $navigationPath)
+                    PostDetailView(postData: detailPost, path: $navigationPath)
                 }
             }
         }
@@ -71,6 +81,6 @@ enum CockPostViewPath {
 }
 
 #Preview {
-    CockPostView()
+    CockPostView(detailPost: PostElement(uid: "", title: "定食", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: []))
 }
 

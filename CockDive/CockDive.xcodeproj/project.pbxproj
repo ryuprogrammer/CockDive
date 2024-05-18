@@ -262,8 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				4298D8402BEDA30C005AB08F /* CockPostView.swift */,
-				4298D8472BEE6C35005AB08F /* AddPostView.swift */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
+				4298D8472BEE6C35005AB08F /* AddPostView.swift */,
 				42DB94582BF20AE600ECDD84 /* PostDetailView */,
 			);
 			path = CockPostViews;
