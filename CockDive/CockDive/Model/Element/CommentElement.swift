@@ -1,7 +1,7 @@
 import Foundation
 
 struct CommentElement: Codable, Equatable, Hashable {
-    var id: String
+    var id = UUID()
     /// uid
     var uid: String
     /// コメント内容

@@ -21,11 +21,11 @@ struct PostDataModel {
     /// Post追加/ 更新
     func addPost(post: PostElement) async {
         // リファレンスを作成
-        var docRef: DocumentReference = db.collection("posts").document()
+        var docRef: DocumentReference = db.collection(postDataCollection).document()
         
         do {
             if let id = post.id { // idがある場合は、データの更新
-                docRef = db.collection("posts").document(id)
+                docRef = db.collection(postDataCollection).document(id)
             }
             
             var postWithId = post
@@ -63,7 +63,7 @@ struct PostDataModel {
         
         guard let postId = post.id else { return }
         // リファレンス
-        let docRef = db.collection("posts").document(postId)
+        let docRef = db.collection(postDataCollection).document(postId)
         
         do {
             try await docRef.updateData(["likeCount": likeCount])
