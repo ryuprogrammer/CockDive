@@ -9,7 +9,6 @@ struct CommentDataModel {
     /// Postを取得するリミット
     private let fetchPostLimit: Int = 20
     private var db = Firestore.firestore()
-    private var storage = Storage.storage()
     
     // データを追加または更新
     enum AddType {
@@ -33,63 +32,8 @@ struct CommentDataModel {
             
             // Firestoreにデータを保存
             try docRef.setData(from: postWithId)
-            
-            if let postImage = post.postImage {
-                // Storageに画像をアップロード
-                if let postImageURL = await uploadPostImage(postImage: postImage, postId: docRef.documentID) {
-                    // 画像のURLをFirestoreに更新
-                    try await docRef.updateData(["postImageURL": postImageURL])
-                }
-            }
         } catch {
             print("Error adding post: \(error)")
-        }
-    }
-    
-    /// Like押す
-    func changeLikeToPost(post: PostElement, uid: String) async {
-        // Likeの数
-        var likeCount = post.likeCount
-        // LikeしたUser
-        var likedUser = post.likedUser
-        // いいねを押しているか判定
-        if post.likedUser.contains(uid) { // ライクから削除
-            likeCount -= 1
-            likedUser.removeAll(where: {$0 == uid})
-        } else { // ライクに追加
-            likeCount += 1
-            likedUser.append(uid)
-        }
-        
-        guard let postId = post.id else { return }
-        // リファレンス
-        let docRef = db.collection(postDataCollection).document(postId)
-        
-        do {
-            try await docRef.updateData(["likeCount": likeCount])
-            try await docRef.updateData(["likedUser": likedUser])
-        } catch {
-            print("Error addHeartToPost: \(error)")
-        }
-    }
-    
-    /// Storageに画像をアップロード
-    func uploadPostImage(postImage: Data, postId: String) async -> String? {
-        let storageRef = Storage.storage().reference().child("postImages/\(postId)/post.jpg")
-        
-        do {
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/jpeg"
-            
-            let _ = try await storageRef.putDataAsync(postImage, metadata: metadata)
-            
-            // 画像のダウンロードURLを取得
-            let downloadURL = try await storageRef.downloadURL()
-            
-            return downloadURL.absoluteString
-        } catch {
-            print("Error uploading post image: \(error)")
-            return nil
         }
     }
     
