@@ -23,13 +23,9 @@ struct CommentDataModel {
         var docRef = db.collection(postDataCollection).document(postId)
         
         do {
-            var postWithId = post
-            postWithId.id = docRef.documentID
-            
-            // Firestoreにデータを保存
-            try docRef.setData(from: postWithId)
+            try await docRef.updateData(["comment": newComment])
         } catch {
-            print("Error adding post: \(error)")
+            print("Error addComment: \(error)")
         }
     }
     
