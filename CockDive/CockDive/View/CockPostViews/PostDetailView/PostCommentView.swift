@@ -3,12 +3,11 @@ import SwiftUI
 struct PostCommentView: View {
     let maxTextCount: Int = 50
     let comment: CommentElement
-    @State private var comments: [String] = [
-        "美味しそう！",
-        "レシピを教えてください！",
-        "最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦戦中最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦最長文字数に挑戦中最長文字数に挑戦中最長文字数に挑戦中",
-        "お腹すいた"
-    ]
+    
+    // ブロック
+    let blockAction: () -> Void
+    // 通報処理
+    let reportAction: () -> Void
     
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -35,7 +34,7 @@ struct PostCommentView: View {
                     
                     Menu {
                         Button(action: {
-                            
+                            blockAction()
                         }, label: {
                             HStack {
                                 Image(systemName: "nosign")
@@ -45,7 +44,7 @@ struct PostCommentView: View {
                         })
                         
                         Button(action: {
-                            
+                            reportAction()
                         }, label: {
                             HStack {
                                 Image(systemName: "exclamationmark.bubble")
@@ -60,7 +59,7 @@ struct PostCommentView: View {
                     }
                 }
                 
-                DynamicHeightCommentView(message: comment, maxTextCount: maxTextCount)
+                DynamicHeightCommentView(message: comment.comment, maxTextCount: maxTextCount)
             }
             
             Spacer()
@@ -69,5 +68,9 @@ struct PostCommentView: View {
 }
 
 #Preview {
-    PostCommentView(comment: CommentElement(uid: "aaa", comment: "美味しそう", createAt: Date()))
+    PostCommentView(
+        comment: CommentElement(uid: "aaa", comment: "美味しそう", createAt: Date()),
+        blockAction: {},
+        reportAction: {}
+    )
 }

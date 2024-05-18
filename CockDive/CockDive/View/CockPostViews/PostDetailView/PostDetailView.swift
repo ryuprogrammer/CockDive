@@ -71,8 +71,17 @@ struct PostDetailView: View {
                 }
                 .padding()
                 
-                PostCommentView()
-                    .padding(.horizontal)
+                ForEach(postData.comment, id: \.self) { comment in
+                    PostCommentView(comment: comment) {
+                        // ブロック
+                        
+                    } reportAction: {
+                        // 通報
+                        
+                    }
+
+                }
+                .padding(.horizontal)
             }
             
             VStack {
