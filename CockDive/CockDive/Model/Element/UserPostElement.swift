@@ -12,3 +12,8 @@ struct UserPostElement: Codable {
     /// いいねした投稿
     var likePost: [String]
 }
+
+enum UserPostType {
+    case post
+    case like
+}
