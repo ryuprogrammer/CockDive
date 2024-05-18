@@ -46,30 +46,4 @@ struct CommentDataModel {
             print("Error deleteComment: \(error)")
         }
     }
-    
-    // MARK: - データ取得
-    /// uid取得
-    func fetchUid() -> String? {
-        return Auth.auth().currentUser?.uid
-    }
-    
-    /// Postを取得（件数指定）
-    func fetchPostData() async -> [PostElement] {
-        let docRef = db.collection(postDataCollection)
-            .order(by: "createAt", descending: true)
-            .limit(to: fetchPostLimit)
-        var postData: [PostElement] = []
-        
-        do {
-            let querySnapshot = try await docRef.getDocuments()
-            for document in querySnapshot.documents {
-                let result = try document.data(as: PostElement.self)
-                postData.append(result)
-            }
-        } catch {
-            print("Error getting documents: \(error)")
-        }
-        
-        return postData
-    }
 }
