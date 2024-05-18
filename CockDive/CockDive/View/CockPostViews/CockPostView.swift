@@ -7,7 +7,7 @@ struct CockPostView: View {
     // 画面遷移用
     @State private var navigationPath: [CockPostViewPath] = []
     // postDetail用のpostデータ
-    @State var detailPost: PostElement = PostElement(uid: "", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
+    @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -34,6 +34,9 @@ struct CockPostView: View {
                             }
                         } navigateAction: {
                             detailPost = postData
+                            navigationPath.append(.postDetailView)
+                            print("postData: \(postData)")
+                            print("navigateAction")
                         }
 
                     }
@@ -95,4 +98,3 @@ enum CockPostViewPath {
 #Preview {
     CockPostView(detailPost: PostElement(uid: "", title: "定食", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: []))
 }
-

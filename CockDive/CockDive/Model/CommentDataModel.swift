@@ -20,7 +20,7 @@ struct CommentDataModel {
         // コメントを追加
         newComment.append(comment)
         // リファレンスを作成
-        var docRef = db.collection(postDataCollection).document(postId)
+        let docRef = db.collection(postDataCollection).document(postId)
         
         do {
             try await docRef.updateData(["comment": newComment])
@@ -38,7 +38,7 @@ struct CommentDataModel {
         // コメントを追加
         newComment.removeAll(where: {$0 == deleteComment})
         // リファレンスを作成
-        var docRef = db.collection(postDataCollection).document(postId)
+        let docRef = db.collection(postDataCollection).document(postId)
         
         do {
             try await docRef.updateData(["comment": newComment])

@@ -71,7 +71,7 @@ class UserPostDataModel {
             let document = try await db.collection(userPostCollection).document(uid).getDocument()
             
             guard document.data() != nil else {
-                print("Document does not exist")
+                print("Document does not exist: fetchUserPostData")
                 return nil
             }
             

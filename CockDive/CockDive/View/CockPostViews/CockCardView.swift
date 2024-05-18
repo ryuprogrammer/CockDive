@@ -108,14 +108,17 @@ struct CockCardView: View {
                 
                 Spacer()
                 VStack(spacing: 1) {
-                    Image(systemName: "message")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
-                        .onTapGesture {
-                            navigateAction()
-                            path.append(.postDetailView)
-                        }
+                    // メッセージ画面への遷移ボタン
+                    Button {
+                        path.append(.postDetailView)
+                        print("postData: \(postData)")
+                        print("navigateAction")
+                    } label: {
+                        Image(systemName: "message")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25)
+                    }
                     
                     Text(String(postData.comment.count))
                         .font(.footnote)
@@ -146,7 +149,6 @@ struct CockCardView: View {
             Divider()
         }
         .onAppear {
-            var isFollow = false
             Task {
                 await cockCardVM.initData(friendUid: postData.uid)
                 await cockCardVM.isFollowFriend(friendUid: postData.uid)
