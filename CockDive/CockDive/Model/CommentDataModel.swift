@@ -29,6 +29,24 @@ struct CommentDataModel {
         }
     }
     
+    /// コメント削除
+    func deleteComment(post: PostElement, deleteComment: CommentElement) async {
+        // id取得
+        guard let postId = post.id else { return }
+        // 新しいコメント
+        var newComment: [CommentElement] = post.comment
+        // コメントを追加
+        newComment.removeAll(where: {$0 == deleteComment})
+        // リファレンスを作成
+        var docRef = db.collection(postDataCollection).document(postId)
+        
+        do {
+            try await docRef.updateData(["comment": newComment])
+        } catch {
+            print("Error deleteComment: \(error)")
+        }
+    }
+    
     // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String? {
