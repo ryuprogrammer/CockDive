@@ -28,6 +28,28 @@ struct PostDetailView: View {
             List {
                 VStack {
                     HStack {
+                        let imageURL = URL(string: postData.postImageURL ?? "")
+                        
+                        AsyncImage(url: imageURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(
+                                    width: (window?.screen.bounds.width ?? 50) / 12,
+                                    height: (window?.screen.bounds.width ?? 50) / 10
+                                )
+                                .clipShape(Circle())
+                        } placeholder: {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .foregroundStyle(Color.gray)
+                                .frame(
+                                    width: (window?.screen.bounds.width ?? 50) / 12,
+                                    height: (window?.screen.bounds.width ?? 50) / 10
+                                )
+                        }
+                        
                         Image("cockImage")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
