@@ -114,7 +114,7 @@ struct CockCardView: View {
                             path.append(.postDetailView)
                         }
                     
-                    Text(String(postData.likeCount))
+                    Text(String(postData.comment.count))
                         .font(.footnote)
                 }
                 
@@ -128,6 +128,7 @@ struct CockCardView: View {
                             withAnimation {
                                 isLike.toggle()
                             }
+                            likeAction()
                         }
                     
                     Text(String(postData.likeCount))
