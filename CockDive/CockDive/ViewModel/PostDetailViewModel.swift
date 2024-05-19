@@ -21,6 +21,7 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
+    // コメント削除
     func deleteComment(post: PostElement, comment: CommentElement) async {
         await commentDataModel.deleteComment(post: post, deleteComment: comment)
     }
