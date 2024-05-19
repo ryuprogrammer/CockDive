@@ -60,11 +60,21 @@ struct PostDetailView: View {
                     }
                     
                     ZStack {
-                        Image("cockImage")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 250)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                        let postImageURL = URL(string: postData.postImageURL ?? "")
+                        
+                        AsyncImage(url: postImageURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: 250)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                        } placeholder: {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: 250)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                        }
                     }
                     
                     Text(postData.memo ?? "")
@@ -112,6 +122,7 @@ struct PostDetailView: View {
                                     comment: comment,
                                     createAt: Date()
                                 )
+                                showPostComment.append(newComment)
                             }
                         }
                     } label: {
@@ -169,14 +180,14 @@ struct PostDetailView: View {
         .onAppear {
             showPostComment = postData.comment
         }
-        .onDisappear {
+        .onChange(of: $showPostComment.count) {_ in
+            print("onChange感知")
             /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
             /// コメントの追加、削除を一括で行う。
             /// 画面更新するのは一瞬で行いたいため。
             if showPostComment != postData.comment {
-                Task {
-                    await postDetailVM.updateComment(post: postData, comments: showPostComment)
-                }
+                print("コメント更新")
+                postDetailVM.updateComment(post: postData, comments: showPostComment)
             }
         }
     }

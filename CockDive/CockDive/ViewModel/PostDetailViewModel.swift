@@ -10,8 +10,8 @@ class PostDetailViewModel: ObservableObject {
     
     // MARK: - データ追加
     /// コメント更新（追加/ 削除）
-    func updateComment(post: PostElement, comments: [CommentElement]) async {
-        await commentDataModel.updateComment(post: post, newComments: comments)
+    func updateComment(post: PostElement, comments: [CommentElement]) {
+        commentDataModel.updateComment(post: post, newComments: comments)
     }
     
     /// Like
