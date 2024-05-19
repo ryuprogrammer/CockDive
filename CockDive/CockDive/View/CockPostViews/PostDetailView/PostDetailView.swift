@@ -121,7 +121,7 @@ struct PostDetailView: View {
         .navigationBarBackButtonHidden(true)
         .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color("main"), for: .navigationBar)
+        .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             // 戻るボタン

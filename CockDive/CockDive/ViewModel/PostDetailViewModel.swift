@@ -8,11 +8,6 @@ class PostDetailViewModel: ObservableObject {
     let postDataModel = PostDataModel()
     
     // MARK: - データ追加
-    /// Post追加/ 更新
-    func addPost(post: PostElement) async {
-        await postDataModel.addPost(post: post)
-    }
-    
     /// Like
     func likePost(post: PostElement) async {
         await postDataModel.changeLikeToPost(post: post)
