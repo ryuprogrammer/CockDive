@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    @State var  postData: PostElement
+    let postData: PostElement
+    // 画面表示用コメント
+    @State private var showPostComment: [CommentElement] = []
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
@@ -153,6 +155,12 @@ struct PostDetailView: View {
                         .foregroundStyle(Color.white)
                 }
             }
+        }
+        .onAppear {
+            showPostComment = postData.comment
+        }
+        .onDisappear {
+            
         }
     }
 }
