@@ -14,7 +14,7 @@ class AddPostViewModel: ObservableObject {
         
         if let userData = await userDataModel.fetchUserData(uid: uid) {
             newPost.postUserNickName = userData.nickName
-            newPost.postImageURL = userData.iconURL
+            newPost.postUserIconImageURL = userData.iconURL
             await postDataModel.addPost(post: newPost)
         }
     }

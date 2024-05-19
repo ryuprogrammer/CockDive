@@ -19,7 +19,7 @@ struct PostDetailView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        let imageURL = URL(string: postData.postImageURL ?? "")
+                        let imageURL = URL(string: postData.postUserIconImageURL ?? "")
                         
                         AsyncImage(url: imageURL) { image in
                             image
@@ -42,7 +42,7 @@ struct PostDetailView: View {
                         }
                         
                         VStack(alignment: .leading) {
-                            Text("\(postDetailVM.nickName)さん")
+                            Text("\(postData.postUserNickName ?? "ニックネーム")さん")
                             
                             Text(postData.createAt.dateString())
                                 .font(.footnote)
