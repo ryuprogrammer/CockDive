@@ -141,4 +141,23 @@ struct PostDataModel {
         
         return postData
     }
+    
+    /// postIdからPostDataを取得
+    func fetchPostFromId(postId: String) async -> PostElement? {
+        do {
+            let document = try await db.collection(postDataCollection).document(postId).getDocument()
+            
+            guard document.data() != nil else {
+                print("Document does not exist")
+                return nil
+            }
+            
+            let decodedUserData = try document.data(as: PostElement.self)
+            
+            return decodedUserData
+        } catch {
+            print("Error fetching user data: \(error)")
+        }
+        return nil
+    }
 }

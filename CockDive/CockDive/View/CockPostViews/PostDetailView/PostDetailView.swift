@@ -2,8 +2,8 @@ import SwiftUI
 
 struct PostDetailView: View {
     let postData: PostElement
-    // 画面表示用コメント
-    @State private var showPostComment: [CommentElement] = []
+    // 画面表示用のPostData
+    @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
@@ -21,7 +21,7 @@ struct PostDetailView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        let imageURL = URL(string: postData.postUserIconImageURL ?? "")
+                        let imageURL = URL(string: showPostData.postUserIconImageURL ?? "")
                         
                         AsyncImage(url: imageURL) { image in
                             image
@@ -60,7 +60,7 @@ struct PostDetailView: View {
                     }
                     
                     ZStack {
-                        let postImageURL = URL(string: postData.postImageURL ?? "")
+                        let postImageURL = URL(string: showPostData.postImageURL ?? "")
                         
                         AsyncImage(url: postImageURL) { image in
                             image
@@ -77,13 +77,13 @@ struct PostDetailView: View {
                         }
                     }
                     
-                    Text(postData.memo ?? "")
+                    Text(showPostData.memo ?? "")
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding()
                 
-                ForEach(showPostComment, id: \.id) { comment in
+                ForEach(showPostData.comment, id: \.id) { comment in
                     PostCommentView(comment: comment) {
                         Task {
                             // ブロック
@@ -122,7 +122,7 @@ struct PostDetailView: View {
                                     comment: comment,
                                     createAt: Date()
                                 )
-                                showPostComment.append(newComment)
+                                showPostData.comment.append(newComment)
                             }
                         }
                     } label: {
@@ -178,16 +178,14 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
-            showPostComment = postData.comment
+            showPostData = postData
         }
-        .onChange(of: $showPostComment.count) {_ in
-            print("onChange感知")
+        .onChange(of: $showPostData.comment.count) {_ in
             /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
             /// コメントの追加、削除を一括で行う。
             /// 画面更新するのは一瞬で行いたいため。
-            if showPostComment != postData.comment {
-                print("コメント更新")
-                postDetailVM.updateComment(post: postData, comments: showPostComment)
+            if showPostData.comment != postData.comment {
+                postDetailVM.updateComment(post: postData, comments: showPostData.comment)
             }
         }
     }
