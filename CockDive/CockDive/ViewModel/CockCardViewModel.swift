@@ -1,5 +1,11 @@
 import Foundation
 
+// TODO: - 5/20中のタスクだお
+/// @PublishのnickNameとか全部消す。
+/// postDataにnickNameとiconImageURL入ってるから。
+///
+/// フォローとライクの実装をする。
+/// PostDetailViewを参考に。
 class CockCardViewModel: ObservableObject {
     @Published var nickName: String = ""
     @Published var iconImageURL: URL? = URL(string: "")

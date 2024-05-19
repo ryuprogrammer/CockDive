@@ -2,6 +2,9 @@ import SwiftUI
 
 struct CockCardView: View {
     let postData: PostElement
+    // 画面表示用のPostData
+    @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])
+    
     let maxTextCount = 20
     @State private var cockCardVM = CockCardViewModel()
     @State private var isLike: Bool = false
@@ -139,8 +142,6 @@ struct CockCardView: View {
         }
         .onAppear {
             Task {
-                print("-------------------------------------------------------------------------")
-                print("cockCardView postData: \(postData)\n\n")
                 await cockCardVM.initData(friendUid: postData.uid)
                 await cockCardVM.isFollowFriend(friendUid: postData.uid)
             }
