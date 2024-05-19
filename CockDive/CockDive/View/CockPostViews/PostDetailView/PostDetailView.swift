@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    let postData: PostElement
+    @State var  postData: PostElement
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
