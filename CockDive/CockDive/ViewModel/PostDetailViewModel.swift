@@ -46,6 +46,11 @@ class PostDetailViewModel: ObservableObject {
         return await userDataModel.fetchUserData(uid: uid)
     }
     
+    /// postIdからPostDataを取得
+    func fetchPostFromPostId(postId: String) async -> PostElement? {
+        return await postDataModel.fetchPostFromPostId(postId: postId)
+    }
+    
     /// フォローしているか判定
     func isFollowFriend(friendUid: String) async {
         guard let uid = userDataModel.fetchUid() else { return }

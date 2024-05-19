@@ -11,8 +11,6 @@ struct PostDetailView: View {
     @State var flag: Visibility = .hidden
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
-    // キーボード制御
-    @FocusState private var keybordFocuse: Bool
     // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
     
@@ -114,7 +112,7 @@ struct PostDetailView: View {
                     Button {
                         Task {
                             if let userData = await postDetailVM.fetchUserData() {
-                                // コメント追加
+                                // 新しいコメント
                                 let newComment: CommentElement = CommentElement(
                                     uid: userData.id ?? "",
                                     commentUserNickName: userData.nickName,
@@ -122,7 +120,11 @@ struct PostDetailView: View {
                                     comment: comment,
                                     createAt: Date()
                                 )
+                                // コメント追加
                                 showPostData.comment.append(newComment)
+                                self.comment = ""
+                                // キーボード閉じる
+                                UIApplication.shared.keybordClose()
                             }
                         }
                     } label: {
@@ -178,7 +180,16 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
+            /// 画面を最速で描画したい
+            /// 親画面からPostDataを取得
             showPostData = postData
+            /// 最新のPostDataを取得
+            Task {
+                if let postData = await postDetailVM.fetchPostFromPostId(postId: postData.id ?? "") {
+                    showPostData = postData
+                }
+            }
+            
         }
         .onChange(of: $showPostData.comment.count) {_ in
             /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新

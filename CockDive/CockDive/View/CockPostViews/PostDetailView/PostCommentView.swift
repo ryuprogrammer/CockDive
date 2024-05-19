@@ -40,7 +40,7 @@ struct PostCommentView: View {
                 HStack {
                     Text(comment.commentUserNickName ?? "ユーザー")
                     
-                    Text(Date().dateString())
+                    Text(comment.createAt.dateString())
                         .font(.caption)
                     
                     Spacer()
