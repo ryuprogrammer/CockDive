@@ -6,8 +6,14 @@ class PostDetailViewModel: ObservableObject {
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
+    let commentDataModel = CommentDataModel()
     
     // MARK: - データ追加
+    /// コメント追加
+    func addCommet(post: PostElement, newComment: CommentElement) {
+        
+    }
+    
     /// Like
     func likePost(post: PostElement) async {
         await postDataModel.changeLikeToPost(post: post)
@@ -28,6 +34,7 @@ class PostDetailViewModel: ObservableObject {
         // TODO: 通報処理書く
     }
     
+    // MARK: - データ取得
     /// フォローしているか判定
     func isFollowFriend(friendUid: String) async {
         guard let uid = userDataModel.fetchUid() else { return }
