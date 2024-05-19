@@ -9,21 +9,9 @@ class PostDetailViewModel: ObservableObject {
     let commentDataModel = CommentDataModel()
     
     // MARK: - データ追加
-    /// コメント追加
-    func addCommet(post: PostElement, comment: CommentElement) async {
-        var newComment = comment
-        let uid = fetchUid()
-        
-        if let userData = await userDataModel.fetchUserData(uid: uid) {
-            newComment.commentUserNickName = userData.nickName
-            newComment.commentUserIconURL = userData.iconURL
-            await commentDataModel.addComment(post: post, comment: newComment)
-        }
-    }
-    
-    // コメント削除
-    func deleteComment(post: PostElement, comment: CommentElement) async {
-        await commentDataModel.deleteComment(post: post, deleteComment: comment)
+    /// コメント更新（追加/ 削除）
+    func updateComment(post: PostElement, comments: [CommentElement]) async {
+        await commentDataModel.updateComment(post: post, newComments: comments)
     }
     
     /// Like
