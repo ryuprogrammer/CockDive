@@ -2,46 +2,24 @@ import Foundation
 import _PhotosUI_SwiftUI
 
 class AddPostViewModel: ObservableObject {
-    @Published var postData: [PostElement] = []
     let postDataModel = PostDataModel()
     let userFriendModel = UserFriendModel()
+    let userDataModel = UserDataModel()
     
     // MARK: - データ追加
     /// Post追加/ 更新
     func addPost(post: PostElement) async {
-        await postDataModel.addPost(post: post)
-    }
-    
-    /// Like
-    func likePost(post: PostElement) async {
-        await postDataModel.changeLikeToPost(post: post)
-    }
-    
-    /// フォロー
-    func followUser(friendUid: String) async {
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .follow)
-    }
-    
-    /// ブロック
-    func blockUser(friendUid: String) async {
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
-    }
-    
-    /// 通報
-    func reportUser(friendUid: String) {
-        // TODO: 通報処理書く
-    }
-    
-    // MARK: - データ取得
-    /// Postを取得
-    func fetchPost() async {
-        let data = await postDataModel.fetchPostData()
-        DispatchQueue.main.async {
-            print("data: \(data)")
-            self.postData = data
+        var newPost = post
+        let uid = fetchUid()
+        
+        if let userData = await userDataModel.fetchUserData(uid: uid) {
+            newPost.postUserNickName = userData.nickName
+            newPost.postImageURL = userData.iconURL
+            await postDataModel.addPost(post: newPost)
         }
     }
     
+    // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String {
         return postDataModel.fetchUid() ?? ""
