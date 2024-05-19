@@ -14,18 +14,31 @@ struct PostCommentView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image("cockImage")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(
-                    width: (window?.screen.bounds.width ?? 50) / 10,
-                    height: (window?.screen.bounds.width ?? 50) / 10
-                )
-                .clipShape(Circle())
+            // アイコン写真のURL
+            let imageURL = URL(string: comment.commentUserIconURL ?? "")
+            AsyncImage(url: imageURL) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(
+                        width: (window?.screen.bounds.width ?? 50) / 10,
+                        height: (window?.screen.bounds.width ?? 50) / 10
+                    )
+                    .clipShape(Circle())
+            } placeholder: {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(
+                        width: (window?.screen.bounds.width ?? 50) / 10,
+                        height: (window?.screen.bounds.width ?? 50) / 10
+                    )
+                    .clipShape(Circle())
+            }
             
             VStack(alignment: .leading) {
                 HStack {
-                    Text("名前")
+                    Text(comment.commentUserNickName ?? "ユーザー")
                     
                     Text(Date().dateString())
                         .font(.caption)
