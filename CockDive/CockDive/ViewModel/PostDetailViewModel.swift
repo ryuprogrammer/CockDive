@@ -40,6 +40,12 @@ class PostDetailViewModel: ObservableObject {
         return postDataModel.fetchUid() ?? ""
     }
     
+    /// userDate取得
+    func fetchUserData() async -> UserElement? {
+        let uid = fetchUid()
+        return await userDataModel.fetchUserData(uid: uid)
+    }
+    
     /// フォローしているか判定
     func isFollowFriend(friendUid: String) async {
         guard let uid = userDataModel.fetchUid() else { return }

@@ -73,7 +73,7 @@ struct PostDetailView: View {
                 }
                 .padding()
                 
-                ForEach(postData.comment, id: \.self) { comment in
+                ForEach(showPostComment, id: \.id) { comment in
                     PostCommentView(comment: comment) {
                         Task {
                             // ブロック
@@ -85,7 +85,7 @@ struct PostDetailView: View {
                             await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
-
+                    
                 }
                 .padding(.horizontal)
             }
@@ -101,16 +101,26 @@ struct PostDetailView: View {
                         maxHeight: 200
                     )
                     
-                    Button(action: {
-                        // コメント追加
-                        
-                    }, label: {
+                    Button {
+                        Task {
+                            if let userData = await postDetailVM.fetchUserData() {
+                                // コメント追加
+                                let newComment: CommentElement = CommentElement(
+                                    uid: userData.id ?? "",
+                                    commentUserNickName: userData.nickName,
+                                    commentUserIconURL: userData.iconURL,
+                                    comment: comment,
+                                    createAt: Date()
+                                )
+                            }
+                        }
+                    } label: {
                         Image(systemName: "paperplane.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 34)
                             .foregroundStyle(Color.white)
-                    })
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)
@@ -160,7 +170,14 @@ struct PostDetailView: View {
             showPostComment = postData.comment
         }
         .onDisappear {
-            
+            /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
+            /// コメントの追加、削除を一括で行う。
+            /// 画面更新するのは一瞬で行いたいため。
+            if showPostComment != postData.comment {
+                Task {
+                    await postDetailVM.updateComment(post: postData, comments: showPostComment)
+                }
+            }
         }
     }
 }
