@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct AddPostView: View {
-    let cockPostVM = CockPostViewModel()
+    let cockPostVM = AddPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var isPrivate: Bool = true

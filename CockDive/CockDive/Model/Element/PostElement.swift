@@ -8,7 +8,7 @@ struct PostElement: Codable, Hashable, Equatable {
     /// アイコン写真のURL
     var postUserIconImageURL: String?
     /// ニックネーム
-    var postUserNickName: String
+    var postUserNickName: String?
     /// 写真: 入力で必要
     var postImage: Data?
     /// 写真のURL: 取得で必要

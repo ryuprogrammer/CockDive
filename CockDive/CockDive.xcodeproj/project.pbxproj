@@ -18,6 +18,7 @@
 		423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A892BF8605800489BCC /* UserPostDataModel.swift */; };
 		423B2A8C2BF86CDB00489BCC /* CommentDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */; };
 		423B2A8E2BF8994100489BCC /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8D2BF8994000489BCC /* PostDetailViewModel.swift */; };
+		423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -85,6 +86,7 @@
 		423B2A892BF8605800489BCC /* UserPostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostDataModel.swift; sourceTree = "<group>"; };
 		423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDataModel.swift; sourceTree = "<group>"; };
 		423B2A8D2BF8994000489BCC /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
+		423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
 				42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */,
 				42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */,
+				423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */,
 				42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */,
 				423B2A8D2BF8994000489BCC /* PostDetailViewModel.swift */,
 			);
@@ -470,6 +473,7 @@
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
 				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,
+				423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */,
 				42DB949C2BF4A2D100ECDD84 /* UserPostElement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
