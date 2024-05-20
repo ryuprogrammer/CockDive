@@ -10,6 +10,9 @@ class UserPostDataModel {
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
     
+    // リスナーのリファレンスを保持するためのプロパティ
+    private var listener: ListenerRegistration?
+    
     // MARK: - データ追加
     /// 自分のpostの追加/ 更新 または 友達の投稿をいいね
     func addPostId(postId: String, userPostType: UserPostType) async {
@@ -81,5 +84,34 @@ class UserPostDataModel {
             print("Error fetching user data: \(error)")
         }
         return nil
+    }
+
+    // MARK: - データのリッスン
+    /// uidを指定してuserPostDataをリアルタイムでリッスン
+    func listenToUserPostData(uid: String, completion: @escaping (UserPostElement?) -> Void) {
+        // 既存のリスナーを削除
+        listener?.remove()
+        
+        // 新しいリスナーを設定
+        listener = db.collection(userPostCollection).document(uid).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                completion(nil)
+                return
+            }
+            do {
+                let userData = try document.data(as: UserPostElement.self)
+                completion(userData)
+            } catch {
+                print("Error decoding user data: \(error)")
+                completion(nil)
+            }
+        }
+    }
+    
+    /// リスナーを停止
+    func removeListener() {
+        listener?.remove()
+        listener = nil
     }
 }

@@ -11,6 +11,9 @@ struct PostDataModel {
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
     
+    // リスナーのリファレンスを保持するためのプロパティ
+    var listeners: [ListenerRegistration] = []
+    
     // データを追加または更新
     enum AddType {
         case add
@@ -124,7 +127,6 @@ struct PostDataModel {
         return postData
     }
     
-    // TODO: データ取得できるか確認 - uidとcreateAtが違うからエラーかな、、、
     /// Postを取得（Uid/ 件数指定）
     func fetchPostFromUid(uid: String) async -> [PostElement] {
         let docRef = db.collection(postDataCollection)
@@ -163,5 +165,41 @@ struct PostDataModel {
             print("Error fetchPostFromPostId: \(error)")
         }
         return nil
+    }
+
+    // MARK: - データのリッスン
+    /// 複数のpostIdを指定してPostデータをリアルタイムでリッスンし、ListenerRegistrationのリストを返す
+    func listenToPostsData(postIds: [String], completion: @escaping ([PostElement]) -> Void) -> [ListenerRegistration] {
+        var postsData: [PostElement] = []
+        let listeners = postIds.map { postId in
+            db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    completion(postsData)
+                    return
+                }
+                do {
+                    let postData = try document.data(as: PostElement.self)
+                    
+                    if let index = postsData.firstIndex(where: { $0.id == postId }) {
+                        postsData[index] = postData
+                    } else {
+                        postsData.append(postData)
+                    }
+                    completion(postsData)
+                } catch {
+                    print("Error decoding post data: \(error)")
+                    completion(postsData)
+                }
+            }
+        }
+        
+        return listeners
+    }
+    
+    /// リスナーを停止
+    mutating func removeListeners() {
+        listeners.forEach { $0.remove() }
+        listeners.removeAll()
     }
 }

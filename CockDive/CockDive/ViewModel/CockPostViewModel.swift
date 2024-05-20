@@ -1,13 +1,17 @@
 import Foundation
-import _PhotosUI_SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 
 class CockPostViewModel: ObservableObject {
     @Published var postData: [PostElement] = []
     let userDataModel = UserDataModel()
-    let postDataModel = PostDataModel()
+    var postDataModel = PostDataModel()
     let userFriendDataModel = UserFriendModel()
     let userPostDataModel = UserPostDataModel()
     
+    private var postListeners: [ListenerRegistration] = []
+
     // MARK: - データ追加
     /// Like
     func likePost(post: PostElement) async {
@@ -60,6 +64,26 @@ class CockPostViewModel: ObservableObject {
     func fetchUserPostElement() async -> UserPostElement? {
         let uid = fetchUid()
         return await userPostDataModel.fetchUserPostData(uid: uid)
+    }
+    
+    // MARK: - データのリッスン
+    /// 複数のPostをリアルタイムでリッスン
+    func listenToPosts(postIds: [String]) {
+        // 既存のリスナーを削除
+        stopListeningToPosts()
+        
+        // 新しいリスナーを設定
+        postListeners = postDataModel.listenToPostsData(postIds: postIds) { [weak self] postsData in
+            DispatchQueue.main.async {
+                self?.postData = postsData
+            }
+        }
+    }
+    
+    /// リスナーを停止
+    func stopListeningToPosts() {
+        postListeners.forEach { $0.remove() }
+        postListeners.removeAll()
     }
     
     // MARK: - その他
