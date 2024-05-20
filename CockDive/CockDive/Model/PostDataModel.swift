@@ -195,6 +195,7 @@ struct PostDataModel {
     
     // MARK: - データのリッスン
     /// 複数のpostIdを指定してPostデータをリアルタイムでリッスンし、ListenerRegistrationのリストを返す
+    /// ↓削除したい！！！
     func listenToPostsData(postIds: [String], completion: @escaping ([PostElement]) -> Void) -> [ListenerRegistration] {
         var postsData: [PostElement] = []
         let listeners = postIds.map { postId in
@@ -217,6 +218,34 @@ struct PostDataModel {
                     print("Error decoding post data: \(error)")
                     completion(postsData)
                 }
+            }
+        }
+        
+        return listeners
+    }
+    
+    // TODO: - 5/21の課題。
+    // 「みんなのご飯」画面のタイムラインを実装完了←ノルマ
+    // 「MyPage」画面のためにCoreDataの設定を始める←できたら
+    /// PostIDを指定して、Postデータをリアルタイムリッスン
+    /// 上のメソッドをこれに置き換えたい。
+    /// 個々のCockCardViewでリスナーを持つ。
+    /// つまり、CockCardViewModelで以下のメソッドを使用。
+    func listenPostsData(postId: String, completion: @escaping (PostElement?) -> Void) -> [ListenerRegistration] {
+        var postData: PostElement?
+        let listener = db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                completion(postData)
+                return
+            }
+            do {
+                postData = try document.data(as: PostElement.self)
+                
+                completion(postData)
+            } catch {
+                print("Error decoding post data: \(error)")
+                completion(postData)
             }
         }
         

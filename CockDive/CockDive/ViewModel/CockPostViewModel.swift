@@ -6,7 +6,7 @@ import FirebaseStorage
 class CockPostViewModel: ObservableObject {
     // Viewで使用するPostData
     @Published var postData: [PostElement] = []
-    // PostDataを取得するためのId
+    // PostDataを取得するためのId: 追加する分のみ
     @Published var postIds: [String] = []
     let userDataModel = UserDataModel()
     var postDataModel = PostDataModel()
@@ -50,7 +50,7 @@ class CockPostViewModel: ObservableObject {
         let lastDocumentId = postIds.last
         let morePostIds: [String] = await postDataModel.fetchMorePostIdData(lastDocumentId: lastDocumentId)
         DispatchQueue.main.async {
-            self.postIds.append(contentsOf: morePostIds)
+            self.postIds = morePostIds
         }
     }
     
@@ -86,7 +86,7 @@ class CockPostViewModel: ObservableObject {
         // 新しいリスナーを設定
         postListeners = postDataModel.listenToPostsData(postIds: postIds) { [weak self] postsData in
             DispatchQueue.main.async {
-                self?.postData.append(contentsOf: postsData)
+                self?.postData = postsData
             }
         }
     }

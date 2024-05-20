@@ -37,6 +37,7 @@ struct CockPostView: View {
                                 if maxY < threshold {
                                     print("下まで到達！！！！！！！！！")
                                     if canLoadPost {
+                                        print("リロード前の投稿数: \(cockPostVM.postData.count)")
                                         print("リローーーーーーーーど！！")
                                         Task {
                                             await cockPostVM.fetchMorePostIds()
@@ -54,11 +55,6 @@ struct CockPostView: View {
                         }
                     )
                     .listStyle(.plain)
-//                    .onChange(of: cockPostVM.postData) { _ in
-//                        if let lastPost = cockPostVM.postData.last {
-//                            proxy.scrollTo(lastPost.id, anchor: .bottom)
-//                        }
-//                    }
                 }
                 
                 Button(action: {
@@ -85,7 +81,7 @@ struct CockPostView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("みんなのご飯")
+                    Text("みんなのごはん")
                         .foregroundStyle(Color.white)
                         .fontWeight(.bold)
                         .font(.title3)
@@ -106,6 +102,7 @@ struct CockPostView: View {
             }
         }
         .onChange(of: cockPostVM.postIds) { postIds in
+            print("投稿数\(cockPostVM.postData.count)")
             // postIdを使用して、Postをリッスン開始
             cockPostVM.listenToPosts(postIds: postIds)
         }
