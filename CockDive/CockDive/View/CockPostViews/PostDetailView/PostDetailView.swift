@@ -49,12 +49,6 @@ struct PostDetailView: View {
                         }
                         
                         Spacer()
-                        
-                        StrokeButton(text: "フォロー", size: .small) {
-                            Task {
-                                await postDetailVM.followUser(friendUid: postData.uid)
-                            }
-                        }
                     }
                     
                     ZStack {

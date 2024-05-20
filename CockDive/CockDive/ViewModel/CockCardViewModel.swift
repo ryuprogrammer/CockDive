@@ -1,20 +1,13 @@
 import Foundation
 
-// TODO: - 5/20中のタスクだお
-/// @PublishのnickNameとか全部消す。
-/// postDataにnickNameとiconImageURL入ってるから。
-///
-/// フォローとライクの実装をする。
-/// PostDetailViewを参考に。
-
 class CockCardViewModel: ObservableObject {
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
     
-    /// uidからUserData取得
-    func fetchUserData(uid: String) async throws -> UserElement? {
-        return await userDataModel.fetchUserData(uid: uid)
+    /// uid取得
+    func fetchUid() -> String {
+        return userDataModel.fetchUid() ?? ""
     }
     
     // MARK: - データ追加

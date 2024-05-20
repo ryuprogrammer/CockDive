@@ -28,7 +28,7 @@
 		4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8552BF0984E005AB08F /* ImageCalendarView.swift */; };
 		4298D8582BF0A908005AB08F /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8572BF0A908005AB08F /* Date+.swift */; };
 		4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8592BF0BD8C005AB08F /* SmallImageView.swift */; };
-		4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */; };
+		4298D85C2BF0DD3B005AB08F /* StrokeButtonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D85B2BF0DD3B005AB08F /* StrokeButtonUI.swift */; };
 		4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D85E2BF101C4005AB08F /* SettingView.swift */; };
 		4298D8622BF10694005AB08F /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8612BF10693005AB08F /* NewsView.swift */; };
 		4298D8642BF106BD005AB08F /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8632BF106BD005AB08F /* PrivacyPolicyView.swift */; };
@@ -97,7 +97,7 @@
 		4298D8552BF0984E005AB08F /* ImageCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCalendarView.swift; sourceTree = "<group>"; };
 		4298D8572BF0A908005AB08F /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		4298D8592BF0BD8C005AB08F /* SmallImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallImageView.swift; sourceTree = "<group>"; };
-		4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeButton.swift; sourceTree = "<group>"; };
+		4298D85B2BF0DD3B005AB08F /* StrokeButtonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeButtonUI.swift; sourceTree = "<group>"; };
 		4298D85E2BF101C4005AB08F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4298D8612BF10693005AB08F /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		4298D8632BF106BD005AB08F /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				4298D84D2BEF4FCA005AB08F /* LongBarButton.swift */,
-				4298D85B2BF0DD3B005AB08F /* StrokeButton.swift */,
+				4298D85B2BF0DD3B005AB08F /* StrokeButtonUI.swift */,
 				42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */,
 				4298D86F2BF116CD005AB08F /* NavigationLinkButtonView.swift */,
 				4298D8732BF12260005AB08F /* ToolBarBackButtonView.swift */,
@@ -450,7 +450,7 @@
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
 				42DB94602BF2562E00ECDD84 /* DynamicHeightCommentView.swift in Sources */,
-				4298D85C2BF0DD3B005AB08F /* StrokeButton.swift in Sources */,
+				4298D85C2BF0DD3B005AB08F /* StrokeButtonUI.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8682BF1073D005AB08F /* BlockListView.swift in Sources */,
 				42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */,
