@@ -3,8 +3,10 @@ import _PhotosUI_SwiftUI
 
 class CockPostViewModel: ObservableObject {
     @Published var postData: [PostElement] = []
+    let userDataModel = UserDataModel()
     let postDataModel = PostDataModel()
-    let userFriendModel = UserFriendModel()
+    let userFriendDataModel = UserFriendModel()
+    let userPostDataModel = UserPostDataModel()
     
     // MARK: - データ追加
     /// Like
@@ -14,12 +16,12 @@ class CockPostViewModel: ObservableObject {
     
     /// フォロー
     func followUser(friendUid: String) async {
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .follow)
+        await userFriendDataModel.addUserFriend(friendUid: friendUid, friendType: .follow)
     }
     
     /// ブロック
     func blockUser(friendUid: String) async {
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
+        await userFriendDataModel.addUserFriend(friendUid: friendUid, friendType: .block)
     }
     
     /// 通報
@@ -40,5 +42,23 @@ class CockPostViewModel: ObservableObject {
     /// uid取得
     func fetchUid() -> String {
         return postDataModel.fetchUid() ?? ""
+    }
+    
+    /// userDate取得
+    func fetchUserData() async -> UserElement? {
+        let uid = fetchUid()
+        return await userDataModel.fetchUserData(uid: uid)
+    }
+    
+    /// UserFriendElement取得
+    func fetchUserFriendElement() async -> UserFriendElement? {
+        let uid = fetchUid()
+        return await userFriendDataModel.fetchUserFriendData(uid: uid)
+    }
+    
+    /// UserPostElement取得
+    func fetchUserPostElement() async -> UserPostElement? {
+        let uid = fetchUid()
+        return await userPostDataModel.fetchUserPostData(uid: uid)
     }
 }

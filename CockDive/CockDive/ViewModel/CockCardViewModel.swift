@@ -6,27 +6,11 @@ import Foundation
 ///
 /// フォローとライクの実装をする。
 /// PostDetailViewを参考に。
+
 class CockCardViewModel: ObservableObject {
-    @Published var nickName: String = ""
-    @Published var iconImageURL: URL? = URL(string: "")
-    @Published var isFollow: Bool = false
-    
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
-    
-    /// データの初期化
-    @MainActor
-    func initData(friendUid: String) async {
-        do {
-            if let userData = try await fetchUserData(uid: friendUid) {
-                self.nickName = userData.nickName
-                self.iconImageURL = URL(string: userData.iconURL ?? "")
-            }
-        } catch {
-            print("Error fetching user data: \(error)")
-        }
-    }
     
     /// フォローしているか判定
     func isFollowFriend(friendUid: String) async {

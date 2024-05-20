@@ -3,8 +3,12 @@ import SwiftUI
 struct CockPostView: View {
     // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
+    // CockCardに渡すUserFriendData
+    @State private var userFriendData: UserFriendElement? = nil
+    // CockCardに渡すUserPostElement
+    @State private var userPostData: UserPostElement? = nil
+    
     @ObservedObject var cockPostVM = CockPostViewModel()
-    let cockCardVM = CockCardViewModel()
     // postDetail用のpostデータ
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
@@ -14,7 +18,7 @@ struct CockPostView: View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 List(cockPostVM.postData, id: \.id) { postData in
-                    CockCardView(postData: postData, path: $navigationPath)
+                    CockCardView(postData: postData, userFriendData: userFriendData, userPostData: userPostData, path: $navigationPath)
                         .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
@@ -58,6 +62,7 @@ struct CockPostView: View {
         }
         .onAppear {
             Task {
+                
                 await cockPostVM.fetchPost()
             }
         }

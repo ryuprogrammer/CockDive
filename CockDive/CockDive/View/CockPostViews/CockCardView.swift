@@ -2,12 +2,17 @@ import SwiftUI
 
 struct CockCardView: View {
     let postData: PostElement
+    let userFriendData: UserFriendElement?
+    let userPostData: UserPostElement?
     // 画面表示用のPostData
     @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])
+    // 画面表示用のフォロープロパティ
+    @State private var isFollow: Bool = false
+    // 画面表示用のライクプロパティ
+    @State private var isLike: Bool = false
     
     let maxTextCount = 20
     @State private var cockCardVM = CockCardViewModel()
-    @State private var isLike: Bool = false
     @State private var isLineLimit: Bool = false
     var screenWidth: CGFloat {
         #if DEBUG
@@ -25,7 +30,9 @@ struct CockCardView: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: cockCardVM.iconImageURL) { image in
+                let iconImageURL = URL(string: postData.postUserIconImageURL ?? "")
+                
+                AsyncImage(url: iconImageURL) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -39,7 +46,7 @@ struct CockCardView: View {
                         .frame(width: screenWidth / 10, height: screenWidth / 10)
                 }
                 
-                Text("\(String(describing: cockCardVM.nickName))さん")
+                Text("\(postData.postUserNickName ?? "ニックネーム")さん")
                 
                 Menu {
                     Button(action: {
@@ -141,10 +148,14 @@ struct CockCardView: View {
             Divider()
         }
         .onAppear {
-            Task {
-                await cockCardVM.initData(friendUid: postData.uid)
-                await cockCardVM.isFollowFriend(friendUid: postData.uid)
-            }
+            // dbからフォロー、ライクを取得
+            
+        }
+        .onChange(of: isFollow) { _ in
+            
+        }
+        .onChange(of: isLike) { _ in
+            
         }
     }
 }
