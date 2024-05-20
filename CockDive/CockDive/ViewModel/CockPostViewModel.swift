@@ -38,7 +38,6 @@ class CockPostViewModel: ObservableObject {
     func fetchPost() async {
         let data = await postDataModel.fetchPostData()
         DispatchQueue.main.async {
-            print("data: \(data)")
             self.postData = data
         }
     }
