@@ -62,7 +62,8 @@ struct CockPostView: View {
         }
         .onAppear {
             Task {
-                
+                userFriendData = await cockPostVM.fetchUserFriendElement()
+                userPostData = await cockPostVM.fetchUserPostElement()
                 await cockPostVM.fetchPost()
             }
         }
