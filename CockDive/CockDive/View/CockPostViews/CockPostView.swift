@@ -13,18 +13,53 @@ struct CockPostView: View {
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     @State private var navigationPath: [PostElement] = []
+    // PostDataのリロードを許可
+    @State private var canLoadPost: Bool = false
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
-                List(cockPostVM.postData, id: \.id) { postData in
-                    let isFollow = cockPostVM.checkIsFollow(userFriendData: userFriendData, friendUid: postData.uid)
-                    let isLike = cockPostVM.checkIsLike(userPostData: userPostData, postId: postData.uid)
-                    
-                    CockCardView(postData: postData, isFollow: isFollow, isLike: isLike, path: $navigationPath)
-                        .listRowSeparator(.hidden)
+                ScrollViewReader { proxy in
+                    List {
+                        ForEach(cockPostVM.postData, id: \.id) { postData in
+                            let isFollow = cockPostVM.checkIsFollow(userFriendData: userFriendData, friendUid: postData.uid)
+                            let isLike = cockPostVM.checkIsLike(postData: postData)
+                            
+                            CockCardView(postData: postData, isFollow: isFollow, isLike: isLike, path: $navigationPath)
+                                .listRowSeparator(.hidden)
+                        }
+                    }
+                    .background(
+                        GeometryReader { proxy -> Color in
+                            DispatchQueue.main.async {
+                                let maxY = proxy.frame(in: .global).maxY
+                                let threshold = UIScreen.main.bounds.height
+                                if maxY < threshold {
+                                    print("下まで到達！！！！！！！！！")
+                                    if canLoadPost {
+                                        print("リローーーーーーーーど！！")
+                                        Task {
+                                            await cockPostVM.fetchMorePostIds()
+                                        }
+                                        canLoadPost = false
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            canLoadPost = true
+                                        }
+                                    } else {
+                                        print("到達したけどロードできない。。。。。。。")
+                                    }
+                                }
+                            }
+                            return Color.clear
+                        }
+                    )
+                    .listStyle(.plain)
+//                    .onChange(of: cockPostVM.postData) { _ in
+//                        if let lastPost = cockPostVM.postData.last {
+//                            proxy.scrollTo(lastPost.id, anchor: .bottom)
+//                        }
+//                    }
                 }
-                .listStyle(.plain)
                 
                 Button(action: {
                     isShowSheet = true
@@ -35,7 +70,7 @@ struct CockPostView: View {
                         .padding()
                         .frame(width: 65, height: 65)
                         .foregroundStyle(Color.white)
-                        .background(Color("main"))
+                        .background(Color.mainColor)
                         .clipShape(Circle())
                 })
                 .frame(
@@ -46,7 +81,7 @@ struct CockPostView: View {
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color("main"), for: .navigationBar)
+            .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -67,8 +102,12 @@ struct CockPostView: View {
             Task {
                 userFriendData = await cockPostVM.fetchUserFriendElement()
                 userPostData = await cockPostVM.fetchUserPostElement()
-                await cockPostVM.fetchPost()
+                await cockPostVM.fetchPostIds()
             }
+        }
+        .onChange(of: cockPostVM.postIds) { postIds in
+            // postIdを使用して、Postをリッスン開始
+            cockPostVM.listenToPosts(postIds: postIds)
         }
     }
 }

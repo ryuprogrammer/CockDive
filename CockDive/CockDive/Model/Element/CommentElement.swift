@@ -6,8 +6,8 @@ struct CommentElement: Codable, Equatable, Hashable {
     var uid: String
     /// ニックネーム
     var commentUserNickName: String?
-    /// コメントしたユーザーのiconURL
-    var commentUserIconURL: String?
+    /// コメントしたユーザーのicon
+    var commentUserIcon: Data?
     /// コメント内容
     var comment: String
     /// 投稿日

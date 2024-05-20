@@ -14,10 +14,10 @@ struct PostCommentView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            // アイコン写真のURL
-            let imageURL = URL(string: comment.commentUserIconURL ?? "")
-            AsyncImage(url: imageURL) { image in
-                image
+            // アイコン写真
+            if let data = comment.commentUserIcon,
+               let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(
@@ -25,7 +25,7 @@ struct PostCommentView: View {
                         height: (window?.screen.bounds.width ?? 50) / 10
                     )
                     .clipShape(Circle())
-            } placeholder: {
+            } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

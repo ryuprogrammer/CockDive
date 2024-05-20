@@ -4,7 +4,10 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class CockPostViewModel: ObservableObject {
+    // Viewで使用するPostData
     @Published var postData: [PostElement] = []
+    // PostDataを取得するためのId
+    @Published var postIds: [String] = []
     let userDataModel = UserDataModel()
     var postDataModel = PostDataModel()
     let userFriendDataModel = UserFriendModel()
@@ -34,11 +37,20 @@ class CockPostViewModel: ObservableObject {
     }
     
     // MARK: - データ取得
-    /// Postを取得
-    func fetchPost() async {
-        let data = await postDataModel.fetchPostData()
+    /// PostIdを取得
+    func fetchPostIds() async {
+        let ids = await postDataModel.fetchPostIdData()
         DispatchQueue.main.async {
-            self.postData = data
+            self.postIds = ids
+        }
+    }
+    
+    /// 最後に取得したDocmentIdを基準にさらにPostIdを取得
+    func fetchMorePostIds() async {
+        let lastDocumentId = postIds.last
+        let morePostIds: [String] = await postDataModel.fetchMorePostIdData(lastDocumentId: lastDocumentId)
+        DispatchQueue.main.async {
+            self.postIds.append(contentsOf: morePostIds)
         }
     }
     
@@ -47,7 +59,7 @@ class CockPostViewModel: ObservableObject {
         return postDataModel.fetchUid() ?? ""
     }
     
-    /// userDate取得
+    /// userData取得
     func fetchUserData() async -> UserElement? {
         let uid = fetchUid()
         return await userDataModel.fetchUserData(uid: uid)
@@ -66,7 +78,7 @@ class CockPostViewModel: ObservableObject {
     }
     
     // MARK: - データのリッスン
-    /// 複数のPostをリアルタイムでリッスン
+    /// 複数のPostをリアルタイムでリッスン→onChangeで使用
     func listenToPosts(postIds: [String]) {
         // 既存のリスナーを削除
         stopListeningToPosts()
@@ -74,7 +86,7 @@ class CockPostViewModel: ObservableObject {
         // 新しいリスナーを設定
         postListeners = postDataModel.listenToPostsData(postIds: postIds) { [weak self] postsData in
             DispatchQueue.main.async {
-                self?.postData = postsData
+                self?.postData.append(contentsOf: postsData)
             }
         }
     }
@@ -98,9 +110,9 @@ class CockPostViewModel: ObservableObject {
     }
     
     /// ライクしているか判定
-    func checkIsLike(userPostData: UserPostElement?, postId: String) -> Bool {
-        guard let userPostData else { return false }
-        if userPostData.likePost.contains(postId) {
+    func checkIsLike(postData: PostElement) -> Bool {
+        let uid = fetchUid()
+        if postData.likedUser.contains(uid) {
             return true
         } else {
             return false

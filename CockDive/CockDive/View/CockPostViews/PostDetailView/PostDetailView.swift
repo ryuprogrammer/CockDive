@@ -19,10 +19,10 @@ struct PostDetailView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        let imageURL = URL(string: showPostData.postUserIconImageURL ?? "")
-                        
-                        AsyncImage(url: imageURL) { image in
-                            image
+                        // アイコン写真
+                        if let data = showPostData.postUserIconImage,
+                           let uiImage = UIImage(data: data) {
+                            Image(uiImage: uiImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(
@@ -30,15 +30,15 @@ struct PostDetailView: View {
                                     height: (window?.screen.bounds.width ?? 50) / 10
                                 )
                                 .clipShape(Circle())
-                        } placeholder: {
+                        } else {
                             Image(systemName: "person.circle.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .foregroundStyle(Color.gray)
                                 .frame(
                                     width: (window?.screen.bounds.width ?? 50) / 12,
                                     height: (window?.screen.bounds.width ?? 50) / 10
                                 )
+                                .clipShape(Circle())
                         }
                         
                         VStack(alignment: .leading) {
@@ -112,7 +112,7 @@ struct PostDetailView: View {
                                 let newComment: CommentElement = CommentElement(
                                     uid: userData.id ?? "",
                                     commentUserNickName: userData.nickName,
-                                    commentUserIconURL: userData.iconURL,
+                                    commentUserIcon: userData.iconImage,
                                     comment: comment,
                                     createAt: Date()
                                 )

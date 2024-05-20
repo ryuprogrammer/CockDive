@@ -34,15 +34,15 @@ struct CockCardView: View {
     var body: some View {
         VStack {
             HStack {
-                let iconImageURL = URL(string: postData.postUserIconImageURL ?? "")
-                
-                AsyncImage(url: iconImageURL) { image in
-                    image
+                // アイコン画像
+                if let data = showPostData.postUserIconImage,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.gray)
                         .frame(width: screenWidth / 10, height: screenWidth / 10)
-                        .clipShape(Circle())
-                } placeholder: {
+                } else {
                     Image(systemName: "person.circle.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -106,16 +106,18 @@ struct CockCardView: View {
                 .disabled(isFollowButtonDisabled)
             }
             
-            let imageURL = URL(string: showPostData.postImageURL ?? "")
-            
-            AsyncImage(url: imageURL) { image in
-                image
+            // 写真
+            if let data = showPostData.postImage,
+               let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
-            } placeholder: {
-                ProgressView()
+            } else {
+                Image(systemName: "birthday.cake")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
             }
