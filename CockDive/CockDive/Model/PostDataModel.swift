@@ -127,6 +127,52 @@ struct PostDataModel {
         return postData
     }
     
+    /// PostIdを件数指定して取得
+    func fetchPostIdData() async -> [String] {
+        let docRef = db.collection(postDataCollection)
+            .order(by: "createAt", descending: true)
+            .limit(to: fetchPostLimit)
+        var postIds: [String] = []
+        
+        do {
+            let querySnapshot = try await docRef.getDocuments()
+            for document in querySnapshot.documents {
+                postIds.append(document.documentID)
+            }
+        } catch {
+            print("Error getting documents: \(error)")
+        }
+        
+        return postIds
+    }
+    
+    /// 最後に取得したドキュメントIDを基準にさらにPostIdを取得
+    func fetchMorePostIdData(lastDocumentId: String?) async -> [String] {
+        var docRef = db.collection(postDataCollection)
+            .order(by: "createAt", descending: true)
+            .limit(to: fetchPostLimit)
+        
+        if let lastDocumentId = lastDocumentId {
+            let lastDocumentSnapshot = try? await db.collection(postDataCollection).document(lastDocumentId).getDocument()
+            if let lastDocument = lastDocumentSnapshot, lastDocument.exists {
+                docRef = docRef.start(afterDocument: lastDocument)
+            }
+        }
+        
+        var postIds: [String] = []
+        
+        do {
+            let querySnapshot = try await docRef.getDocuments()
+            for document in querySnapshot.documents {
+                postIds.append(document.documentID)
+            }
+        } catch {
+            print("Error getting documents: \(error)")
+        }
+        
+        return postIds
+    }
+    
     /// Postを取得（Uid/ 件数指定）
     func fetchPostFromUid(uid: String) async -> [PostElement] {
         let docRef = db.collection(postDataCollection)
@@ -166,7 +212,7 @@ struct PostDataModel {
         }
         return nil
     }
-
+    
     // MARK: - データのリッスン
     /// 複数のpostIdを指定してPostデータをリアルタイムでリッスンし、ListenerRegistrationのリストを返す
     func listenToPostsData(postIds: [String], completion: @escaping ([PostElement]) -> Void) -> [ListenerRegistration] {
