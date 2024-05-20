@@ -81,7 +81,7 @@ struct PostDetailView: View {
                 }
                 .padding()
                 
-                ForEach(showPostData.comment, id: \.id) { comment in
+                ForEach(showPostData.comment.reversed(), id: \.id) { comment in
                     PostCommentView(comment: comment) {
                         Task {
                             // ブロック
@@ -93,9 +93,11 @@ struct PostDetailView: View {
                             await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
-                    
                 }
                 .padding(.horizontal)
+                
+                Spacer()
+                    .frame(height: 300)
             }
             
             VStack {

@@ -147,6 +147,7 @@ struct CockCardView: View {
             Divider()
         }
         .onAppear {
+            showPostData = postData
             showIsFollow = isFollow
             showIsLike = isLike
         }
