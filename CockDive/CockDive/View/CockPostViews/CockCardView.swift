@@ -2,14 +2,14 @@ import SwiftUI
 
 struct CockCardView: View {
     let postData: PostElement
-    let userFriendData: UserFriendElement?
-    let userPostData: UserPostElement?
+    let isFollow: Bool
+    let isLike: Bool
     // 画面表示用のPostData
     @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])
     // 画面表示用のフォロープロパティ
-    @State private var isFollow: Bool = false
+    @State private var showIsFollow: Bool = false
     // 画面表示用のライクプロパティ
-    @State private var isLike: Bool = false
+    @State private var showIsLike: Bool = false
     
     let maxTextCount = 20
     @State private var cockCardVM = CockCardViewModel()
@@ -46,7 +46,7 @@ struct CockCardView: View {
                         .frame(width: screenWidth / 10, height: screenWidth / 10)
                 }
                 
-                Text("\(postData.postUserNickName ?? "ニックネーム")さん")
+                Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
                 
                 Menu {
                     Button(action: {
@@ -80,17 +80,18 @@ struct CockCardView: View {
                 
                 Spacer()
                 
-                if !cockCardVM.isFollow {
+                if !showIsFollow {
                     StrokeButton(text: "フォロー", size: .small) {
-                        Task {
-                            /// フォロー
-                            await cockCardVM.followUser(friendUid: postData.uid)
-                        }
+                        showIsFollow = true
+                    }
+                } else {
+                    StrokeButton(text: "フォロー中", size: .small) {
+                        showIsFollow = false
                     }
                 }
             }
             
-            let imageURL = URL(string: postData.postImageURL ?? "")
+            let imageURL = URL(string: showPostData.postImageURL ?? "")
             
             AsyncImage(url: imageURL) { image in
                 image
@@ -105,7 +106,7 @@ struct CockCardView: View {
             }
             
             HStack(alignment: .top, spacing: 20) {
-                Text(postData.title)
+                Text(showPostData.title)
                     .font(.title)
                 
                 Spacer()
@@ -115,47 +116,54 @@ struct CockCardView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30)
-                        .foregroundStyle(Color.pink)
+                        .foregroundStyle(Color.black)
                         .onTapGesture {
                             path.append(postData)
                         }
                     
-                    Text(String(postData.likeCount))
+                    Text(String(showPostData.comment.count))
                         .font(.footnote)
                 }
                 
                 VStack(spacing: 1) {
-                    Image(systemName: postData.likedUser.contains("") ? "heart" : "heart.fill")
+                    Image(systemName: showIsLike ? "heart.fill" : "heart")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30)
                         .foregroundStyle(Color.pink)
                         .onTapGesture {
-                            Task {
-                                await cockCardVM.likePost(post: postData)
-                            }
+                            showIsLike.toggle()
                         }
                     
-                    Text(String(postData.likeCount))
+                    Text(String(showPostData.likeCount))
                         .font(.footnote)
                 }
             }
             
-            if let memo = postData.memo {
+            if let memo = showPostData.memo {
                 DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
             }
             
             Divider()
         }
         .onAppear {
-            // dbからフォロー、ライクを取得
-            
+            showIsFollow = isFollow
+            showIsLike = isLike
         }
-        .onChange(of: isFollow) { _ in
-            
+        .onChange(of: showIsFollow) { _ in
+            Task {
+                await cockCardVM.followUser(friendUid: postData.uid)
+            }
         }
-        .onChange(of: isLike) { _ in
-            
+        .onChange(of: showIsLike) { _ in
+            if showIsLike {
+                showPostData.likeCount += 1
+            } else {
+                showPostData.likeCount -= 1
+            }
+            Task {
+                await cockCardVM.likePost(post: postData)
+            }
         }
     }
 }

@@ -61,4 +61,26 @@ class CockPostViewModel: ObservableObject {
         let uid = fetchUid()
         return await userPostDataModel.fetchUserPostData(uid: uid)
     }
+    
+    // MARK: - その他
+    /// フォローしているか判定
+    func checkIsFollow(userFriendData: UserFriendElement?, friendUid: String) -> Bool {
+        guard let userFriendData else { return false }
+        
+        if userFriendData.follow.contains(friendUid) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// ライクしているか判定
+    func checkIsLike(userPostData: UserPostElement?, postId: String) -> Bool {
+        guard let userPostData else { return false }
+        if userPostData.likePost.contains(postId) {
+            return true
+        } else {
+            return false
+        }
+    }
 }

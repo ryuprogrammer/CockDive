@@ -12,18 +12,6 @@ class CockCardViewModel: ObservableObject {
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
     
-    /// フォローしているか判定
-    func isFollowFriend(friendUid: String) async {
-        guard let uid = userDataModel.fetchUid() else { return }
-        if let userFriendData = await  userFriendModel.fetchUserFriendData(uid: uid) {
-            if userFriendData.follow.contains(friendUid) {
-                DispatchQueue.main.async {
-                    self.isFollow = true
-                }
-            }
-        }
-    }
-    
     /// uidからUserData取得
     func fetchUserData(uid: String) async throws -> UserElement? {
         return await userDataModel.fetchUserData(uid: uid)

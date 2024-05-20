@@ -195,9 +195,7 @@ struct PostDetailView: View {
             /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
             /// コメントの追加、削除を一括で行う。
             /// 画面更新するのは一瞬で行いたいため。
-            if showPostData.comment != postData.comment {
-                postDetailVM.updateComment(post: postData, comments: showPostData.comment)
-            }
+            postDetailVM.updateComment(post: postData, comments: showPostData.comment)
         }
     }
 }

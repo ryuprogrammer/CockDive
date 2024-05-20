@@ -18,7 +18,10 @@ struct CockPostView: View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 List(cockPostVM.postData, id: \.id) { postData in
-                    CockCardView(postData: postData, userFriendData: userFriendData, userPostData: userPostData, path: $navigationPath)
+                    let isFollow = cockPostVM.checkIsFollow(userFriendData: userFriendData, friendUid: postData.uid)
+                    let isLike = cockPostVM.checkIsLike(userPostData: userPostData, postId: postData.uid)
+                    
+                    CockCardView(postData: postData, isFollow: isFollow, isLike: isLike, path: $navigationPath)
                         .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
