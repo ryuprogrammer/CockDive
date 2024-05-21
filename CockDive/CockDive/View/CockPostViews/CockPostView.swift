@@ -1,49 +1,49 @@
 import SwiftUI
 
+// SwiftUIのViewにUIKitのUITableViewを組み込む
 struct CockPostView: View {
-    // 投稿追加画面の表示有無
     @State private var isShowSheet: Bool = false
-    // CockCardに渡すUserFriendData
     @State private var userFriendData: UserFriendElement? = nil
-    // CockCardに渡すUserPostElement
     @State private var userPostData: UserPostElement? = nil
     
     @ObservedObject var cockPostVM = CockPostViewModel()
-    // postDetail用のpostデータ
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
-    // PostDataのリロードを許可
     @State private var canLoadPost: Bool = false
+    
+    // LastPostを保持
+    @State var lastPost: PostElement?
     
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
-                List {
-                    ForEach(cockPostVM.postsData, id: \.id) { postData in
-                        CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
-                            .onAppear {
-                                print("レンダリング: \(postData.id ?? "")")
-                                //                                if cockPostVM.checkIsLastPost(postData: postData) {
-                                //                                    Task {
-                                //                                        await cockPostVM.fetchMorePosts()
-                                //                                    }
-                                //                                }
-                            }
-                            .overlay(
-                                GeometryReader { geo -> AnyView in
-                                    DispatchQueue.main.async {
-                                        if geo.frame(in: .global).minY < CGFloat.zero {
-                                            print("postDataが見えなくなった: \(postData.title)")
+                ScrollViewReader { reader in
+                    List {
+                        ForEach(cockPostVM.postsData, id: \.id) { postData in
+                            CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
+                                .id(postData.id)
+                                .onAppear {
+                                    print("レンダリング: \(postData.id ?? "")")
+                                    if cockPostVM.checkIsLastPost(postData: postData) {
+                                        print("最後のポスト表示: onAppear")
+                                        // 最新のポストの最後を保持
+                                        lastPost = postData
+                                        Task {
+                                            await cockPostVM.fetchMorePosts()
                                         }
                                     }
-                                    return AnyView(EmptyView())
                                 }
-                            )
-                            .listRowSeparator(.hidden)
+                        }
+                    }
+                    .listStyle(.plain)
+                    .onChange(of: cockPostVM.postsData) { _ in
+                        if let post = lastPost {
+                            print("スクローーーーーーーーーーーーーる")
+                            reader.scrollTo(post.id)
+                        }
                     }
                 }
-                .listStyle(.plain)
                 
                 Button(action: {
                     isShowSheet = true

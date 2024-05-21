@@ -7,7 +7,7 @@ struct PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "posts"
     /// Postを取得するリミット
-    private let fetchPostLimit: Int = 5
+    private let fetchPostLimit: Int = 8
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
     
@@ -128,7 +128,7 @@ struct PostDataModel {
     }
     
     /// 最後に取得したドキュメントIDを基準にさらにPostIdを取得
-    func fetchMorePostData(lastDocumentId: String?) async -> [PostElement] {
+    func fetchMorePostData(lastDocumentId: String?, completion: @escaping (Result<[PostElement], Error>) -> Void) async {
         var docRef = db.collection(postDataCollection)
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
@@ -148,11 +148,11 @@ struct PostDataModel {
                 let decodedUserData = try document.data(as: PostElement.self)
                 posts.append(decodedUserData)
             }
+            completion(.success(posts))  // 成功時にデータをコールバック
         } catch {
+            completion(.failure(error))  // エラー時にエラーをコールバック
             print("Error getting documents: \(error)")
         }
-        
-        return posts
     }
     
     /// Postを取得（Uid/ 件数指定）

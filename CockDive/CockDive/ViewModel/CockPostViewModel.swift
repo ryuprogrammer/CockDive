@@ -6,13 +6,24 @@ import FirebaseStorage
 class CockPostViewModel: ObservableObject {
     // PostDataを取得
     @Published var postsData: [PostElement] = []
+    
+    // ロードステータス
+    private var loadStatus: LoadStatus = .initial
     let userDataModel = UserDataModel()
     var postDataModel = PostDataModel()
     let userFriendDataModel = UserFriendModel()
     let userPostDataModel = UserPostDataModel()
     
     private var postListeners: [ListenerRegistration] = []
-
+    
+    // ロードステータス
+    private enum LoadStatus {
+        case initial
+        case loading
+        case completion
+        case error
+    }
+    
     // MARK: - データ追加
     /// Like
     func likePost(post: PostElement) async {
@@ -45,12 +56,26 @@ class CockPostViewModel: ObservableObject {
     
     /// 最後に取得したDocmentIdを基準にさらにPostIdを取得
     func fetchMorePosts() async {
+        // .loadingの時以外、処理を実行する
+        guard self.loadStatus != .loading else { return }
+        // ロード開始のステータスに変更
+        self.loadStatus = .loading
+        
         let lastDocumentId = postsData.last?.id ?? ""
-        let morePosts: [PostElement] = await postDataModel.fetchMorePostData(lastDocumentId: lastDocumentId)
-        DispatchQueue.main.async {
-            self.postsData.append(contentsOf: morePosts)
-            print("新しく取得したデータ数: \(morePosts.count)")
-            print("全ての投稿数: \(self.postsData.count)")
+        await postDataModel.fetchMorePostData(lastDocumentId: lastDocumentId) { result in
+            switch result {
+            case .success(let posts):
+                // データの取得が成功した場合の処理
+                DispatchQueue.main.async {
+                    self.postsData.append(contentsOf: posts)
+                    print("新しく取得したデータ数: \(posts.count)")
+                    print("全ての投稿数: \(self.postsData.count)")
+                }
+                self.loadStatus = .completion
+            case .failure(let error):
+                // エラーが発生した場合の処理
+                self.loadStatus = .error
+            }
         }
     }
     

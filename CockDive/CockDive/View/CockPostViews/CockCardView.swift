@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CockCardView: View {
-    @State var postData: PostElement
+    let postData: PostElement
     let friendData: UserFriendElement?
     // 画面表示用のフォロープロパティ
     @State private var showIsFollow: Bool = false
@@ -38,13 +38,13 @@ struct CockCardView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(Color.gray)
-                        .frame(width: screenWidth / 10, height: screenWidth / 10)
+                        .frame(width: screenWidth / 12, height: screenWidth / 12)
                 } else {
                     Image(systemName: "person.circle.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(Color.gray)
-                        .frame(width: screenWidth / 10, height: screenWidth / 10)
+                        .frame(width: screenWidth / 12, height: screenWidth / 12)
                 }
                 
                 Text("\(cockCardVM.showPostData?.postUserNickName ?? "ニックネーム")さん")
@@ -86,27 +86,25 @@ struct CockCardView: View {
                 Spacer()
                 
                 // フォローボタン
-                Button {
-                    if isFollowButtonDisabled {
-                        return
-                    }
-                    
-                    showIsFollow.toggle()
-                    
-                    Task {
-                        if let uid = cockCardVM.showPostData?.uid {
-                            await cockCardVM.followUser(friendUid: uid)
+                StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
+                    .onTapGesture {
+                        if isFollowButtonDisabled {
+                            return
+                        }
+                        
+                        showIsFollow.toggle()
+                        
+                        Task {
+                            if let uid = cockCardVM.showPostData?.uid {
+                                await cockCardVM.followUser(friendUid: uid)
+                            }
+                        }
+                        
+                        isFollowButtonDisabled = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isFollowButtonDisabled = false
                         }
                     }
-                    
-                    isFollowButtonDisabled = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        isFollowButtonDisabled = false
-                    }
-                } label: {
-                    StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
-                }
-                .disabled(isFollowButtonDisabled)
             }
             
             // 写真
@@ -116,13 +114,17 @@ struct CockCardView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
+                    .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .padding(.bottom)
             } else {
                 Image(systemName: "birthday.cake")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
+                    .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .padding(.bottom)
             }
             
             HStack(alignment: .top, spacing: 20) {
@@ -187,9 +189,6 @@ struct CockCardView: View {
             if let memo = cockCardVM.showPostData?.memo {
                 DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
             }
-            
-            Divider()
-                .frame(height: 1)
         }
         .onAppear {
             // データの初期化
