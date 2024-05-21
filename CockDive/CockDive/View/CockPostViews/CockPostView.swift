@@ -25,21 +25,19 @@ struct CockPostView: View {
                             columns: [GridItem(.flexible())]
                         ) {
                             CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
-                                .background(Color.clear)
                                 .onAppear {
-                                    print("レンダリング: \(String(describing: postData.id))")
-                                    
-                                    if cockPostVM.postsData.last?.id == postData.id {
-                                        print("最後がレンダリング")
-                                        print("更新")
+                                    print("レンダリング: \(postData.id ?? "")")
+                                    if cockPostVM.checkIsLastPost(postData: postData) {
                                         Task {
-                                            await cockPostVM.fetchMorePostIds()
+                                            await cockPostVM.fetchMorePosts()
                                         }
                                     }
                                 }
                         }
+                        .listRowSeparator(.hidden)
                     }
                 }
+                .listStyle(.plain)
                 
                 Button(action: {
                     isShowSheet = true
@@ -108,3 +106,4 @@ enum CockCardNavigationPath: Hashable {
         )
     )
 }
+

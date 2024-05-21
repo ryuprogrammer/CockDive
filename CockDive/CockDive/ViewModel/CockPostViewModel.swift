@@ -82,4 +82,13 @@ class CockPostViewModel: ObservableObject {
         postListeners.forEach { $0.remove() }
         postListeners.removeAll()
     }
+    
+    // MARK: - その他
+    /// 表示されたPostが最後か判定
+    func checkIsLastPost(postData: PostElement) -> Bool {
+        if postData.id == postsData.last?.id {
+            return true
+        }
+        return false
+    }
 }

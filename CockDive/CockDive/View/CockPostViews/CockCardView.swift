@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CockCardView: View {
-    let postData: PostElement
+    @State var postData: PostElement
     let friendData: UserFriendElement?
     // 画面表示用のフォロープロパティ
     @State private var showIsFollow: Bool = false
@@ -189,6 +189,7 @@ struct CockCardView: View {
             }
             
             Divider()
+                .frame(height: 1)
         }
         .onAppear {
             // データの初期化
