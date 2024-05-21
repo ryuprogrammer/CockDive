@@ -4,8 +4,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class CockPostViewModel: ObservableObject {
-    // PostDataを取得するためのId: 追加する分のみ
-    @Published var postIds: [String] = []
+    // PostDataを取得
+    @Published var postsData: [PostElement] = []
     let userDataModel = UserDataModel()
     var postDataModel = PostDataModel()
     let userFriendDataModel = UserFriendModel()
@@ -35,21 +35,22 @@ class CockPostViewModel: ObservableObject {
     }
     
     // MARK: - データ取得
-    /// PostIdを取得
-    func fetchPostIds() async {
-        let ids = await postDataModel.fetchPostIdData()
+    /// Postを複数取得
+    func fetchPosts() async {
+        let datas = await postDataModel.fetchPostIdData()
         DispatchQueue.main.async {
-            self.postIds = ids
+            self.postsData = datas
         }
     }
     
     /// 最後に取得したDocmentIdを基準にさらにPostIdを取得
-    func fetchMorePostIds() async {
-        let lastDocumentId = postIds.last
-        let morePostIds: [String] = await postDataModel.fetchMorePostIdData(lastDocumentId: lastDocumentId)
+    func fetchMorePosts() async {
+        let lastDocumentId = postsData.last?.id ?? ""
+        let morePosts: [PostElement] = await postDataModel.fetchMorePostData(lastDocumentId: lastDocumentId)
         DispatchQueue.main.async {
-            self.postIds.append(contentsOf: morePostIds)
-            print("新しく取得したデータ数: \(morePostIds.count)")
+            self.postsData.append(contentsOf: morePosts)
+            print("新しく取得したデータ数: \(morePosts.count)")
+            print("全ての投稿数: \(self.postsData.count)")
         }
     }
     

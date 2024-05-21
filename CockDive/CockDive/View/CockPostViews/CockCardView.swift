@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CockCardView: View {
-    let postId: String
+    let postData: PostElement
     let friendData: UserFriendElement?
     // 画面表示用のフォロープロパティ
     @State private var showIsFollow: Bool = false
@@ -13,7 +13,7 @@ struct CockCardView: View {
     @State private var isFollowButtonDisabled: Bool = false
     
     let maxTextCount = 20
-    @State private var cockCardVM = CockCardViewModel()
+    @ObservedObject private var cockCardVM = CockCardViewModel()
     @State private var isLineLimit: Bool = false
     var screenWidth: CGFloat {
 #if DEBUG
@@ -26,7 +26,7 @@ struct CockCardView: View {
 #endif
     }
     
-    @Binding var path: [PostElement]
+    @Binding var path: [CockCardNavigationPath]
     
     var body: some View {
         VStack {
@@ -139,7 +139,7 @@ struct CockCardView: View {
                         .foregroundStyle(Color.black)
                         .onTapGesture {
                             if let postData = cockCardVM.showPostData {
-                                path.append(postData)
+                                path.append(.detailView(postData: postData))
                             }
                         }
                     
@@ -191,8 +191,12 @@ struct CockCardView: View {
             Divider()
         }
         .onAppear {
-            // Postデータをリッスン開始
-            cockCardVM.listenToPost(postId: postId)
+            // データの初期化
+            cockCardVM.showPostData = postData
+            if let id = postData.id {
+                // Postデータをリッスン開始
+                cockCardVM.listenToPost(postId: id)
+            }
         }
         .onChange(of: cockCardVM.showPostData) { newPostData in
             // フォローとライクを更新
@@ -200,11 +204,6 @@ struct CockCardView: View {
                 showIsFollow = cockCardVM.checkIsFollow(userFriendData: friendData, friendUid: postData.uid)
                 showIsLike = cockCardVM.checkIsLike(postData: postData)
             }
-        }
-        .onDisappear {
-            // Postのリッスン終了
-            cockCardVM.stopListeningToPosts()
-            print("CockCardView: Postリッスン終了")
         }
     }
 }
@@ -221,9 +220,9 @@ struct CockCardView: View {
             block: [],
             blockedByFriend: []
         )
-        @State var path: [PostElement] = []
+        @State var path: [CockCardNavigationPath] = []
         var body: some View {
-            CockCardView(postId: postData.id ?? "", friendData: userFriendData, path: $path)
+            CockCardView(postData: postData, friendData: userFriendData, path: $path)
         }
     }
     return PreviewView()

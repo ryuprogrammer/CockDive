@@ -12,24 +12,24 @@ struct CockPostView: View {
     // postDetail用のpostデータ
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
-    @State private var navigationPath: [PostElement] = []
+    @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
     // PostDataのリロードを許可
     @State private var canLoadPost: Bool = false
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
                 List {
-                    ForEach(cockPostVM.postIds, id: \.id) { postId in
+                    ForEach(cockPostVM.postsData, id: \.id) { postData in
                         LazyVGrid(
                             columns: [GridItem(.flexible())]
                         ) {
-                            CockCardView(postId: postId, friendData: userFriendData, path: $navigationPath)
+                            CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
                                 .background(Color.clear)
                                 .onAppear {
-                                    print("レンダリング: \(String(describing: postId))")
+                                    print("レンダリング: \(String(describing: postData.id))")
                                     
-                                    if cockPostVM.postIds.last == postId {
+                                    if cockPostVM.postsData.last?.id == postData.id {
                                         print("最後がレンダリング")
                                         print("更新")
                                         Task {
@@ -71,8 +71,11 @@ struct CockPostView: View {
                         .font(.title3)
                 }
             }
-            .navigationDestination(for: PostElement.self) { postData in
-                PostDetailView(postData: postData)
+            .navigationDestination(for: CockCardNavigationPath.self) { pathData in
+                switch pathData {
+                case .detailView(let postData):
+                    PostDetailView(postData: postData)
+                }
             }
         }
         .sheet(isPresented: $isShowSheet) {
@@ -82,15 +85,14 @@ struct CockPostView: View {
             Task {
                 userFriendData = await cockPostVM.fetchUserFriendElement()
                 userPostData = await cockPostVM.fetchUserPostElement()
-                await cockPostVM.fetchPostIds()
+                await cockPostVM.fetchPosts()
             }
         }
-        .onChange(of: cockPostVM.postIds) { postIds in
-            print("投稿数\(cockPostVM.postData.count)")
-            // postIdを使用して、Postをリッスン開始
-            cockPostVM.listenToPosts(postIds: postIds)
-        }
     }
+}
+
+enum CockCardNavigationPath: Hashable {
+    case detailView(postData: PostElement)
 }
 
 #Preview {

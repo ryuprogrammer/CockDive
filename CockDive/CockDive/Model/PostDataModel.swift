@@ -108,26 +108,27 @@ struct PostDataModel {
     }
     
     /// PostIdを件数指定して取得
-    func fetchPostIdData() async -> [String] {
+    func fetchPostIdData() async -> [PostElement] {
         let docRef = db.collection(postDataCollection)
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
-        var postIds: [String] = []
+        var posts: [PostElement] = []
         
         do {
             let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
-                postIds.append(document.documentID)
+                let decodedUserData = try document.data(as: PostElement.self)
+                posts.append(decodedUserData)
             }
         } catch {
             print("Error getting documents: \(error)")
         }
         
-        return postIds
+        return posts
     }
     
     /// 最後に取得したドキュメントIDを基準にさらにPostIdを取得
-    func fetchMorePostIdData(lastDocumentId: String?) async -> [String] {
+    func fetchMorePostData(lastDocumentId: String?) async -> [PostElement] {
         var docRef = db.collection(postDataCollection)
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
@@ -139,18 +140,19 @@ struct PostDataModel {
             }
         }
         
-        var postIds: [String] = []
+        var posts: [PostElement] = []
         
         do {
             let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
-                postIds.append(document.documentID)
+                let decodedUserData = try document.data(as: PostElement.self)
+                posts.append(decodedUserData)
             }
         } catch {
             print("Error getting documents: \(error)")
         }
         
-        return postIds
+        return posts
     }
     
     /// Postを取得（Uid/ 件数指定）
@@ -194,35 +196,6 @@ struct PostDataModel {
     }
     
     // MARK: - データのリッスン
-    /// 複数のpostIdを指定してPostデータをリアルタイムでリッスンし、ListenerRegistrationのリストを返す
-    /// ↓削除したい！！！
-    func listenToPostsData(postIds: [String], completion: @escaping ([PostElement]) -> Void) -> [ListenerRegistration] {
-        var postsData: [PostElement] = []
-        let listeners = postIds.map { postId in
-            db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    completion(postsData)
-                    return
-                }
-                do {
-                    let postData = try document.data(as: PostElement.self)
-                    
-                    if let index = postsData.firstIndex(where: { $0.id == postId }) {
-                        postsData[index] = postData
-                    } else {
-                        postsData.append(postData)
-                    }
-                    completion(postsData)
-                } catch {
-                    print("Error decoding post data: \(error)")
-                    completion(postsData)
-                }
-            }
-        }
-        
-        return listeners
-    }
     
     // TODO: - 5/21の課題。
     // 「みんなのご飯」画面のタイムラインを実装完了←ノルマ
