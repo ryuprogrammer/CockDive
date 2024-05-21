@@ -5,7 +5,7 @@ import FirebaseStorage
 
 class CockPostViewModel: ObservableObject {
     // PostDataを取得
-    @Published var postsData: [PostElement] = []
+    @Published var newPostsData: [PostElement] = []
     
     // ロードステータス
     private var loadStatus: LoadStatus = .initial
@@ -50,7 +50,7 @@ class CockPostViewModel: ObservableObject {
     func fetchPosts() async {
         let datas = await postDataModel.fetchPostIdData()
         DispatchQueue.main.async {
-            self.postsData = datas
+            self.newPostsData = datas
         }
     }
     
@@ -61,15 +61,15 @@ class CockPostViewModel: ObservableObject {
         // ロード開始のステータスに変更
         self.loadStatus = .loading
         
-        let lastDocumentId = postsData.last?.id ?? ""
+        let lastDocumentId = newPostsData.last?.id ?? ""
         await postDataModel.fetchMorePostData(lastDocumentId: lastDocumentId) { result in
             switch result {
             case .success(let posts):
                 // データの取得が成功した場合の処理
                 DispatchQueue.main.async {
-                    self.postsData.append(contentsOf: posts)
+                    self.newPostsData = posts
                     print("新しく取得したデータ数: \(posts.count)")
-                    print("全ての投稿数: \(self.postsData.count)")
+                    print("全ての投稿数: \(self.newPostsData.count)")
                 }
                 self.loadStatus = .completion
             case .failure(let error):
@@ -111,7 +111,7 @@ class CockPostViewModel: ObservableObject {
     // MARK: - その他
     /// 表示されたPostが最後か判定
     func checkIsLastPost(postData: PostElement) -> Bool {
-        if postData.id == postsData.last?.id {
+        if postData.id == newPostsData.last?.id {
             return true
         }
         return false

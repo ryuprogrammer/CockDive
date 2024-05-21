@@ -1,7 +1,7 @@
 import SwiftUI
 
-// SwiftUIのViewにUIKitのUITableViewを組み込む
 struct CockPostView: View {
+    @State private var showPostsData: [PostElement] = []
     @State private var isShowSheet: Bool = false
     @State private var userFriendData: UserFriendElement? = nil
     @State private var userPostData: UserPostElement? = nil
@@ -10,25 +10,19 @@ struct CockPostView: View {
     @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
     
     @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
-    @State private var canLoadPost: Bool = false
     
-    // LastPostを保持
-    @State var lastPost: PostElement?
+    @State private var lastPost: PostElement?
     
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
-                ScrollViewReader { reader in
+                ScrollViewReader { proxy in
                     List {
-                        ForEach(cockPostVM.postsData, id: \.id) { postData in
-                            CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
+                        ForEach(showPostsData, id: \.id) { postData in
+                            CockCardView(showPostData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
                                 .id(postData.id)
                                 .onAppear {
-                                    print("レンダリング: \(postData.id ?? "")")
                                     if cockPostVM.checkIsLastPost(postData: postData) {
-                                        print("最後のポスト表示: onAppear")
-                                        // 最新のポストの最後を保持
-                                        lastPost = postData
                                         Task {
                                             await cockPostVM.fetchMorePosts()
                                         }
@@ -37,10 +31,9 @@ struct CockPostView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .onChange(of: cockPostVM.postsData) { _ in
-                        if let post = lastPost {
-                            print("スクローーーーーーーーーーーーーる")
-                            reader.scrollTo(post.id)
+                    .onChange(of: showPostsData) { _ in
+                        if let lastPost = lastPost {
+                            proxy.scrollTo(lastPost.id, anchor: .bottom)
                         }
                     }
                 }
@@ -57,11 +50,7 @@ struct CockPostView: View {
                         .background(Color.mainColor)
                         .clipShape(Circle())
                 })
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                    alignment: .bottomTrailing
-                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -84,6 +73,10 @@ struct CockPostView: View {
         }
         .sheet(isPresented: $isShowSheet) {
             AddPostView()
+        }
+        .onChange(of: cockPostVM.newPostsData) { newPostData in
+            lastPost = showPostsData.last
+            showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
             Task {
@@ -112,4 +105,3 @@ enum CockCardNavigationPath: Hashable {
         )
     )
 }
-

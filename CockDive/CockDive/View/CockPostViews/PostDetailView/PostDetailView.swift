@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct PostDetailView: View {
+    // TODO: - 詳細画面の画像表示速度向上
+    // TODO: - フォローボタン修正
     let postData: PostElement
     // 画面表示用のPostData
     @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])

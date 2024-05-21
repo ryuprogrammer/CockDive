@@ -2,7 +2,7 @@ import Foundation
 import FirebaseFirestore
 
 class CockCardViewModel: ObservableObject {
-    @Published var showPostData: PostElement? = nil
+    @Published var postData: PostElement? = nil
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
@@ -23,7 +23,7 @@ class CockCardViewModel: ObservableObject {
         // 新しいリスナーを設定
         postListener = postDataModel.listenToPostData(postId: postId) { [weak self] postsData in
             DispatchQueue.main.async {
-                self?.showPostData = postsData
+                self?.postData = postsData
             }
         }
     }
