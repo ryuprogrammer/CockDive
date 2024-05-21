@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		420584832BFC538C005B2397 /* PostTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 420584822BFC538C005B2397 /* PostTableView.storyboard */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
 		422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */; };
@@ -74,6 +75,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		420584822BFC538C005B2397 /* PostTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PostTableView.storyboard; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
 		422C69C62BED1C570012FB8F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				4298D8402BEDA30C005AB08F /* CockPostView.swift */,
+				420584822BFC538C005B2397 /* PostTableView.storyboard */,
 				422C69D82BED1FE10012FB8F /* CockCardView.swift */,
 				4298D8472BEE6C35005AB08F /* AddPostView.swift */,
 				42DB94582BF20AE600ECDD84 /* PostDetailView */,
@@ -411,6 +414,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				420584832BFC538C005B2397 /* PostTableView.storyboard in Resources */,
 				42DB947D2BF323FD00ECDD84 /* GoogleService-Info.plist in Resources */,
 				422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */,
 				422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */,

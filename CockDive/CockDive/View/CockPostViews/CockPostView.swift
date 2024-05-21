@@ -21,20 +21,26 @@ struct CockPostView: View {
             ZStack {
                 List {
                     ForEach(cockPostVM.postsData, id: \.id) { postData in
-                        LazyVGrid(
-                            columns: [GridItem(.flexible())]
-                        ) {
-                            CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
-                                .onAppear {
-                                    print("レンダリング: \(postData.id ?? "")")
-                                    if cockPostVM.checkIsLastPost(postData: postData) {
-                                        Task {
-                                            await cockPostVM.fetchMorePosts()
+                        CockCardView(postData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
+                            .onAppear {
+                                print("レンダリング: \(postData.id ?? "")")
+                                //                                if cockPostVM.checkIsLastPost(postData: postData) {
+                                //                                    Task {
+                                //                                        await cockPostVM.fetchMorePosts()
+                                //                                    }
+                                //                                }
+                            }
+                            .overlay(
+                                GeometryReader { geo -> AnyView in
+                                    DispatchQueue.main.async {
+                                        if geo.frame(in: .global).minY < CGFloat.zero {
+                                            print("postDataが見えなくなった: \(postData.title)")
                                         }
                                     }
+                                    return AnyView(EmptyView())
                                 }
-                        }
-                        .listRowSeparator(.hidden)
+                            )
+                            .listRowSeparator(.hidden)
                     }
                 }
                 .listStyle(.plain)
