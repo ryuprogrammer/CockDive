@@ -19,42 +19,26 @@ struct CockPostView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
-                ScrollViewReader { proxy in
-                    List {
-                        ForEach(cockPostVM.postData, id: \.id) { postData in
-                            let isFollow = cockPostVM.checkIsFollow(userFriendData: userFriendData, friendUid: postData.uid)
-                            let isLike = cockPostVM.checkIsLike(postData: postData)
-                            
-                            CockCardView(postData: postData, isFollow: isFollow, isLike: isLike, path: $navigationPath)
-                                .listRowSeparator(.hidden)
-                        }
-                    }
-                    .background(
-                        GeometryReader { proxy -> Color in
-                            DispatchQueue.main.async {
-                                let maxY = proxy.frame(in: .global).maxY
-                                let threshold = UIScreen.main.bounds.height
-                                if maxY < threshold {
-                                    print("下まで到達！！！！！！！！！")
-                                    if canLoadPost {
-                                        print("リロード前の投稿数: \(cockPostVM.postData.count)")
-                                        print("リローーーーーーーーど！！")
+                List {
+                    ForEach(cockPostVM.postIds, id: \.id) { postId in
+                        LazyVGrid(
+                            columns: [GridItem(.flexible())]
+                        ) {
+                            CockCardView(postId: postId, friendData: userFriendData, path: $navigationPath)
+                                .background(Color.clear)
+                                .onAppear {
+                                    print("レンダリング: \(String(describing: postId))")
+                                    
+                                    if cockPostVM.postIds.last == postId {
+                                        print("最後がレンダリング")
+                                        print("更新")
                                         Task {
                                             await cockPostVM.fetchMorePostIds()
                                         }
-                                        canLoadPost = false
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                            canLoadPost = true
-                                        }
-                                    } else {
-                                        print("到達したけどロードできない。。。。。。。")
                                     }
                                 }
-                            }
-                            return Color.clear
                         }
-                    )
-                    .listStyle(.plain)
+                    }
                 }
                 
                 Button(action: {
@@ -110,5 +94,15 @@ struct CockPostView: View {
 }
 
 #Preview {
-    CockPostView(detailPost: PostElement(uid: "", title: "定食", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: []))
+    CockPostView(
+        detailPost: PostElement(
+            uid: "",
+            title: "定食",
+            isPrivate: false,
+            createAt: Date(),
+            likeCount: 10,
+            likedUser: [],
+            comment: []
+        )
+    )
 }

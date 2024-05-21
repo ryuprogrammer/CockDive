@@ -231,7 +231,7 @@ struct PostDataModel {
     /// 上のメソッドをこれに置き換えたい。
     /// 個々のCockCardViewでリスナーを持つ。
     /// つまり、CockCardViewModelで以下のメソッドを使用。
-    func listenPostsData(postId: String, completion: @escaping (PostElement?) -> Void) -> [ListenerRegistration] {
+    func listenToPostData(postId: String, completion: @escaping (PostElement?) -> Void) -> ListenerRegistration {
         var postData: PostElement?
         let listener = db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
             guard let document = documentSnapshot else {
@@ -249,7 +249,7 @@ struct PostDataModel {
             }
         }
         
-        return listeners
+        return listener
     }
     
     /// リスナーを停止
