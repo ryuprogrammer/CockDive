@@ -2,8 +2,22 @@ import SwiftUI
 
 struct ProfileView: View {
     @State var showUser: UserElement
-    @State var showUserFriends: UserFriendElement
-    @State var showUserPosts: UserPostElement
+
+    // このViewで取得
+    @State private var showUserFriends: UserFriendElement = UserFriendElement(
+        followCount: 0,
+        follow: [],
+        followerCount: 0,
+        follower: [],
+        block: [],
+        blockedByFriend: []
+    )
+    @State private var showUserPosts: UserPostElement = UserPostElement(
+        postCount: 0,
+        posts: [],
+        likePostCount: 0,
+        likePost: []
+    )
 
     var body: some View {
         VStack {
@@ -11,6 +25,10 @@ struct ProfileView: View {
             Text("Introduction: \(showUser.introduction ?? "No introduction")")
             Text("Followers: \(showUserFriends.followerCount)")
             Text("Posts: \(showUserPosts.postCount)")
+        }
+        .onAppear {
+            // UserFriendElementとUserPostElementのデータ取得ロジックをここに追加
+            // 例えば、Firebase Firestoreからデータを取得するコード
         }
     }
 }
@@ -23,20 +41,6 @@ struct ProfileView_Previews: PreviewProvider {
                 introduction: "This is John",
                 iconImage: nil,
                 iconURL: nil
-            ),
-            showUserFriends: UserFriendElement(
-                followCount: 100,
-                follow: ["user1", "user2"],
-                followerCount: 200,
-                follower: ["user3", "user4"],
-                block: ["user5"],
-                blockedByFriend: ["user6"]
-            ),
-            showUserPosts: UserPostElement(
-                postCount: 10,
-                posts: ["post1", "post2"],
-                likePostCount: 5,
-                likePost: ["like1", "like2"]
             )
         )
     }

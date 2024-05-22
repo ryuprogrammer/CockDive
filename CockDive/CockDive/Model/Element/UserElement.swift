@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserElement: Encodable, Decodable {
+struct UserElement: Encodable, Decodable, Equatable, Hashable {
     @DocumentID var id: String?
     /// ニックネーム
     var nickName: String

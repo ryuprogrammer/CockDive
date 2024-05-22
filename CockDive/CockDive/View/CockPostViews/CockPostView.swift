@@ -37,6 +37,8 @@ struct CockPostView: View {
                 switch pathData {
                 case .detailView(let postData):
                     PostDetailView(showPostData: postData)
+                case .profileView(userData: let userData):
+                    ProfileView(showUser: userData)
                 }
             }
         }
@@ -130,6 +132,7 @@ struct CockPostView: View {
 
 enum CockCardNavigationPath: Hashable {
     case detailView(postData: PostElement)
+    case profileView(userData: UserElement)
 }
 
 #Preview {

@@ -24,6 +24,7 @@
 		4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */; };
 		4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6132BFDEB890067BF14 /* HapticsManager.swift */; };
 		4253F6172BFE00DF0067BF14 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6162BFE00DF0067BF14 /* ProfileView.swift */; };
+		4253F6192BFE0ECA0067BF14 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6182BFE0ECA0067BF14 /* ProfileViewModel.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -97,6 +98,7 @@
 		4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
 		4253F6132BFDEB890067BF14 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		4253F6162BFE00DF0067BF14 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		4253F6182BFE0ECA0067BF14 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */,
 				42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */,
 				423B2A8D2BF8994000489BCC /* PostDetailViewModel.swift */,
+				4253F6182BFE0ECA0067BF14 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
 				42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
+				4253F6192BFE0ECA0067BF14 /* ProfileViewModel.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
 				4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */,
 				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,

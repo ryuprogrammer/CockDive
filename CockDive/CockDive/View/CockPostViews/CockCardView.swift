@@ -34,7 +34,17 @@ struct CockCardView: View {
         VStack {
             HStack {
                 Button {
-                    path.append(.detailView(postData: showPostData))
+                    path.append(
+                        .profileView(
+                            userData: UserElement(
+                                id: showPostData.uid,
+                                nickName: showPostData.postUserNickName ?? "",
+                                introduction: nil,
+                                iconImage: showPostData.postUserIconImage,
+                                iconURL: nil
+                            )
+                        )
+                    )
                 } label: {
                     HStack {
                         // アイコン画像
