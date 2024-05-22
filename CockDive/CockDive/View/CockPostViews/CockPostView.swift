@@ -47,7 +47,7 @@ struct CockPostView: View {
             Task {
                 userFriendData = await cockPostVM.fetchUserFriendElement()
                 userPostData = await cockPostVM.fetchUserPostElement()
-                await cockPostVM.fetchPosts()
+                await cockPostVM.fetchPostsDataByStatus()
             }
         }
     }
@@ -55,8 +55,6 @@ struct CockPostView: View {
     private var postListView: some View {
         ScrollViewReader { proxy in
             List {
-                Spacer()
-                    .frame(height: 10)
                 ForEach(showPostsData, id: \.id) { postData in
                     CockCardView(
                         showPostData: postData,
@@ -68,16 +66,26 @@ struct CockPostView: View {
                     .onAppear {
                         if cockPostVM.checkIsLastPost(postData: postData) {
                             Task {
-                                await cockPostVM.fetchMorePosts()
+                                await cockPostVM.fetchPostsDataByStatus()
                             }
                         }
                     }
+                }
+
+                if cockPostVM.loadStatus == .loading {
+                    Text("読み込み中.....")
                 }
             }
             .listStyle(.plain)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
                     proxy.scrollTo(lastPost.id, anchor: .center)
+                }
+            }
+            .refreshable {
+                cockPostVM.loadStatus = .initial
+                Task {
+                    await cockPostVM.fetchPostsDataByStatus()
                 }
             }
         }
