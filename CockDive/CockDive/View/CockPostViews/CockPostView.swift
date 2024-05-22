@@ -70,6 +70,9 @@ struct CockPostView: View {
                         friendData: userFriendData,
                         path: $cockCardNavigationPath
                     )
+                    .onTapGesture {
+                        cockCardNavigationPath.append(.detailView(postData: postData))
+                    }
                     .id(postData.id)
                     .onAppear {
                         if cockPostVM.checkIsLastPost(postData: postData) {

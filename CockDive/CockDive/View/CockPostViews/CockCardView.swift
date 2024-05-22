@@ -150,16 +150,11 @@ struct CockCardView: View {
                 Spacer()
 
                 VStack(spacing: 1) {
-                    Button {
-                        path.append(.detailView(postData: showPostData))
-                    } label: {
-                        Image(systemName: "message")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30)
-                            .foregroundStyle(Color.black)
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
+                    Image(systemName: "message")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30)
+                        .foregroundStyle(Color.black)
 
                     Text(String(showPostData.comment.count))
                         .font(.footnote)
@@ -212,7 +207,6 @@ struct CockCardView: View {
                 .frame(height: 1)
                 .padding(0)
         }
-
         .onAppear {
             // データの初期化
             cockCardVM.postData = showPostData
