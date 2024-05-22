@@ -89,16 +89,11 @@ struct CockCardView: View {
                 StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
                     .onTapGesture {
                         print("フォロータップ検知！！！！")
-//                        if isFollowButtonDisabled {
-//                            return
-//                        }
                         
                         showIsFollow.toggle()
                         
                         Task {
-                            if let uid = cockCardVM.postData?.uid {
-                                await cockCardVM.followUser(friendUid: uid)
-                            }
+                            await cockCardVM.followUser(friendUid: showPostData.uid)
                         }
                         
                         isFollowButtonDisabled = true
@@ -108,26 +103,6 @@ struct CockCardView: View {
                         }
                     }
             }
-            
-            // 写真
-//            if let data = cockCardVM.showPostData?.postImage,
-//               let uiImage = UIImage(data: data) {
-//                Image(uiImage: uiImage)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(height: 250)
-//                    .background(Color.gray)
-//                    .clipShape(RoundedRectangle(cornerRadius: 15))
-//                    .padding(.bottom)
-//            } else {
-//                Image(systemName: "birthday.cake")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(height: 250)
-//                    .background(Color.gray)
-//                    .clipShape(RoundedRectangle(cornerRadius: 15))
-//                    .padding(.bottom)
-//            }
             
             if let data = showPostData.postImage,
                let uiImage = UIImage(data: data) {
@@ -181,17 +156,15 @@ struct CockCardView: View {
                             }
                             
                             if showIsLike {
-                                cockCardVM.postData?.likeCount -= 1
+                                showPostData.likeCount -= 1
                                 showIsLike = false
                             } else {
-                                cockCardVM.postData?.likeCount += 1
+                                showPostData.likeCount += 1
                                 showIsLike = true
                             }
                             
                             Task {
-                                if let postData = cockCardVM.postData {
-                                    await cockCardVM.likePost(post: postData)
-                                }
+                                await cockCardVM.likePost(post: showPostData)
                             }
                             
                             isLikeButtonDisabled = true
