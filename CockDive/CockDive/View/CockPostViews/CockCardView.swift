@@ -11,7 +11,7 @@ struct CockCardView: View {
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
     @State private var isFollowButtonDisabled: Bool = false
-    
+
     let maxTextCount = 20
     @ObservedObject private var cockCardVM = CockCardViewModel()
     @State private var isLineLimit: Bool = false
@@ -25,11 +25,11 @@ struct CockCardView: View {
             .first?.screen.bounds.width ?? 50
 #endif
     }
-    
+
     @Binding var path: [CockCardNavigationPath]
-    
+
     var body: some View {
-        // アイコン、ニックネーム、フォローボタンのセクション
+        // アイコン、ニックネーム、フォローボタン、区切り線のセクション
         VStack {
             HStack {
                 Button {
@@ -133,7 +133,6 @@ struct CockCardView: View {
                     .frame(height: 250)
                     .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .padding(.bottom)
             } else {
                 Image(systemName: "birthday.cake")
                     .resizable()
@@ -141,70 +140,77 @@ struct CockCardView: View {
                     .frame(height: 250)
                     .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .padding(.bottom)
             }
-            
-            HStack(alignment: .top, spacing: 20) {
+
+            HStack(alignment: .top, spacing: 15) {
                 Text(showPostData.title)
                     .font(.title)
-                
+
                 Spacer()
-                
+
                 VStack(spacing: 1) {
-                    Image(systemName: "message")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .foregroundStyle(Color.black)
-                        .onTapGesture {
-                            path.append(.detailView(postData: showPostData))
-                        }
-                    
+                    Button {
+                        path.append(.detailView(postData: showPostData))
+                    } label: {
+                        Image(systemName: "message")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30)
+                            .foregroundStyle(Color.black)
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+
                     Text(String(showPostData.comment.count))
                         .font(.footnote)
                 }
-                
+
                 VStack(spacing: 1) {
                     // ライクボタン
-                    Image(systemName: showIsLike ? "heart.fill" : "heart")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
-                        .onTapGesture {
-                            if isLikeButtonDisabled {
-                                return
-                            }
-                            
-                            if showIsLike {
-                                showPostData.likeCount -= 1
-                                showIsLike = false
-                            } else {
-                                showPostData.likeCount += 1
-                                showIsLike = true
-                            }
-                            
-                            Task {
-                                await cockCardVM.likePost(post: showPostData)
-                            }
-                            
-                            isLikeButtonDisabled = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                isLikeButtonDisabled = false
-                            }
+                    Button {
+
+                        if isLikeButtonDisabled {
+                            return
                         }
-                    
+
+                        if showIsLike {
+                            showPostData.likeCount -= 1
+                            showIsLike = false
+                        } else {
+                            showPostData.likeCount += 1
+                            showIsLike = true
+                        }
+
+                        Task {
+                            await cockCardVM.likePost(post: showPostData)
+                        }
+
+                        isLikeButtonDisabled = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isLikeButtonDisabled = false
+                        }
+
+                    } label: {
+                        Image(systemName: showIsLike ? "heart.fill" : "heart")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30)
+                            .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+
                     Text(String(showPostData.likeCount))
                         .font(.footnote)
                 }
             }
-            
+
             if let memo = showPostData.memo {
                 DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
             }
-        }
 
-        Divider()
+            Divider()
+                .frame(height: 1)
+                .padding(0)
+        }
 
         .onAppear {
             // データの初期化
@@ -218,7 +224,7 @@ struct CockCardView: View {
             if let postData = newPostData {
                 // 画面のpostを更新
                 showPostData = postData
-                
+
                 // フォローとライクを更新
                 showIsFollow = cockCardVM.checkIsFollow(userFriendData: friendData, friendUid: postData.uid)
                 showIsLike = cockCardVM.checkIsLike(postData: postData)
@@ -229,7 +235,7 @@ struct CockCardView: View {
 
 #Preview {
     struct PreviewView: View {
-        
+
         let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
         let userFriendData: UserFriendElement = UserFriendElement(
             followCount: 1,
@@ -242,6 +248,9 @@ struct CockCardView: View {
         @State var path: [CockCardNavigationPath] = []
         var body: some View {
             List {
+                CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
+                    .listRowSeparator(.hidden)
+
                 CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
                     .listRowSeparator(.hidden)
             }

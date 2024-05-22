@@ -55,13 +55,15 @@ struct CockPostView: View {
     private var postListView: some View {
         ScrollViewReader { proxy in
             List {
+                Spacer()
+                    .frame(height: 10)
                 ForEach(showPostsData, id: \.id) { postData in
                     CockCardView(
                         showPostData: postData,
                         friendData: userFriendData,
                         path: $cockCardNavigationPath
                     )
-                    .listStyle(.plain)
+                    .listRowSeparator(.hidden)
                     .id(postData.id)
                     .onAppear {
                         if cockPostVM.checkIsLastPost(postData: postData) {
@@ -75,7 +77,7 @@ struct CockPostView: View {
             .listStyle(.plain)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
-                    proxy.scrollTo(lastPost.id, anchor: .bottom)
+                    proxy.scrollTo(lastPost.id, anchor: .center)
                 }
             }
         }
