@@ -29,26 +29,36 @@ struct CockCardView: View {
     @Binding var path: [CockCardNavigationPath]
     
     var body: some View {
+        // アイコン、ニックネーム、フォローボタンのセクション
         VStack {
             HStack {
-                // アイコン画像
-                if let data = showPostData.postUserIconImage,
-                   let uiImage = UIImage(data: data) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(Color.gray)
-                        .frame(width: screenWidth / 12, height: screenWidth / 12)
-                } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(Color.gray)
-                        .frame(width: screenWidth / 12, height: screenWidth / 12)
+                Button {
+                    path.append(.detailView(postData: showPostData))
+                } label: {
+                    HStack {
+                        // アイコン画像
+                        if let data = showPostData.postUserIconImage,
+                           let uiImage = UIImage(data: data) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.gray)
+                                .frame(width: screenWidth / 12, height: screenWidth / 12)
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.gray)
+                                .frame(width: screenWidth / 12, height: screenWidth / 12)
+                        }
+
+                        // ニックネーム
+                        Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
+                            .foregroundStyle(Color.black)
+                    }
                 }
-                
-                Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
-                
+                .buttonStyle(BorderlessButtonStyle())
+
                 Menu {
                     Button(action: {
                         Task {
@@ -64,7 +74,7 @@ struct CockCardView: View {
                             Text("ブロック")
                         }
                     })
-                    
+
                     Button(action: {
                         /// 通報するアクション
                         if let uid = cockCardVM.postData?.uid {
@@ -82,28 +92,39 @@ struct CockCardView: View {
                         .foregroundStyle(Color.black)
                         .frame(width: 30, height: 30)
                 }
-                
+
                 Spacer()
-                
+
                 // フォローボタン
-                StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
-                    .onTapGesture {
-                        print("フォロータップ検知！！！！")
-                        
-                        showIsFollow.toggle()
-                        
-                        Task {
-                            await cockCardVM.followUser(friendUid: showPostData.uid)
-                        }
-                        
-                        isFollowButtonDisabled = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            isFollowButtonDisabled = false
-                            print("押せるよ！")
-                        }
+                Button {
+                    print("フォロータップ検知！！！！")
+
+                    showIsFollow.toggle()
+
+                    Task {
+                        await cockCardVM.followUser(friendUid: showPostData.uid)
                     }
+
+                    isFollowButtonDisabled = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        isFollowButtonDisabled = false
+                        print("押せるよ！")
+                    }
+                } label: {
+                    StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
+                        .overlay {
+                            // 押せない時は少し白くする
+                            Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0)
+                        }
+                }
+                .disabled(isFollowButtonDisabled)
+                .buttonStyle(BorderlessButtonStyle())
             }
-            
+        }
+
+        // 写真、タイトル、メモ、コメント、ハート
+        VStack {
+            // Postの写真
             if let data = showPostData.postImage,
                let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
@@ -182,6 +203,9 @@ struct CockCardView: View {
                 DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
             }
         }
+
+        Divider()
+
         .onAppear {
             // データの初期化
             cockCardVM.postData = showPostData
@@ -217,7 +241,11 @@ struct CockCardView: View {
         )
         @State var path: [CockCardNavigationPath] = []
         var body: some View {
-            CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
+            List {
+                CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
+                    .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
         }
     }
     return PreviewView()

@@ -5,53 +5,18 @@ struct CockPostView: View {
     @State private var isShowSheet: Bool = false
     @State private var userFriendData: UserFriendElement? = nil
     @State private var userPostData: UserPostElement? = nil
-    
+
     @ObservedObject var cockPostVM = CockPostViewModel()
-    @State var detailPost: PostElement = PostElement(uid: "B4uotKO8WiPsylwU5LYSCYBUPjk2", title: "sss", isPrivate: false, createAt: Date(), likeCount: 10, likedUser: [], comment: [])
-    
+
     @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
-    
+
     @State private var lastPost: PostElement?
-    
+
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
-                ScrollViewReader { proxy in
-                    List {
-                        ForEach(showPostsData, id: \.id) { postData in
-                            CockCardView(showPostData: postData, friendData: userFriendData, path: $cockCardNavigationPath)
-                                .id(postData.id)
-                                .onAppear {
-                                    if cockPostVM.checkIsLastPost(postData: postData) {
-                                        Task {
-                                            await cockPostVM.fetchMorePosts()
-                                        }
-                                    }
-                                }
-                        }
-                    }
-                    .listStyle(.plain)
-                    .onChange(of: showPostsData) { _ in
-                        if let lastPost = lastPost {
-                            proxy.scrollTo(lastPost.id, anchor: .bottom)
-                        }
-                    }
-                }
-                
-                Button(action: {
-                    isShowSheet = true
-                }, label: {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding()
-                        .frame(width: 65, height: 65)
-                        .foregroundStyle(Color.white)
-                        .background(Color.mainColor)
-                        .clipShape(Circle())
-                })
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding()
+                postListView
+                addButton
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
@@ -86,6 +51,52 @@ struct CockPostView: View {
             }
         }
     }
+
+    private var postListView: some View {
+        ScrollViewReader { proxy in
+            List {
+                ForEach(showPostsData, id: \.id) { postData in
+                    CockCardView(
+                        showPostData: postData,
+                        friendData: userFriendData,
+                        path: $cockCardNavigationPath
+                    )
+                    .listStyle(.plain)
+                    .id(postData.id)
+                    .onAppear {
+                        if cockPostVM.checkIsLastPost(postData: postData) {
+                            Task {
+                                await cockPostVM.fetchMorePosts()
+                            }
+                        }
+                    }
+                }
+            }
+            .listStyle(.plain)
+            .onChange(of: showPostsData) { _ in
+                if let lastPost = lastPost {
+                    proxy.scrollTo(lastPost.id, anchor: .bottom)
+                }
+            }
+        }
+    }
+
+    private var addButton: some View {
+        Button(action: {
+            isShowSheet = true
+        }, label: {
+            Image(systemName: "plus")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding()
+                .frame(width: 65, height: 65)
+                .foregroundStyle(Color.white)
+                .background(Color.mainColor)
+                .clipShape(Circle())
+        })
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        .padding()
+    }
 }
 
 enum CockCardNavigationPath: Hashable {
@@ -93,15 +104,5 @@ enum CockCardNavigationPath: Hashable {
 }
 
 #Preview {
-    CockPostView(
-        detailPost: PostElement(
-            uid: "",
-            title: "定食",
-            isPrivate: false,
-            createAt: Date(),
-            likeCount: 10,
-            likedUser: [],
-            comment: []
-        )
-    )
+    CockPostView()
 }
