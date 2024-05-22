@@ -21,6 +21,8 @@
 		423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */; };
 		423B2A922BFA293C00489BCC /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A912BFA293C00489BCC /* UIApplication+.swift */; };
 		4253F60E2BFDD0DA0067BF14 /* PostMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F60D2BFDD0DA0067BF14 /* PostMockData.swift */; };
+		4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */; };
+		4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6132BFDEB890067BF14 /* HapticsManager.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -91,6 +93,8 @@
 		423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		423B2A912BFA293C00489BCC /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		4253F60D2BFDD0DA0067BF14 /* PostMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMockData.swift; sourceTree = "<group>"; };
+		4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
+		4253F6132BFDEB890067BF14 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 				42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */,
 				42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */,
 				42DB94A32BF662E600ECDD84 /* CameraView.swift */,
+				4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 		42DB947F2BF3280C00ECDD84 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				4253F6132BFDEB890067BF14 /* HapticsManager.swift */,
 				42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */,
 				42DB949D2BF4BC7A00ECDD84 /* StartViewModel.swift */,
 				42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */,
@@ -438,6 +444,7 @@
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
 				42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */,
 				423B2A882BF8395300489BCC /* UserFriendModel.swift in Sources */,
+				4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */,
 				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
@@ -488,6 +495,7 @@
 				42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
+				4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */,
 				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,
 				423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */,
 				42DB949C2BF4A2D100ECDD84 /* UserPostElement.swift in Sources */,

@@ -83,6 +83,7 @@ class CockPostViewModel: ObservableObject {
             case .failure(let error):
                 // エラーが発生した場合の処理
                 DispatchQueue.main.async {
+                    print("エラーーーーーーー: \(error)")
                     self.loadStatus = .error
                 }
             }

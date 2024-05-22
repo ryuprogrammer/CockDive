@@ -27,6 +27,7 @@ struct CockCardView: View {
     }
 
     @Binding var path: [CockCardNavigationPath]
+    @StateObject private var hapticsManager = HapticsManager()
 
     var body: some View {
         // アイコン、ニックネーム、フォローボタン、区切り線のセクション
@@ -167,11 +168,11 @@ struct CockCardView: View {
                 VStack(spacing: 1) {
                     // ライクボタン
                     Button {
-
                         if isLikeButtonDisabled {
                             return
                         }
-
+                        // haptics
+                        hapticsManager.playHapticPattern()
                         if showIsLike {
                             showPostData.likeCount -= 1
                             showIsLike = false

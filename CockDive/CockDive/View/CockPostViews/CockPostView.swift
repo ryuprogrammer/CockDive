@@ -15,7 +15,11 @@ struct CockPostView: View {
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
-                postListView
+                if showPostsData.isEmpty {
+                    LoadingAnimationView()
+                } else {
+                    postListView
+                }
                 addButton
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -44,10 +48,15 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
-            Task {
-                userFriendData = await cockPostVM.fetchUserFriendElement()
-                userPostData = await cockPostVM.fetchUserPostElement()
-                await cockPostVM.fetchPostsDataByStatus()
+            print("onAppearonAppearonAppearonAppear")
+            print("loadStatus: \(cockPostVM.loadStatus)")
+            if cockPostVM.loadStatus == .initial {
+                print("最初の更新！")
+                Task {
+                    userFriendData = await cockPostVM.fetchUserFriendElement()
+                    userPostData = await cockPostVM.fetchUserPostElement()
+                    await cockPostVM.fetchPostsDataByStatus()
+                }
             }
         }
     }
@@ -61,7 +70,6 @@ struct CockPostView: View {
                         friendData: userFriendData,
                         path: $cockCardNavigationPath
                     )
-                    .listRowSeparator(.hidden)
                     .id(postData.id)
                     .onAppear {
                         if cockPostVM.checkIsLastPost(postData: postData) {
@@ -71,9 +79,15 @@ struct CockPostView: View {
                         }
                     }
                 }
+                .listRowSeparator(.hidden)
 
                 if cockPostVM.loadStatus == .loading {
-                    Text("読み込み中.....")
+                    HStack {
+                        Spacer()
+                        LoadingAnimationView()
+                        Spacer()
+                    }
+                        .listRowSeparator(.hidden)
                 }
             }
             .listStyle(.plain)
@@ -84,6 +98,8 @@ struct CockPostView: View {
             }
             .refreshable {
                 cockPostVM.loadStatus = .initial
+                showPostsData.removeAll()
+                cockPostVM.newPostsData.removeAll()
                 Task {
                     await cockPostVM.fetchPostsDataByStatus()
                 }

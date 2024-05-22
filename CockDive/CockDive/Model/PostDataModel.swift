@@ -132,16 +132,20 @@ struct PostDataModel {
         var docRef = db.collection(postDataCollection)
             .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
-        
-        if let lastDocumentId = lastDocumentId {
+
+        if let lastDocumentId = lastDocumentId, !lastDocumentId.isEmpty {
             let lastDocumentSnapshot = try? await db.collection(postDataCollection).document(lastDocumentId).getDocument()
             if let lastDocument = lastDocumentSnapshot, lastDocument.exists {
                 docRef = docRef.start(afterDocument: lastDocument)
+            } else {
+                print("The document with ID \(lastDocumentId) does not exist or could not be fetched.")
+                completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "The document with ID \(lastDocumentId) does not exist or could not be fetched."])))
+                return
             }
         }
-        
+
         var posts: [PostElement] = []
-        
+
         do {
             let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
