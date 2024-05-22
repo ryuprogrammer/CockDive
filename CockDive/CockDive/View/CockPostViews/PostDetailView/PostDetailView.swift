@@ -11,7 +11,7 @@ struct PostDetailView: View {
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
-    
+
     var body: some View {
         ZStack {
             ScrollView {
@@ -38,17 +38,17 @@ struct PostDetailView: View {
                                 )
                                 .clipShape(Circle())
                         }
-                        
+
                         VStack(alignment: .leading) {
                             Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
-                            
+
                             Text(showPostData.createAt.dateString())
                                 .font(.footnote)
                         }
-                        
+
                         Spacer()
                     }
-                    
+
                     // Postの写真
                     if let data = showPostData.postImage,
                        let uiImage = UIImage(data: data) {
@@ -64,37 +64,36 @@ struct PostDetailView: View {
                             .frame(height: 250)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
-                    
+
                     Text(showPostData.memo ?? "")
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding()
-                
-                List {
-                    ForEach(showPostData.comment.reversed(), id: \.id) { comment in
-                        PostCommentView(comment: comment) {
-                            Task {
-                                // ブロック
-                                await postDetailVM.blockUser(friendUid: comment.uid)
-                            }
-                        } reportAction: {
-                            Task {
-                                // 通報
-                                await postDetailVM.reportUser(friendUid: comment.uid)
-                            }
+
+                ForEach(showPostData.comment.reversed(), id: \.id) { comment in
+                    Text("コメント: \(comment.comment)")
+                    PostCommentView(comment: comment) {
+                        Task {
+                            // ブロック
+                            await postDetailVM.blockUser(friendUid: comment.uid)
+                        }
+                    } reportAction: {
+                        Task {
+                            // 通報
+                            await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
                 }
                 .listStyle(.plain)
-                
+
                 Spacer()
                     .frame(height: 300)
             }
-            
+
             VStack {
                 Spacer()
-                
+
                 HStack {
                     // コメント入力欄
                     DynamicHeightTextEditorView(
@@ -102,27 +101,42 @@ struct PostDetailView: View {
                         placeholder: "コメントしよう！",
                         maxHeight: 200
                     )
-                    
+
                     Button {
-                        Task {
-                            if let userData = await postDetailVM.fetchUserData() {
-                                print("送信ボタンタップされた")
-                                // 新しいコメント
-                                let newComment: CommentElement = CommentElement(
-                                    uid: userData.id ?? "",
-                                    commentUserNickName: userData.nickName,
-                                    commentUserIcon: userData.iconImage,
-                                    comment: comment,
-                                    createAt: Date()
-                                )
-                                // コメント追加
-                                showPostData.comment.append(newComment)
-                                print("showPostData.comment.count: \(showPostData.comment.count)")
-                                self.comment = ""
-                                // キーボード閉じる
-                                UIApplication.shared.keybordClose()
-                            }
-                        }
+//                        Task {
+//                            if let userData = await postDetailVM.fetchUserData() {
+//                                DispatchQueue.main.async {
+//                                    print("送信ボタンタップされた")
+//                                    // 新しいコメント
+//                                    let newComment: CommentElement = CommentElement(
+//                                        uid: userData.id ?? "",
+//                                        commentUserNickName: userData.nickName,
+//                                        commentUserIcon: userData.iconImage,
+//                                        comment: comment,
+//                                        createAt: Date()
+//                                    )
+//                                    // コメント追加
+//                                    showPostData.comment.append(newComment)
+//                                    print("showPostData.comment.count: \(showPostData.comment.count)")
+//                                    self.comment = ""
+//                                    // キーボード閉じる
+//                                    UIApplication.shared.keybordClose()
+//                                }
+//
+//                            }
+//                        }
+                        // 新しいコメント
+                        let newComment: CommentElement = CommentElement(
+                            uid: "id",
+                            commentUserNickName: "userData.nickName",
+                            commentUserIcon: nil,
+                            comment: comment,
+                            createAt: Date()
+                        )
+                        // コメント追加
+                        showPostData.comment.append(newComment)
+                        self.comment = ""
+                        UIApplication.shared.keybordClose()
                     } label: {
                         Image(systemName: "paperplane.circle")
                             .resizable()
@@ -151,7 +165,7 @@ struct PostDetailView: View {
                     self.presentation.wrappedValue.dismiss()
                 }
             }
-            
+
             // タイトル
             ToolbarItem(placement: .principal) {
                 Text(showPostData.title)
@@ -159,7 +173,7 @@ struct PostDetailView: View {
                     .fontWeight(.bold)
                     .font(.title3)
             }
-            
+
             // 通報
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -176,6 +190,7 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
+            print("コメント: \(showPostData.comment)")
             // Postデータをリッスン
             postDetailVM.listenToPost(postId: showPostData.id)
         }
