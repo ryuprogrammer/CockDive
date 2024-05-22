@@ -214,15 +214,14 @@ struct CockCardView: View {
                 // Postデータをリッスン開始
                 cockCardVM.listenToPost(postId: id)
             }
+            // フォローとライクを初期化
+            showIsFollow = cockCardVM.checkIsFollow(userFriendData: friendData, friendUid: showPostData.uid)
+            showIsLike = cockCardVM.checkIsLike(postData: showPostData)
         }
         .onChange(of: cockCardVM.postData) { newPostData in
             if let postData = newPostData {
                 // 画面のpostを更新
                 showPostData = postData
-
-                // フォローとライクを更新
-                showIsFollow = cockCardVM.checkIsFollow(userFriendData: friendData, friendUid: postData.uid)
-                showIsLike = cockCardVM.checkIsLike(postData: postData)
             }
         }
     }
