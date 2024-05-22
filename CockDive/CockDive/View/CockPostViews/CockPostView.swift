@@ -67,7 +67,7 @@ struct CockPostView: View {
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
                 case .detailView(let postData):
-                    PostDetailView(postData: postData)
+                    PostDetailView(showPostData: postData)
                 }
             }
         }

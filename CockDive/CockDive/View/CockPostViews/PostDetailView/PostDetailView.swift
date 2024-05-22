@@ -1,11 +1,7 @@
 import SwiftUI
 
 struct PostDetailView: View {
-    // TODO: - 詳細画面の画像表示速度向上
-    // TODO: - フォローボタン修正
-    let postData: PostElement
-    // 画面表示用のPostData
-    @State private var showPostData: PostElement = PostElement(uid: "", title: "", isPrivate: true, createAt: Date(), likeCount: 0, likedUser: [], comment: [])
+    @State var showPostData: PostElement
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
@@ -44,31 +40,29 @@ struct PostDetailView: View {
                         }
                         
                         VStack(alignment: .leading) {
-                            Text("\(postData.postUserNickName ?? "ニックネーム")さん")
+                            Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
                             
-                            Text(postData.createAt.dateString())
+                            Text(showPostData.createAt.dateString())
                                 .font(.footnote)
                         }
                         
                         Spacer()
                     }
                     
-                    ZStack {
-                        let postImageURL = URL(string: showPostData.postImageURL ?? "")
-                        
-                        AsyncImage(url: postImageURL) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 250)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                        } placeholder: {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 250)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                        }
+                    // Postの写真
+                    if let data = showPostData.postImage,
+                       let uiImage = UIImage(data: data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
                     
                     Text(showPostData.memo ?? "")
@@ -77,20 +71,22 @@ struct PostDetailView: View {
                 }
                 .padding()
                 
-                ForEach(showPostData.comment.reversed(), id: \.id) { comment in
-                    PostCommentView(comment: comment) {
-                        Task {
-                            // ブロック
-                            await postDetailVM.blockUser(friendUid: comment.uid)
-                        }
-                    } reportAction: {
-                        Task {
-                            // 通報
-                            await postDetailVM.reportUser(friendUid: comment.uid)
+                List {
+                    ForEach(showPostData.comment.reversed(), id: \.id) { comment in
+                        PostCommentView(comment: comment) {
+                            Task {
+                                // ブロック
+                                await postDetailVM.blockUser(friendUid: comment.uid)
+                            }
+                        } reportAction: {
+                            Task {
+                                // 通報
+                                await postDetailVM.reportUser(friendUid: comment.uid)
+                            }
                         }
                     }
                 }
-                .padding(.horizontal)
+                .listStyle(.plain)
                 
                 Spacer()
                     .frame(height: 300)
@@ -110,6 +106,7 @@ struct PostDetailView: View {
                     Button {
                         Task {
                             if let userData = await postDetailVM.fetchUserData() {
+                                print("送信ボタンタップされた")
                                 // 新しいコメント
                                 let newComment: CommentElement = CommentElement(
                                     uid: userData.id ?? "",
@@ -120,6 +117,7 @@ struct PostDetailView: View {
                                 )
                                 // コメント追加
                                 showPostData.comment.append(newComment)
+                                print("showPostData.comment.count: \(showPostData.comment.count)")
                                 self.comment = ""
                                 // キーボード閉じる
                                 UIApplication.shared.keybordClose()
@@ -156,7 +154,7 @@ struct PostDetailView: View {
             
             // タイトル
             ToolbarItem(placement: .principal) {
-                Text(postData.title)
+                Text(showPostData.title)
                     .foregroundStyle(Color.white)
                     .fontWeight(.bold)
                     .font(.title3)
@@ -166,7 +164,7 @@ struct PostDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
-                        await postDetailVM.reportUser(friendUid: postData.uid)
+                        await postDetailVM.reportUser(friendUid: showPostData.uid)
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -178,22 +176,20 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
-            /// 画面を最速で描画したい
-            /// 親画面からPostDataを取得
-            showPostData = postData
-            /// 最新のPostDataを取得
-            Task {
-                if let postData = await postDetailVM.fetchPostFromPostId(postId: postData.id ?? "") {
-                    showPostData = postData
-                }
+            // Postデータをリッスン
+            postDetailVM.listenToPost(postId: showPostData.id)
+        }
+        .onChange(of: postDetailVM.postData) { newPostData in
+            if let newPostData {
+                // データが更新されたので、画面に描画
+                showPostData = newPostData
             }
-            
         }
         .onChange(of: $showPostData.comment.count) {_ in
             /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
             /// コメントの追加、削除を一括で行う。
             /// 画面更新するのは一瞬で行いたいため。
-            postDetailVM.updateComment(post: postData, comments: showPostData.comment)
+            postDetailVM.updateComment(post: showPostData, comments: showPostData.comment)
         }
     }
 }
@@ -203,7 +199,7 @@ struct PostDetailView: View {
         var body: some View {
             NavigationStack {
                 PostDetailView(
-                    postData: PostElement(
+                    showPostData: PostElement(
                         id: "000",
                         uid: "mmmmmmmm",
                         postImage: Data(),

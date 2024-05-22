@@ -1,12 +1,27 @@
 import Foundation
+import FirebaseFirestore
 
 class PostDetailViewModel: ObservableObject {
+    @Published var postData: PostElement?
     @Published var isFollow: Bool = false
     
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
     let commentDataModel = CommentDataModel()
+    
+    // ロードステータス
+    private var loadStatus: LoadStatus = .initial
+    
+    private var postListener: ListenerRegistration? = nil
+    
+    // ロードステータス
+    private enum LoadStatus {
+        case initial
+        case loading
+        case completion
+        case error
+    }
     
     // MARK: - データ追加
     /// コメント更新（追加/ 削除）
@@ -61,5 +76,25 @@ class PostDetailViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    // MARK: - データのリッスン
+    /// Postをリアルタイムでリッスン
+    func listenToPost(postId: String?) {
+        guard let postId else { return }
+        // 既存のリスナーを削除
+        stopListeningToPosts()
+        
+        // 新しいリスナーを設定
+        postListener = postDataModel.listenToPostData(postId: postId) { [weak self] postsData in
+            DispatchQueue.main.async {
+                self?.postData = postsData
+            }
+        }
+    }
+    
+    /// リスナーを停止
+    func stopListeningToPosts() {
+        postListener = nil
     }
 }
