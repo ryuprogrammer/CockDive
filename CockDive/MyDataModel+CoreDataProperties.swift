@@ -17,3 +17,35 @@ extension MyDataModel {
 extension MyDataModel : Identifiable {
 
 }
+
+extension MyDataModel {
+    /// followUids→NSObject?型を[String]に変換
+    public var wrappedFollowUids: [String] {
+        if let followUids,
+           let followUidsStr = followUids as? [String] {
+            return followUidsStr
+        }
+
+        return []
+    }
+
+    /// likePostIds→NSObject?型を[String]に変換
+    public var wrappedLikePostIds: [String] {
+        if let likePostIds,
+           let likePostIdsStr = likePostIds as? [String] {
+            return likePostIdsStr
+        }
+
+        return []
+    }
+
+    /// commentPostIds→NSObject?型を[String]に変換
+    public var wrappedCommentPostIds: [String] {
+        if let commentPostIds,
+           let commentPostIdsStr = commentPostIds as? [String] {
+            return commentPostIdsStr
+        }
+
+        return []
+    }
+}

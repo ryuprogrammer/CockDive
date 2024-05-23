@@ -19,3 +19,11 @@ extension MyPostModel {
 extension MyPostModel : Identifiable {
 
 }
+
+extension MyPostModel {
+    public var wrappedId: String { id ?? "" }
+    public var wrappedImage: Data { image ?? Data() }
+    public var wrappedTitle: String { title ?? "" }
+    public var wrappedMemo: String { memo ?? "" }
+    public var wrappedCreateAt: Date { createAt ?? Date() }
+}
