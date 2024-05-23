@@ -175,10 +175,6 @@
 		422C69B82BED1C570012FB8F = {
 			isa = PBXGroup;
 			children = (
-				4253F61A2BFEBA840067BF14 /* MyPostModel+CoreDataClass.swift */,
-				4253F61B2BFEBA840067BF14 /* MyPostModel+CoreDataProperties.swift */,
-				4253F61C2BFEBA840067BF14 /* MyDataModel+CoreDataClass.swift */,
-				4253F61D2BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift */,
 				422C69C32BED1C570012FB8F /* CockDive */,
 				422C69C22BED1C570012FB8F /* Products */,
 				42DB94962BF48C5C00ECDD84 /* Frameworks */,
@@ -198,7 +194,6 @@
 			children = (
 				42DB947E2BF3244D00ECDD84 /* Info.plist */,
 				422C69C42BED1C570012FB8F /* CockDiveApp.swift */,
-				422C69C62BED1C570012FB8F /* Persistence.swift */,
 				4298D8422BEDDD65005AB08F /* View */,
 				42DB947F2BF3280C00ECDD84 /* ViewModel */,
 				42DB94802BF3282D00ECDD84 /* Model */,
@@ -234,6 +229,18 @@
 				4253F6162BFE00DF0067BF14 /* ProfileView.swift */,
 			);
 			path = ProfileViews;
+			sourceTree = "<group>";
+		};
+		4253F6222BFEC2870067BF14 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				422C69C62BED1C570012FB8F /* Persistence.swift */,
+				4253F61A2BFEBA840067BF14 /* MyPostModel+CoreDataClass.swift */,
+				4253F61B2BFEBA840067BF14 /* MyPostModel+CoreDataProperties.swift */,
+				4253F61C2BFEBA840067BF14 /* MyDataModel+CoreDataClass.swift */,
+				4253F61D2BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		4298D8422BEDDD65005AB08F /* View */ = {
@@ -360,6 +367,7 @@
 				42DB94942BF48A5E00ECDD84 /* PostDataModel.swift */,
 				423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */,
 				42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */,
+				4253F6222BFEC2870067BF14 /* CoreData */,
 				4253F60C2BFDD08E0067BF14 /* Data */,
 			);
 			path = Model;

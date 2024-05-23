@@ -1,10 +1,3 @@
-//
-//  Persistence.swift
-//  CockDive
-//
-//  Created by トム・クルーズ on 2024/05/09.
-//
-
 import CoreData
 
 struct PersistenceController {
@@ -13,10 +6,25 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
+        
+        // MyDataModelのサンプルデータを追加
         for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newMyData = MyDataModel(context: viewContext)
+            newMyData.followUids = [] as NSObject
+            newMyData.likePostIds = [] as NSObject
+            newMyData.commentPostIds = [] as NSObject
         }
+
+        // MyPostModelのサンプルデータを追加
+        for i in 0..<10 {
+            let newMyPost = MyPostModel(context: viewContext)
+            newMyPost.id = UUID().uuidString
+            newMyPost.image = Data()
+            newMyPost.title = "Sample Title \(i)"
+            newMyPost.memo = "Sample Memo \(i)"
+            newMyPost.createAt = Date()
+        }
+
         do {
             try viewContext.save()
         } catch {
