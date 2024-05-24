@@ -130,6 +130,7 @@ struct AddPostView: View {
                     ToolBarAddButtonView(text: "投稿") {
                         Task {
                             guard let dataImage = cockPostVM.castUIImageToData(uiImage: image) else { return }
+                            // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                             await cockPostVM.addPost(post: PostElement(
                                 uid: cockPostVM.fetchUid(),
                                 postImage: dataImage,

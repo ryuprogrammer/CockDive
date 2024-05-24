@@ -19,18 +19,24 @@ struct PostDataModel {
         case add
         case update
     }
-    
+
+    /// 新しいリファレンス作成
+    func createNewDocId() -> String {
+        return db.collection(postDataCollection).document().documentID
+    }
+
     // MARK: - データ追加
-    /// Post追加/ 更新
-    func addPost(post: PostElement) async {
+    /// Post追加/ 更新→PostIdがnilの場合、新規作成なので、newDocIdを使用
+    func addPost(
+        post: PostElement,
+        newDocId: String
+    ) async {
+        // DocmentId取得、ない場合は新しいDocIdを使用
+        var docId = post.id ?? newDocId
         // リファレンスを作成
-        var docRef: DocumentReference = db.collection(postDataCollection).document()
-        
+        var docRef = db.collection(postDataCollection).document(docId)
+
         do {
-            if let id = post.id { // idがある場合は、データの更新
-                docRef = db.collection(postDataCollection).document(id)
-            }
-            
             var postWithId = post
             postWithId.id = docRef.documentID
             

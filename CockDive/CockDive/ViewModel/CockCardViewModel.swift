@@ -10,7 +10,7 @@ class CockCardViewModel: ObservableObject {
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
-    let coreDataMyDataModel = MyDataCoreDataManager.shared // シングルトンインスタンスを使用
+    let coreDataMyDataModel = MyDataCoreDataManager.shared
 
     private var postListener: ListenerRegistration? = nil
 
