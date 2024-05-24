@@ -2,6 +2,10 @@ import SwiftUI
 
 struct PostDetailView: View {
     @State var showPostData: PostElement
+    // ライクボタン無効状態
+    @State private var isLikeButtonDisabled: Bool = false
+    // フォローボタン無効状態
+    @State private var isFollowButtonDisabled: Bool = false
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
@@ -11,6 +15,8 @@ struct PostDetailView: View {
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
+    let maxTextCount = 40
+    @StateObject private var hapticsManager = HapticsManager()
 
     var body: some View {
         ZStack {
@@ -47,6 +53,34 @@ struct PostDetailView: View {
                         }
 
                         Spacer()
+
+                        // フォローボタン
+                        Button {
+                            // ボタンの無効化
+                            isFollowButtonDisabled = true
+                            // haptics
+                            hapticsManager.playHapticPattern()
+                            Task {
+                                // フォローデータ更新
+                                await postDetailVM.followUser(friendUid: showPostData.uid)
+                                // フォローデータ取得
+                                postDetailVM.checkIsFollow(friendUid: showPostData.uid)
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                isFollowButtonDisabled = false
+                            }
+                        } label: {
+                            StrokeButtonUI(
+                                text: postDetailVM.showIsFollow ? "フォロー中" : "フォロー" ,
+                                size: .small,
+                                isFill: postDetailVM.showIsFollow ? true : false
+                            )
+                            // 押せない時は少し白くする
+                            .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+                        }
+                        .disabled(isFollowButtonDisabled)
+                        .buttonStyle(BorderlessButtonStyle())
                     }
 
                     // Postの写真
@@ -65,14 +99,48 @@ struct PostDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
 
-                    Text(showPostData.memo ?? "")
-                        .font(.callout)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        if let memo = showPostData.memo {
+                            DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
+                        }
+
+                        // ライクボタン
+                        Button {
+                            // ボタンの無効化
+                            isLikeButtonDisabled = true
+                            // haptics
+                            hapticsManager.playHapticPattern()
+
+                            if postDetailVM.showIsLikePost {
+                                showPostData.likeCount -= 1
+                            } else {
+                                showPostData.likeCount += 1
+                            }
+                            Task {
+                                // ライクデータ変更（FirebaseとCoreData）
+                                await postDetailVM.likePost(post: showPostData)
+                                // CoreDataからライクデータ取得
+                                postDetailVM.checkIsLike(postId: showPostData.id)
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                isLikeButtonDisabled = false
+                            }
+                        } label: {
+                            Image(systemName: postDetailVM.showIsLikePost ? "heart.fill" : "heart")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
+                        }
+                        .disabled(isLikeButtonDisabled)
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                    .padding(.top)
                 }
                 .padding()
 
                 ForEach(showPostData.comment.reversed(), id: \.id) { comment in
-                    Text("コメント: \(comment.comment)")
                     PostCommentView(comment: comment) {
                         Task {
                             // ブロック
@@ -84,6 +152,7 @@ struct PostDetailView: View {
                             await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
+                    .padding(.horizontal)
                 }
                 .listStyle(.plain)
 
@@ -103,38 +172,21 @@ struct PostDetailView: View {
                     )
 
                     Button {
-//                        Task {
-//                            if let userData = await postDetailVM.fetchUserData() {
-//                                DispatchQueue.main.async {
-//                                    print("送信ボタンタップされた")
-//                                    // 新しいコメント
-//                                    let newComment: CommentElement = CommentElement(
-//                                        uid: userData.id ?? "",
-//                                        commentUserNickName: userData.nickName,
-//                                        commentUserIcon: userData.iconImage,
-//                                        comment: comment,
-//                                        createAt: Date()
-//                                    )
-//                                    // コメント追加
-//                                    showPostData.comment.append(newComment)
-//                                    print("showPostData.comment.count: \(showPostData.comment.count)")
-//                                    self.comment = ""
-//                                    // キーボード閉じる
-//                                    UIApplication.shared.keybordClose()
-//                                }
-//
-//                            }
-//                        }
+                        // userData取得
+                        guard let userData = postDetailVM.fetchUserData() else { return }
+                        let uid = postDetailVM.fetchUid()
                         // 新しいコメント
                         let newComment: CommentElement = CommentElement(
-                            uid: "id",
-                            commentUserNickName: "userData.nickName",
-                            commentUserIcon: nil,
+                            uid: uid,
+                            commentUserNickName: userData.nickName,
+                            commentUserIcon: userData.iconImage,
                             comment: comment,
                             createAt: Date()
                         )
                         // コメント追加
                         showPostData.comment.append(newComment)
+                        // コメント保存
+                        postDetailVM.updateComment(post: showPostData, newComment: newComment)
                         self.comment = ""
                         UIApplication.shared.keybordClose()
                     } label: {
@@ -193,18 +245,15 @@ struct PostDetailView: View {
             print("コメント: \(showPostData.comment)")
             // Postデータをリッスン
             postDetailVM.listenToPost(postId: showPostData.id)
+            // フォローとライクを初期化
+            postDetailVM.checkIsLike(postId: showPostData.id)
+            postDetailVM.checkIsFollow(friendUid: showPostData.uid)
         }
         .onChange(of: postDetailVM.postData) { newPostData in
             if let newPostData {
                 // データが更新されたので、画面に描画
                 showPostData = newPostData
             }
-        }
-        .onChange(of: $showPostData.comment.count) {_ in
-            /// 表示しているコメントとPostDataのコメントが異なる場合のみコメントを更新
-            /// コメントの追加、削除を一括で行う。
-            /// 画面更新するのは一瞬で行いたいため。
-            postDetailVM.updateComment(post: showPostData, comments: showPostData.comment)
         }
     }
 }

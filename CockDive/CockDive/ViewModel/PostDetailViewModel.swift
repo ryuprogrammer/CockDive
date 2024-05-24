@@ -3,13 +3,17 @@ import FirebaseFirestore
 
 class PostDetailViewModel: ObservableObject {
     @Published var postData: PostElement?
-    @Published var isFollow: Bool = false
-    
+    @Published var showIsLikePost: Bool = false
+    @Published var showIsFollow: Bool = false
+
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
+    let userPostDataModel = UserPostDataModel()
     let postDataModel = PostDataModel()
     let commentDataModel = CommentDataModel()
-    
+    let coreDataMyDataModel = MyDataCoreDataManager.shared
+    let userDefaultsDataModel = UserDefaultsDataModel()
+
     // ロードステータス
     private var loadStatus: LoadStatus = .initial
     
@@ -25,21 +29,32 @@ class PostDetailViewModel: ObservableObject {
     
     // MARK: - データ追加
     /// コメント更新（追加/ 削除）
-    func updateComment(post: PostElement, comments: [CommentElement]) {
-        commentDataModel.updateComment(post: post, newComments: comments)
+    func updateComment(post: PostElement, newComment: CommentElement) {
+        commentDataModel.updateComment(post: post, newComment: newComment)
     }
     
-    /// Like
-    func likePost(post: PostElement) async {
-        // TODO: - toLikeを引数にする
-        await postDataModel.changeLikeToPost(post: post, toLike: true)
+    /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
+    func likePost(
+        post: PostElement
+    ) async {
+        guard let id = post.id else { return }
+        let toLike = !showIsLikePost
+        // CoreDataのライク変更
+        coreDataMyDataModel.changeLike(postId: id, toLike: toLike)
+        // FirestoreのPostDataModelのライク変更
+        await postDataModel.changeLikeToPost(post: post, toLike: toLike)
+        // FirestoreのUserPostDataModelのライク変更
+        await userPostDataModel.addPostId(postId: id, userPostType: .like)
     }
-    
-    /// フォロー
+
+    /// フォロー変更（CoreDataとFirestore）
     func followUser(friendUid: String) async {
+        // CoreDataのフォロー変更
+        coreDataMyDataModel.changeFollow(uid: friendUid)
+        // Firestoreのフォロー変更
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .follow)
     }
-    
+
     /// ブロック
     func blockUser(friendUid: String) async {
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
@@ -53,13 +68,14 @@ class PostDetailViewModel: ObservableObject {
     // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String {
-        return postDataModel.fetchUid() ?? ""
+        return userDataModel.fetchUid() ?? ""
     }
-    
     /// userDate取得
-    func fetchUserData() async -> UserElement? {
-        let uid = fetchUid()
-        return await userDataModel.fetchUserData(uid: uid)
+    func fetchUserData() -> UserElementForUserDefaults? {
+        if let userData = userDefaultsDataModel.fetchUserData() {
+            return userData
+        }
+        return nil
     }
     
     /// postIdからPostDataを取得
@@ -67,18 +83,23 @@ class PostDetailViewModel: ObservableObject {
         return await postDataModel.fetchPostFromPostId(postId: postId)
     }
     
-    /// フォローしているか判定
-    func isFollowFriend(friendUid: String) async {
-        guard let uid = userDataModel.fetchUid() else { return }
-        if let userFriendData = await  userFriendModel.fetchUserFriendData(uid: uid) {
-            if userFriendData.follow.contains(friendUid) {
-                DispatchQueue.main.async {
-                    self.isFollow = true
-                }
-            }
+    // MARK: - CoreData
+    /// ライクしているか判定（CoreData）
+    func checkIsLike(postId: String?) {
+        if let postId {
+            showIsLikePost = coreDataMyDataModel.checkIsLike(postId: postId)
+            print("ライク:\(showIsLikePost)")
         }
     }
-    
+
+    /// フォローしているか判定
+    func checkIsFollow(friendUid: String?) {
+        if let friendUid {
+            showIsFollow = coreDataMyDataModel.checkIsFollow(uid: friendUid)
+            print("フォロー: \(showIsFollow)")
+        }
+    }
+
     // MARK: - データのリッスン
     /// Postをリアルタイムでリッスン
     func listenToPost(postId: String?) {

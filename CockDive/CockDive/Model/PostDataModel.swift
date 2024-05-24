@@ -32,9 +32,9 @@ struct PostDataModel {
         newDocId: String
     ) async {
         // DocmentId取得、ない場合は新しいDocIdを使用
-        var docId = post.id ?? newDocId
+        let docId = post.id ?? newDocId
         // リファレンスを作成
-        var docRef = db.collection(postDataCollection).document(docId)
+        let docRef = db.collection(postDataCollection).document(docId)
 
         do {
             var postWithId = post
