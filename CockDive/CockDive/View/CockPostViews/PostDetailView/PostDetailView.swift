@@ -6,6 +6,8 @@ struct PostDetailView: View {
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
     @State private var isFollowButtonDisabled: Bool = false
+    // コメントボタン無効状態
+    @State private var isCommentButtonDisabled: Bool = false
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
@@ -152,7 +154,7 @@ struct PostDetailView: View {
                             await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
-                    .padding(.horizontal)
+                    .padding([.horizontal, .top])
                 }
                 .listStyle(.plain)
 
@@ -172,6 +174,8 @@ struct PostDetailView: View {
                     )
 
                     Button {
+                        print("こめ")
+                        isCommentButtonDisabled = true
                         // userData取得
                         guard let userData = postDetailVM.fetchUserData() else { return }
                         let uid = postDetailVM.fetchUid()
@@ -185,17 +189,21 @@ struct PostDetailView: View {
                         )
                         // コメント追加
                         showPostData.comment.append(newComment)
+                        self.comment = ""
                         // コメント保存
                         postDetailVM.updateComment(post: showPostData, newComment: newComment)
-                        self.comment = ""
                         UIApplication.shared.keybordClose()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isCommentButtonDisabled = false
+                        }
                     } label: {
                         Image(systemName: "paperplane.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 34)
-                            .foregroundStyle(Color.white)
+                            .foregroundStyle(isCommentButtonDisabled ? Color.white.opacity(0.7) : Color.white)
                     }
+                    .disabled(isCommentButtonDisabled)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)
