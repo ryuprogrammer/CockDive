@@ -9,6 +9,7 @@ class CockCardViewModel: ObservableObject {
 
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
+    let userPostDataModel = UserPostDataModel()
     let postDataModel = PostDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
 
@@ -30,10 +31,6 @@ class CockCardViewModel: ObservableObject {
             DispatchQueue.main.async {
                 if let postsData {
                     self?.postData = postsData
-                    print("データ更新")
-                    print("postData更新を検知！postData: \(postsData)")
-                } else {
-                    print("データ更新、、、、")
                 }
             }
         }
@@ -45,7 +42,7 @@ class CockCardViewModel: ObservableObject {
     }
 
     // MARK: - データ追加
-    /// Like変更（CoreDataとFirestore）
+    /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(
         post: PostElement
     ) async {
@@ -53,8 +50,10 @@ class CockCardViewModel: ObservableObject {
         let toLike = !showIsLikePost
         // CoreDataのライク変更
         coreDataMyDataModel.changeLike(postId: id, toLike: toLike)
-        // Firestoreのライク変更
+        // FirestoreのPostDataModelのライク変更
         await postDataModel.changeLikeToPost(post: post, toLike: toLike)
+        // FirestoreのUserPostDataModelのライク変更
+        await userPostDataModel.addPostId(postId: id, userPostType: .like)
     }
 
     /// フォロー変更（CoreDataとFirestore）
