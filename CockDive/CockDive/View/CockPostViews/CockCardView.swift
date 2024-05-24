@@ -2,11 +2,6 @@ import SwiftUI
 
 struct CockCardView: View {
     @State var showPostData: PostElement
-    let friendData: UserFriendElement?
-    // 画面表示用のフォロープロパティ
-    @State private var showIsFollow: Bool = false
-    // 画面表示用のライクプロパティ
-    @State private var showIsLike: Bool = false
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
@@ -108,25 +103,28 @@ struct CockCardView: View {
 
                 // フォローボタン
                 Button {
-                    print("フォロータップ検知！！！！")
-
-                    showIsFollow.toggle()
-
                     Task {
+                        // フォローデータ更新
                         await cockCardVM.followUser(friendUid: showPostData.uid)
+                        // フォローデータ取得
+                        cockCardVM.checkIsFollow(friendUid: showPostData.uid)
                     }
-
+                    print("cockCardVM.showIsFollow: \(cockCardVM.showIsFollow)")
                     isFollowButtonDisabled = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         isFollowButtonDisabled = false
                         print("押せるよ！")
                     }
                 } label: {
-                    StrokeButtonUI(text: showIsFollow ? "フォロー中" : "フォロー" , size: .small, isFill: showIsFollow ? true : false)
-                        .overlay {
-                            // 押せない時は少し白くする
-                            Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0)
-                        }
+                    StrokeButtonUI(
+                        text: cockCardVM.showIsFollow ? "フォロー中" : "フォロー" ,
+                        size: .small,
+                        isFill: cockCardVM.showIsFollow ? true : false
+                    )
+                    .overlay {
+                        // 押せない時は少し白くする
+                        Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0)
+                    }
                 }
                 .disabled(isFollowButtonDisabled)
                 .buttonStyle(BorderlessButtonStyle())
@@ -173,35 +171,35 @@ struct CockCardView: View {
                 VStack(spacing: 1) {
                     // ライクボタン
                     Button {
-                        if isLikeButtonDisabled {
-                            return
-                        }
                         // haptics
                         hapticsManager.playHapticPattern()
-                        if showIsLike {
+
+
+                        if cockCardVM.showIsLikePost {
                             showPostData.likeCount -= 1
-                            showIsLike = false
                         } else {
                             showPostData.likeCount += 1
-                            showIsLike = true
                         }
-
                         Task {
+                            // ライクデータ変更（FirebaseとCoreData）
                             await cockCardVM.likePost(post: showPostData)
+                            // CoreDataからライクデータ取得
+                            cockCardVM.checkIsLike(postId: showPostData.id)
                         }
-
+                        print("cockCardVM.showIsLikePost: \(cockCardVM.showIsLikePost)")
                         isLikeButtonDisabled = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             isLikeButtonDisabled = false
                         }
 
                     } label: {
-                        Image(systemName: showIsLike ? "heart.fill" : "heart")
+                        Image(systemName: cockCardVM.showIsLikePost ? "heart.fill" : "heart")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 30)
                             .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
                     }
+                    .disabled(isLikeButtonDisabled)
                     .buttonStyle(BorderlessButtonStyle())
 
                     Text(String(showPostData.likeCount))
@@ -225,8 +223,8 @@ struct CockCardView: View {
                 cockCardVM.listenToPost(postId: id)
             }
             // フォローとライクを初期化
-            showIsFollow = cockCardVM.checkIsFollow(userFriendData: friendData, friendUid: showPostData.uid)
-            showIsLike = cockCardVM.checkIsLike(postData: showPostData)
+            cockCardVM.checkIsLike(postId: showPostData.id)
+            cockCardVM.checkIsFollow(friendUid: showPostData.uid)
         }
         .onChange(of: cockCardVM.postData) { newPostData in
             if let postData = newPostData {
@@ -241,21 +239,14 @@ struct CockCardView: View {
     struct PreviewView: View {
 
         let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 555, likedUser: [], comment: [])
-        let userFriendData: UserFriendElement = UserFriendElement(
-            followCount: 1,
-            follow: [],
-            followerCount: 1,
-            follower: [],
-            block: [],
-            blockedByFriend: []
-        )
+
         @State var path: [CockCardNavigationPath] = []
         var body: some View {
             List {
-                CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
+                CockCardView(showPostData: postData, path: $path)
                     .listRowSeparator(.hidden)
 
-                CockCardView(showPostData: postData, friendData: userFriendData, path: $path)
+                CockCardView(showPostData: postData, path: $path)
                     .listRowSeparator(.hidden)
             }
             .listStyle(.plain)

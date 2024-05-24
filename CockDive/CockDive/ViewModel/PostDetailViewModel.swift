@@ -31,7 +31,8 @@ class PostDetailViewModel: ObservableObject {
     
     /// Like
     func likePost(post: PostElement) async {
-        await postDataModel.changeLikeToPost(post: post)
+        // TODO: - toLikeを引数にする
+        await postDataModel.changeLikeToPost(post: post, toLike: true)
     }
     
     /// フォロー

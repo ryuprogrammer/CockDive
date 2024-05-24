@@ -50,7 +50,10 @@ struct PostDataModel {
     }
     
     /// Like押す
-    func changeLikeToPost(post: PostElement) async {
+    func changeLikeToPost(
+        post: PostElement,
+        toLike: Bool
+    ) async {
         // 最新のPostを取得
         if let latestPost = await fetchPostFromPostId(postId: post.id ?? "") {
             guard let uid = fetchUid() else { return }
@@ -59,24 +62,30 @@ struct PostDataModel {
             var likeCount = latestPost.likeCount
             // LikeしたUser
             var likedUser = latestPost.likedUser
-            // いいねを押しているか判定
-            if latestPost.likedUser.contains(uid) { // ライクから削除
-                likeCount -= 1
-                likedUser.removeAll(where: {$0 == uid})
-            } else { // ライクに追加
-                likeCount += 1
-                likedUser.append(uid)
-            }
-            
-            guard let postId = post.id else { return }
-            // リファレンス
-            let docRef = db.collection(postDataCollection).document(postId)
-            
-            do {
-                try await docRef.updateData(["likeCount": likeCount])
-                try await docRef.updateData(["likedUser": likedUser])
-            } catch {
-                print("Error addHeartToPost: \(error)")
+            // firestoreのLike情報
+            let isLikeAtFirestore = latestPost.likedUser.contains(uid)
+
+            // 更新したいライク（toLike）とforestoreが異なる場合のみ更新
+            if toLike != isLikeAtFirestore {
+                // toLikeによって変更
+                if toLike {
+                    likeCount += 1
+                    likedUser.append(uid)
+                } else {
+                    likeCount -= 1
+                    likedUser.removeAll(where: {$0 == uid})
+                }
+
+                guard let postId = post.id else { return }
+                // リファレンス
+                let docRef = db.collection(postDataCollection).document(postId)
+
+                do {
+                    try await docRef.updateData(["likeCount": likeCount])
+                    try await docRef.updateData(["likedUser": likedUser])
+                } catch {
+                    print("Error addHeartToPost: \(error)")
+                }
             }
         }
     }

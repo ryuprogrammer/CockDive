@@ -1,10 +1,10 @@
 import SwiftUI
+import CoreData
 
 struct CockPostView: View {
     @State private var showPostsData: [PostElement] = []
     @State private var isShowSheet: Bool = false
     @State private var userFriendData: UserFriendElement? = nil
-    @State private var userPostData: UserPostElement? = nil
 
     @ObservedObject var cockPostVM = CockPostViewModel()
 
@@ -50,13 +50,10 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
-            print("onAppearonAppearonAppearonAppear")
             print("loadStatus: \(cockPostVM.loadStatus)")
             if cockPostVM.loadStatus == .initial {
                 print("最初の更新！")
                 Task {
-                    userFriendData = await cockPostVM.fetchUserFriendElement()
-                    userPostData = await cockPostVM.fetchUserPostElement()
                     await cockPostVM.fetchPostsDataByStatus()
                 }
             }
@@ -69,7 +66,6 @@ struct CockPostView: View {
                 ForEach(showPostsData, id: \.id) { postData in
                     CockCardView(
                         showPostData: postData,
-                        friendData: userFriendData,
                         path: $cockCardNavigationPath
                     )
                     .onTapGesture {
@@ -92,7 +88,7 @@ struct CockPostView: View {
                         LoadingAnimationView()
                         Spacer()
                     }
-                        .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
                 }
             }
             .listStyle(.plain)

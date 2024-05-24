@@ -2,6 +2,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
+import CoreData
 
 class CockPostViewModel: ObservableObject {
     // PostDataを取得
@@ -21,27 +22,6 @@ class CockPostViewModel: ObservableObject {
         case loading
         case completion
         case error
-    }
-
-    // MARK: - データ追加
-    /// Like
-    func likePost(post: PostElement) async {
-        await postDataModel.changeLikeToPost(post: post)
-    }
-
-    /// フォロー
-    func followUser(friendUid: String) async {
-        await userFriendDataModel.addUserFriend(friendUid: friendUid, friendType: .follow)
-    }
-
-    /// ブロック
-    func blockUser(friendUid: String) async {
-        await userFriendDataModel.addUserFriend(friendUid: friendUid, friendType: .block)
-    }
-
-    /// 通報
-    func reportUser(friendUid: String) {
-        // TODO: 通報処理書く
     }
 
     // MARK: - データ取得
@@ -93,24 +73,6 @@ class CockPostViewModel: ObservableObject {
     /// uid取得
     func fetchUid() -> String {
         return postDataModel.fetchUid() ?? ""
-    }
-
-    /// userData取得
-    func fetchUserData() async -> UserElement? {
-        let uid = fetchUid()
-        return await userDataModel.fetchUserData(uid: uid)
-    }
-
-    /// UserFriendElement取得
-    func fetchUserFriendElement() async -> UserFriendElement? {
-        let uid = fetchUid()
-        return await userFriendDataModel.fetchUserFriendData(uid: uid)
-    }
-
-    /// UserPostElement取得
-    func fetchUserPostElement() async -> UserPostElement? {
-        let uid = fetchUid()
-        return await userPostDataModel.fetchUserPostData(uid: uid)
     }
 
     /// リスナーを停止
