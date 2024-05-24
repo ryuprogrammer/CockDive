@@ -214,6 +214,9 @@ struct CockCardView: View {
                 .frame(height: 1)
                 .padding(0)
         }
+        .onTapGesture {
+            path.append(.detailView(postData: showPostData))
+        }
         .onAppear {
             // データの初期化
             cockCardVM.postData = showPostData
