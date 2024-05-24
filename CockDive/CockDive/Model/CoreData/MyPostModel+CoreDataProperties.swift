@@ -17,7 +17,6 @@ extension MyPostModel {
 }
 
 extension MyPostModel : Identifiable {
-
 }
 
 extension MyPostModel {
