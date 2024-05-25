@@ -1,8 +1,6 @@
 import Foundation
 
 class ProfileViewModel: ObservableObject {
-    
-
     // 投稿のid、いいねした投稿のidを取得
     let userPostDataModel = UserPostDataModel()
     // フォローとかフォロワーを取得
