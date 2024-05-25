@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @State var showUser: UserElement
+    let firstFollow: Bool
 
     // このViewで取得
     @State private var showUserFriends: UserFriendElement = UserFriendElement(
@@ -41,7 +42,8 @@ struct ProfileView_Previews: PreviewProvider {
                 introduction: "This is John",
                 iconImage: nil,
                 iconURL: nil
-            )
+            ),
+            firstFollow: false
         )
     }
 }

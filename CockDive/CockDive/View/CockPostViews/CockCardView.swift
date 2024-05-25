@@ -37,7 +37,8 @@ struct CockCardView: View {
                                 introduction: nil,
                                 iconImage: showPostData.postUserIconImage,
                                 iconURL: nil
-                            )
+                            ),
+                            firstFollow: cockCardVM.showIsFollow
                         )
                     )
                 } label: {
@@ -215,7 +216,13 @@ struct CockCardView: View {
                 .padding(0)
         }
         .onTapGesture {
-            path.append(.detailView(postData: showPostData))
+            path.append(
+                .detailView(
+                    postData: showPostData,
+                    firstLike: cockCardVM.showIsLikePost,
+                    firstFollow: cockCardVM.showIsFollow
+                )
+            )
         }
         .onAppear {
             // データの初期化

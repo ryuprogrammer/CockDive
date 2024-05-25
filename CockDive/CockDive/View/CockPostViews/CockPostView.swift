@@ -35,10 +35,10 @@ struct CockPostView: View {
             }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
-                case .detailView(let postData):
-                    PostDetailView(showPostData: postData)
-                case .profileView(userData: let userData):
-                    ProfileView(showUser: userData)
+                case .detailView(let postData, let firstLike, let firstFollow):
+                    PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
+                case .profileView(userData: let userData, let firstFollow):
+                    ProfileView(showUser: userData, firstFollow: firstFollow)
                 }
             }
         }
@@ -124,8 +124,8 @@ struct CockPostView: View {
 }
 
 enum CockCardNavigationPath: Hashable {
-    case detailView(postData: PostElement)
-    case profileView(userData: UserElement)
+    case detailView(postData: PostElement, firstLike: Bool, firstFollow: Bool)
+    case profileView(userData: UserElement, firstFollow: Bool)
 }
 
 #Preview {

@@ -3,8 +3,8 @@ import FirebaseFirestore
 
 class PostDetailViewModel: ObservableObject {
     @Published var postData: PostElement?
-    @Published var showIsLikePost: Bool = false
-    @Published var showIsFollow: Bool = false
+    @Published var isLike: Bool = false
+    @Published var isFollow: Bool = false
 
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
@@ -16,9 +16,9 @@ class PostDetailViewModel: ObservableObject {
 
     // ロードステータス
     private var loadStatus: LoadStatus = .initial
-    
+
     private var postListener: ListenerRegistration? = nil
-    
+
     // ロードステータス
     private enum LoadStatus {
         case initial
@@ -26,19 +26,25 @@ class PostDetailViewModel: ObservableObject {
         case completion
         case error
     }
-    
+
+    // 初期値設定用メソッド
+    func initialize(firstLike: Bool, firstFollow: Bool) {
+        self.isLike = firstLike
+        self.isFollow = firstFollow
+    }
+
     // MARK: - データ追加
     /// コメント更新（追加/ 削除）
     func updateComment(post: PostElement, newComment: CommentElement) {
         commentDataModel.updateComment(post: post, newComment: newComment)
     }
-    
+
     /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(
         post: PostElement
     ) async {
         guard let id = post.id else { return }
-        let toLike = !showIsLikePost
+        let toLike = !isLike
         // CoreDataのライク変更
         coreDataMyDataModel.changeLike(postId: id, toLike: toLike)
         // FirestoreのPostDataModelのライク変更
@@ -59,12 +65,12 @@ class PostDetailViewModel: ObservableObject {
     func blockUser(friendUid: String) async {
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
     }
-    
+
     /// 通報
     func reportUser(friendUid: String) async {
         // TODO: 通報処理書く
     }
-    
+
     // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String {
@@ -77,26 +83,26 @@ class PostDetailViewModel: ObservableObject {
         }
         return nil
     }
-    
+
     /// postIdからPostDataを取得
     func fetchPostFromPostId(postId: String) async -> PostElement? {
         return await postDataModel.fetchPostFromPostId(postId: postId)
     }
-    
+
     // MARK: - CoreData
     /// ライクしているか判定（CoreData）
     func checkIsLike(postId: String?) {
         if let postId {
-            showIsLikePost = coreDataMyDataModel.checkIsLike(postId: postId)
-            print("ライク:\(showIsLikePost)")
+            isLike = coreDataMyDataModel.checkIsLike(postId: postId)
+            print("ライク:\(isLike)")
         }
     }
 
     /// フォローしているか判定
     func checkIsFollow(friendUid: String?) {
         if let friendUid {
-            showIsFollow = coreDataMyDataModel.checkIsFollow(uid: friendUid)
-            print("フォロー: \(showIsFollow)")
+            isFollow = coreDataMyDataModel.checkIsFollow(uid: friendUid)
+            print("フォロー: \(isFollow)")
         }
     }
 
@@ -106,7 +112,7 @@ class PostDetailViewModel: ObservableObject {
         guard let postId else { return }
         // 既存のリスナーを削除
         stopListeningToPosts()
-        
+
         // 新しいリスナーを設定
         postListener = postDataModel.listenToPostData(postId: postId) { [weak self] postsData in
             DispatchQueue.main.async {
@@ -114,7 +120,7 @@ class PostDetailViewModel: ObservableObject {
             }
         }
     }
-    
+
     /// リスナーを停止
     func stopListeningToPosts() {
         postListener = nil

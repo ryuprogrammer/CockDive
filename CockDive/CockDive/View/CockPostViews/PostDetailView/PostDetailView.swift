@@ -2,6 +2,10 @@ import SwiftUI
 
 struct PostDetailView: View {
     @State var showPostData: PostElement
+    // ライクの初期値
+    @State var showIsLike: Bool
+    // フォローの初期値
+    @State var showIsFollow: Bool
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
@@ -74,9 +78,9 @@ struct PostDetailView: View {
                             }
                         } label: {
                             StrokeButtonUI(
-                                text: postDetailVM.showIsFollow ? "フォロー中" : "フォロー" ,
+                                text: showIsFollow ? "フォロー中" : "フォロー",
                                 size: .small,
-                                isFill: postDetailVM.showIsFollow ? true : false
+                                isFill: showIsFollow ? true : false
                             )
                             // 押せない時は少し白くする
                             .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
@@ -113,7 +117,7 @@ struct PostDetailView: View {
                             // haptics
                             hapticsManager.playHapticPattern()
 
-                            if postDetailVM.showIsLikePost {
+                            if showIsLike {
                                 showPostData.likeCount -= 1
                             } else {
                                 showPostData.likeCount += 1
@@ -129,7 +133,7 @@ struct PostDetailView: View {
                                 isLikeButtonDisabled = false
                             }
                         } label: {
-                            Image(systemName: postDetailVM.showIsLikePost ? "heart.fill" : "heart")
+                            Image(systemName: showIsLike ? "heart.fill" : "heart")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 30)
@@ -162,6 +166,7 @@ struct PostDetailView: View {
                     .frame(height: 300)
             }
 
+            // コメント入力
             VStack {
                 Spacer()
 
@@ -253,15 +258,20 @@ struct PostDetailView: View {
             print("コメント: \(showPostData.comment)")
             // Postデータをリッスン
             postDetailVM.listenToPost(postId: showPostData.id)
-            // フォローとライクを初期化
-            postDetailVM.checkIsLike(postId: showPostData.id)
-            postDetailVM.checkIsFollow(friendUid: showPostData.uid)
         }
         .onChange(of: postDetailVM.postData) { newPostData in
             if let newPostData {
                 // データが更新されたので、画面に描画
                 showPostData = newPostData
             }
+        }
+        .onChange(of: postDetailVM.isLike) { isLike in
+            // ライク更新
+            showIsLike = isLike
+        }
+        .onChange(of: postDetailVM.isFollow) { isFollow in
+            // フォロー更新
+            showIsFollow = isFollow
         }
     }
 }
@@ -289,7 +299,9 @@ struct PostDetailView: View {
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date()),
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date())
                         ]
-                    )
+                    ),
+                    showIsLike: false,
+                    showIsFollow: false
                 )
             }
         }
