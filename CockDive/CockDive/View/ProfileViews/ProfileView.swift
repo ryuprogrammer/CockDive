@@ -32,6 +32,8 @@ struct ProfileView: View {
         return 400
     }
 
+    @Binding var navigationPath: [CockCardNavigationPath]
+
     var body: some View {
         ScrollViewReader { proxy in
             List {
@@ -61,12 +63,11 @@ struct ProfileView: View {
                     .listRowSeparator(.hidden)
 
                 ForEach(showPostsData, id: \.id) { postData in
-                    PostView(postData: postData)
+                    CockCardView(showPostData: postData, path: $navigationPath)
                         .id(postData.id)
                         .onAppear {
                             if profileVM.checkIsLastPost(postData: postData) {
                                 Task {
-                                    print("更新！！！！！！！！！！！")
                                     guard let last = showPostsData.last,
                                           let lastId = last.id else { return }
                                     await profileVM.fetchPostsDataByStatus(
@@ -77,6 +78,7 @@ struct ProfileView: View {
                             }
                         }
                 }
+                .listRowSeparator(.hidden)
                 .onChange(of: showPostsData) { _ in
                     if let lastPost = lastPost {
                         proxy.scrollTo(lastPost.id, anchor: .center)
@@ -132,20 +134,16 @@ struct ProfileView: View {
             }
         }
         .onChange(of: profileVM.newPostsData) { newPostData in
-            print("newPostData: \(newPostData.count)")
             lastPost = showPostsData.last
             showPostsData.append(contentsOf: newPostData)
-            print("showPostsData: \(showPostsData.count)")
         }
         .onChange(of: profileVM.userFriends) { userFriends in
             if let userFriends {
-                print("userFriends: \(userFriends)")
                 showUserFriends = userFriends
             }
         }
         .onChange(of: profileVM.userPosts) { userPosts in
             if let userPosts {
-                print("userPosts: \(userPosts)")
                 showUserPosts = userPosts
             }
         }
@@ -253,7 +251,8 @@ struct PostView: View {
                 iconImage: nil,
                 iconURL: nil
             ),
-            showIsFollow: false
+            showIsFollow: false,
+            navigationPath: .constant([])
         )
     }
 }

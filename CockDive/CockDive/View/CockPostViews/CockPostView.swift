@@ -38,7 +38,7 @@ struct CockPostView: View {
                 case .detailView(let postData, let firstLike, let firstFollow):
                     PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
                 case .profileView(let userData, let isFollow):
-                    ProfileView(showUser: userData, showIsFollow: isFollow)
+                    ProfileView(showUser: userData, showIsFollow: isFollow, navigationPath: $cockCardNavigationPath)
                 }
             }
         }
@@ -89,7 +89,6 @@ struct CockPostView: View {
             .listStyle(.plain)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
-                    // スクロールを制御
                     proxy.scrollTo(lastPost.id, anchor: .center)
                 }
             }

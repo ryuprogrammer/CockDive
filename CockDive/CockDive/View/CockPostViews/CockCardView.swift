@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CockCardView: View {
     @State var showPostData: PostElement
+    @Binding var path: [CockCardNavigationPath]
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
@@ -21,7 +22,6 @@ struct CockCardView: View {
 #endif
     }
 
-    @Binding var path: [CockCardNavigationPath]
     @StateObject private var hapticsManager = HapticsManager()
 
     var body: some View {
