@@ -64,7 +64,8 @@ struct CockPostView: View {
                 ForEach(showPostsData, id: \.id) { postData in
                     CockCardView(
                         showPostData: postData,
-                        path: $cockCardNavigationPath
+                        path: $cockCardNavigationPath,
+                        isShowUserNameAndFollowButton: true
                     )
                     .id(postData.id)
                     .onAppear {

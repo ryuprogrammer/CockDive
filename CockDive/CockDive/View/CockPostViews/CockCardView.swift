@@ -3,6 +3,9 @@ import SwiftUI
 struct CockCardView: View {
     @State var showPostData: PostElement
     @Binding var path: [CockCardNavigationPath]
+    /// ニックネームとフォローボタンを表示するかどうか
+    /// CockPostでは表示、Profileでは非表示
+    let isShowUserNameAndFollowButton: Bool
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
@@ -253,10 +256,10 @@ struct CockCardView: View {
         @State var path: [CockCardNavigationPath] = []
         var body: some View {
             List {
-                CockCardView(showPostData: postData, path: $path)
+                CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
                     .listRowSeparator(.hidden)
 
-                CockCardView(showPostData: postData, path: $path)
+                CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: false)
                     .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
