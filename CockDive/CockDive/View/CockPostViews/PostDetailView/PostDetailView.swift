@@ -26,6 +26,33 @@ struct PostDetailView: View {
         ZStack {
             ScrollView {
                 VStack {
+                    // フォローボタン
+                    Button {
+                        // ボタンの無効化
+                        isFollowButtonDisabled = true
+                        // haptics
+                        hapticsManager.playHapticPattern()
+                        showIsFollow.toggle()
+                        Task {
+                            // フォローデータ更新
+                            await postDetailVM.followUser(friendUid: showPostData.uid)
+                            // フォローデータ取得
+                            postDetailVM.checkIsFollow(friendUid: showPostData.uid)
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isFollowButtonDisabled = false
+                        }
+                    } label: {
+                        StrokeButtonUI(
+                            text: showIsFollow ? "フォロー中" : "フォロー",
+                            size: .small,
+                            isFill: showIsFollow ? true : false
+                        )
+                        // 押せない時は少し白くする
+                        .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+                    }
+                    .disabled(isFollowButtonDisabled)
                     HStack {
                         // アイコン写真
                         if let data = showPostData.postUserIconImage,
@@ -85,7 +112,6 @@ struct PostDetailView: View {
                             .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
                         }
                         .disabled(isFollowButtonDisabled)
-                        .buttonStyle(BorderlessButtonStyle())
                     }
 
                     // Postの写真
