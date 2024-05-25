@@ -47,7 +47,6 @@ struct ProfileView: View {
 
                 if let introduction = showUser.introduction {
                     DynamicHeightCommentView(message: introduction, maxTextCount: 30)
-                        .padding(.horizontal)
                         .listRowSeparator(.hidden)
                 }
 
@@ -58,10 +57,11 @@ struct ProfileView: View {
                     profileVM: profileVM,
                     showUser: showUser
                 )
-                .padding(.horizontal)
                 .listRowSeparator(.hidden)
 
                 Divider()
+                    .frame(height: 1)
+                    .padding(0)
                     .listRowSeparator(.hidden)
 
                 ForEach(showPostsData, id: \.id) { postData in
@@ -166,8 +166,7 @@ struct ProfileHeaderView: View {
     var screenWidth: CGFloat
 
     var body: some View {
-        HStack(spacing: 10) {
-            Spacer()
+        HStack {
             if let data = showUser.iconImage,
                let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
@@ -175,27 +174,27 @@ struct ProfileHeaderView: View {
                     .aspectRatio(contentMode: .fit)
                     .foregroundStyle(Color.gray)
                     .frame(width: screenWidth / 6, height: screenWidth / 6)
-                    .padding()
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundStyle(Color.gray)
                     .frame(width: screenWidth / 6, height: screenWidth / 6)
-                    .padding()
             }
             Spacer()
-            VStack {
-                Text("\(showUserPosts.postCount)")
-                Text("投稿")
-            }
-            VStack {
-                Text("\(showUserFriends.followCount)")
-                Text("フォロー")
-            }
-            VStack {
-                Text("\(showUserFriends.followerCount)")
-                Text("フォロワー")
+            HStack(spacing: 15) {
+                VStack {
+                    Text("\(showUserPosts.postCount)")
+                    Text("投稿")
+                }
+                VStack {
+                    Text("\(showUserFriends.followCount)")
+                    Text("フォロー")
+                }
+                VStack {
+                    Text("\(showUserFriends.followerCount)")
+                    Text("フォロワー")
+                }
             }
             Spacer()
         }
@@ -232,19 +231,7 @@ struct FollowButtonView: View {
             }
             .disabled(isFollowButtonDisabled)
             .buttonStyle(BorderlessButtonStyle())
-            .padding(.trailing)
         }
-    }
-}
-
-struct PostView: View {
-    var postData: PostElement
-
-    var body: some View {
-        Text("postData: \(postData.title)")
-            .font(.largeTitle)
-            .frame(width: 400, height: 300)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 

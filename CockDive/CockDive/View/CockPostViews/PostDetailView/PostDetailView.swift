@@ -64,6 +64,7 @@ struct PostDetailView: View {
                             isFollowButtonDisabled = true
                             // haptics
                             hapticsManager.playHapticPattern()
+                            showIsFollow.toggle()
                             Task {
                                 // フォローデータ更新
                                 await postDetailVM.followUser(friendUid: showPostData.uid)
@@ -108,37 +109,43 @@ struct PostDetailView: View {
                             DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
                         }
 
-                        // ライクボタン
-                        Button {
-                            // ボタンの無効化
-                            isLikeButtonDisabled = true
-                            // haptics
-                            hapticsManager.playHapticPattern()
+                        VStack {
+                            // ライクボタン
+                            Button {
+                                // ボタンの無効化
+                                isLikeButtonDisabled = true
+                                // haptics
+                                hapticsManager.playHapticPattern()
 
-                            if showIsLike {
-                                showPostData.likeCount -= 1
-                            } else {
-                                showPostData.likeCount += 1
-                            }
-                            Task {
-                                // ライクデータ変更（FirebaseとCoreData）
-                                await postDetailVM.likePost(post: showPostData)
-                                // CoreDataからライクデータ取得
-                                postDetailVM.checkIsLike(postId: showPostData.id)
-                            }
+                                if showIsLike {
+                                    showPostData.likeCount -= 1
+                                } else {
+                                    showPostData.likeCount += 1
+                                }
+                                showIsLike.toggle()
+                                Task {
+                                    // ライクデータ変更（FirebaseとCoreData）
+                                    await postDetailVM.likePost(post: showPostData)
+                                    // CoreDataからライクデータ取得
+                                    postDetailVM.checkIsLike(postId: showPostData.id)
+                                }
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                isLikeButtonDisabled = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    isLikeButtonDisabled = false
+                                }
+                            } label: {
+                                Image(systemName: showIsLike ? "heart.fill" : "heart")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30)
+                                    .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
                             }
-                        } label: {
-                            Image(systemName: showIsLike ? "heart.fill" : "heart")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30)
-                                .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
+                            .disabled(isLikeButtonDisabled)
+                            .buttonStyle(BorderlessButtonStyle())
+
+                            Text("\(showPostData.likeCount)")
+                                .font(.footnote)
                         }
-                        .disabled(isLikeButtonDisabled)
-                        .buttonStyle(BorderlessButtonStyle())
                     }
                     .padding(.top)
                 }
@@ -166,7 +173,7 @@ struct PostDetailView: View {
                 .listStyle(.plain)
 
                 Spacer()
-                    .frame(height: 300)
+                    .frame(height: 400)
             }
 
             // コメント入力
