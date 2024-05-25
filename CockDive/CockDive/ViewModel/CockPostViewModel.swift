@@ -36,6 +36,7 @@ class CockPostViewModel: ObservableObject {
             await fetchMorePosts()
         }
     }
+
     /// Postを複数取得
     func fetchPosts() async {
         let datas = await postDataModel.fetchPostIdData()
@@ -45,7 +46,7 @@ class CockPostViewModel: ObservableObject {
         }
     }
 
-    /// 最後に取得したDocmentIdを基準にさらにPostIdを取得
+    /// 最後に取得したDocmentIdを基準にさらにPostを取得
     func fetchMorePosts() async {
         DispatchQueue.main.async {
             // ロード開始のステータスに変更
@@ -63,7 +64,6 @@ class CockPostViewModel: ObservableObject {
             case .failure(let error):
                 // エラーが発生した場合の処理
                 DispatchQueue.main.async {
-                    print("エラーーーーーーー: \(error)")
                     self.loadStatus = .error
                 }
             }

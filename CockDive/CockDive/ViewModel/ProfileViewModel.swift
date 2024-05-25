@@ -3,9 +3,10 @@ import Foundation
 class ProfileViewModel: ObservableObject {
     @Published var userFriends: UserFriendElement?
     @Published var userPosts: UserPostElement?
-    @Published var showPostData: [PostElement] = []
+    @Published var newPostsData: [PostElement] = []
     @Published var isFollow: Bool = false
-
+    // ロードステータス
+    @Published var loadStatus: LoadStatus = .initial
     // 投稿のid、いいねした投稿のidを取得
     let userPostDataModel = UserPostDataModel()
     // フォローとかフォロワーを取得
@@ -13,7 +14,28 @@ class ProfileViewModel: ObservableObject {
     let postDataModel = PostDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
 
+    // ロードステータス
+    enum LoadStatus {
+        case initial
+        case loading
+        case completion
+        case error
+    }
+
     // MARK: - データ取得
+    /// PostをloadStatusに応じて取得
+    func fetchPostsDataByStatus(uid: String, lastId: String?) async {
+        switch loadStatus {
+        case .initial: // 初回は普通にデータ取得
+            await fetchPostFromUid(uid: uid)
+        case .loading: // 取得中なので、何もしない
+            return
+        case .completion, .error:
+            guard let lastId else { return }
+            await fetchMorePosts(uid: uid, lastDocumentId: lastId)
+        }
+    }
+
     /// UserFriendElement取得
     func fetchUserFriendData(uid: String) async {
         let userFriends = await userFriendModel.fetchUserFriendData(uid: uid)
@@ -30,11 +52,35 @@ class ProfileViewModel: ObservableObject {
         }
     }
 
-    /// PostIdからPost取得
+    /// UidからPost取得
     func fetchPostFromUid(uid: String) async {
         let postData = await postDataModel.fetchPostFromUid(uid: uid)
         DispatchQueue.main.async {
-            self.showPostData = postData
+            self.newPostsData = postData
+            self.loadStatus = .completion
+        }
+    }
+
+    /// 最後に取得したDocmentIdを基準にさらにPostを取得
+    func fetchMorePosts(uid: String, lastDocumentId: String) async {
+        DispatchQueue.main.async {
+            // ロード開始のステータスに変更
+            self.loadStatus = .loading
+        }
+        await postDataModel.fetchMorePostDataFromUid(uid: uid, lastDocumentId: lastDocumentId) { result in
+            switch result {
+            case .success(let posts):
+                // データの取得が成功した場合の処理
+                DispatchQueue.main.async {
+                    self.newPostsData = posts
+                    self.loadStatus = .completion
+                }
+            case .failure(let error):
+                // エラーが発生した場合の処理
+                DispatchQueue.main.async {
+                    self.loadStatus = .error
+                }
+            }
         }
     }
 
@@ -63,5 +109,14 @@ class ProfileViewModel: ObservableObject {
         if let friendUid {
             self.isFollow = coreDataMyDataModel.checkIsFollow(uid: friendUid)
         }
+    }
+
+    // MARK: - その他
+    /// 表示されたPostが最後か判定
+    func checkIsLastPost(postData: PostElement) -> Bool {
+        if postData.id == newPostsData.last?.id {
+            return true
+        }
+        return false
     }
 }
