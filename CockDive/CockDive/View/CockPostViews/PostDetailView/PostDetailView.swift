@@ -15,8 +15,6 @@ struct PostDetailView: View {
     // コメント
     @State private var comment: String = ""
     let postDetailVM = PostDetailViewModel()
-    // TabBar用
-    @State var flag: Visibility = .hidden
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     // 画面遷移戻る
@@ -221,7 +219,7 @@ struct PostDetailView: View {
             }
         }
         // TabBar非表示
-        .toolbar(flag, for: .tabBar)
+        .toolbar(.hidden, for: .tabBar)
         // 戻るボタン非表示
         .navigationBarBackButtonHidden(true)
         .listStyle(.plain)

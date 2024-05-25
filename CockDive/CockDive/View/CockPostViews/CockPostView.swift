@@ -37,8 +37,8 @@ struct CockPostView: View {
                 switch pathData {
                 case .detailView(let postData, let firstLike, let firstFollow):
                     PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
-                case .profileView(userData: let userData, let firstFollow):
-                    ProfileView(showUser: userData, firstFollow: firstFollow)
+                case .profileView(userData: let userData, let isFollow):
+                    ProfileView(showUser: userData, showIsFollow: isFollow)
                 }
             }
         }
@@ -125,7 +125,7 @@ struct CockPostView: View {
 
 enum CockCardNavigationPath: Hashable {
     case detailView(postData: PostElement, firstLike: Bool, firstFollow: Bool)
-    case profileView(userData: UserElement, firstFollow: Bool)
+    case profileView(userData: UserElement, showIsFollow: Bool)
 }
 
 #Preview {

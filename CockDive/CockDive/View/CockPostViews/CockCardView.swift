@@ -38,7 +38,7 @@ struct CockCardView: View {
                                 iconImage: showPostData.postUserIconImage,
                                 iconURL: nil
                             ),
-                            firstFollow: cockCardVM.showIsFollow
+                            showIsFollow: cockCardVM.showIsFollow
                         )
                     )
                 } label: {
