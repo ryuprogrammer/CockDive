@@ -1,15 +1,23 @@
 import SwiftUI
 
 struct DynamicHeightTextEditorView: View {
+    // 入力するテキスト
     @Binding var text: String
+    // プレースホルダーの文字
     let placeholder: String
+    // 最大の高さ
     let maxHeight: CGFloat
 
     var body: some View {
         ZStack(alignment: .leading) {
             // テキストエディター
             HStack {
-                Text(text.isEmpty ? "placeholder" : text)
+                if text.isEmpty {
+                    Text(placeholder)
+                        .foregroundColor(.gray)
+                } else {
+                    Text(text)
+                }
                 Spacer(minLength: 0)
             }
             .allowsHitTesting(false)
@@ -20,25 +28,12 @@ struct DynamicHeightTextEditorView: View {
                 TextEditor(text: $text)
                     .offset(y: 1.8)
             )
-
-            // プレースホルダー
-            if text.isEmpty {
-                Text(placeholder)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 5)
-            }
         }
         .padding(.horizontal, 10)
-        .frame(maxHeight: maxHeight) // テキストエディタの最大サイズを設定する
-        .fixedSize(horizontal: false, vertical: true) // テキストエディタの最大サイズを設定する
-        .background(Color.white) // テキストエディタの背景色
+        .frame(maxHeight: maxHeight)
+        .fixedSize(horizontal: false, vertical: true)
+        .background(Color.white)
         .mask(RoundedRectangle(cornerRadius: 18).padding(.vertical, 3))
-        .onAppear {
-            UITextView.appearance().backgroundColor = .clear
-        }
-        .onDisappear {
-            UITextView.appearance().backgroundColor = nil
-        }
     }
 }
 
