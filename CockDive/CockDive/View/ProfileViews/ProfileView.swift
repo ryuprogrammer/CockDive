@@ -3,7 +3,6 @@ import SwiftUI
 struct ProfileView: View {
     @State var showUser: UserElement
     @State var showIsFollow: Bool
-
     @ObservedObject var profileVM = ProfileViewModel()
     @StateObject private var hapticsManager = HapticsManager()
 
@@ -40,6 +39,7 @@ struct ProfileView: View {
         ScrollView {
             // アイコン、投稿数、フォロー数、フォロワー数
             HStack(spacing: 10) {
+                Spacer()
                 // アイコン画像
                 if let data = showUser.iconImage,
                    let uiImage = UIImage(data: data) {
@@ -74,10 +74,12 @@ struct ProfileView: View {
                     Text("\(showUserFriends.followerCount)")
                     Text("フォロワー")
                 }
-                .padding(.trailing)
+
+                Spacer()
             }
             // 自己紹介文
             DynamicHeightCommentView(message: showUser.introduction ?? "", maxTextCount: 30)
+                .padding(.horizontal)
             // フォローボタン
             HStack {
                 Spacer()
@@ -108,14 +110,16 @@ struct ProfileView: View {
                 }
                 .disabled(isFollowButtonDisabled)
                 .buttonStyle(BorderlessButtonStyle())
+                .padding(.trailing)
             }
+            .padding(.horizontal)
 
-            // ここで使用
-            SwipeableCardView(screenWidth: screenWidth) {
-                Group {
-                    cardView(text: "Card 1", color: .blue, width: screenWidth)
-                    cardView(text: "Card 2", color: .green, width: screenWidth)
-                }
+            ForEach(profileVM.showPostData, id: \.id) { postData in
+                Text("投稿: \(postData.title)")
+                    .frame(width: 350, height: 200)
+                    .foregroundStyle(Color.white)
+                    .background(Color.mainColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
             }
         }
         // TabBar非表示
@@ -168,6 +172,7 @@ struct ProfileView: View {
         .onAppear {
             Task {
                 guard let uid = showUser.id else { return }
+                await profileVM.fetchPostFromUid(uid: uid)
                 await profileVM.fetchUserFriendData(uid: uid)
                 await profileVM.fetchUserPostElement(uid: uid)
             }
@@ -187,57 +192,6 @@ struct ProfileView: View {
         .onChange(of: profileVM.isFollow) { isFollow in
             showIsFollow = isFollow
         }
-    }
-
-    @ViewBuilder
-    private func cardView(text: String, color: Color, width: CGFloat) -> some View {
-        Text(text)
-            .frame(width: width, height: 200)
-            .background(color)
-            .cornerRadius(10)
-            .padding()
-    }
-}
-
-struct SwipeableCardView<Content: View>: View {
-    let screenWidth: CGFloat
-    let content: () -> Content
-    @State private var offset: CGFloat = 0
-    @State private var currentIndex: Int = 0
-
-    var body: some View {
-        GeometryReader { geometry in
-            ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 0) {
-                        content()
-                            .frame(width: screenWidth, height: geometry.size.height)
-                    }
-                    .frame(width: screenWidth * 2, height: geometry.size.height)
-                }
-                .content.offset(x: -CGFloat(currentIndex) * screenWidth + offset)
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            self.offset = value.translation.width
-                        }
-                        .onEnded { value in
-                            withAnimation {
-                                if value.translation.width < -screenWidth / 2 {
-                                    currentIndex = 1
-                                } else if value.translation.width > screenWidth / 2 {
-                                    currentIndex = 0
-                                }
-                                offset = 0
-                            }
-                        }
-                )
-                .onAppear {
-                    offset = 0
-                }
-            }
-        }
-        .frame(height: 200)
     }
 }
 

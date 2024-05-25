@@ -178,20 +178,23 @@ struct PostDataModel {
     func fetchPostFromUid(uid: String) async -> [PostElement] {
         let docRef = db.collection(postDataCollection)
             .whereField("uid", isEqualTo: uid)
-            .order(by: "createAt", descending: true)
             .limit(to: fetchPostLimit)
         var postData: [PostElement] = []
-        
+
         do {
             let querySnapshot = try await docRef.getDocuments()
             for document in querySnapshot.documents {
                 let result = try document.data(as: PostElement.self)
                 postData.append(result)
             }
+
+            // createAtで並び替え
+            postData.sort { $0.createAt > $1.createAt }
+
         } catch {
             print("Error getting documents: \(error)")
         }
-        
+
         return postData
     }
     

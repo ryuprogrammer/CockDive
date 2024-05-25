@@ -3,7 +3,7 @@ import Foundation
 class ProfileViewModel: ObservableObject {
     @Published var userFriends: UserFriendElement?
     @Published var userPosts: UserPostElement?
-    @Published var postData: [PostElement] = []
+    @Published var showPostData: [PostElement] = []
     @Published var isFollow: Bool = false
 
     // 投稿のid、いいねした投稿のidを取得
@@ -31,8 +31,11 @@ class ProfileViewModel: ObservableObject {
     }
 
     /// PostIdからPost取得
-    func fetchPostFromId(userPost: UserPostElement) async {
-        
+    func fetchPostFromUid(uid: String) async {
+        let postData = await postDataModel.fetchPostFromUid(uid: uid)
+        DispatchQueue.main.async {
+            self.showPostData = postData
+        }
     }
 
     // MARK: - データ追加
