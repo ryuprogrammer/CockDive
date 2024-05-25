@@ -45,9 +45,11 @@ struct ProfileView: View {
                 )
                 .listRowSeparator(.hidden)
 
-                DynamicHeightCommentView(message: showUser.introduction ?? "", maxTextCount: 30)
-                    .padding(.horizontal)
-                    .listRowSeparator(.hidden)
+                if let introduction = showUser.introduction {
+                    DynamicHeightCommentView(message: introduction, maxTextCount: 30)
+                        .padding(.horizontal)
+                        .listRowSeparator(.hidden)
+                }
 
                 FollowButtonView(
                     showIsFollow: $showIsFollow,
@@ -63,25 +65,29 @@ struct ProfileView: View {
                     .listRowSeparator(.hidden)
 
                 ForEach(showPostsData, id: \.id) { postData in
-                    CockCardView(showPostData: postData, path: $navigationPath)
-                        .id(postData.id)
-                        .onAppear {
-                            if profileVM.checkIsLastPost(postData: postData) {
-                                Task {
-                                    guard let last = showPostsData.last,
-                                          let lastId = last.id else { return }
-                                    await profileVM.fetchPostsDataByStatus(
-                                        uid: postData.uid,
-                                        lastId: lastId
-                                    )
-                                }
+                    CockCardView(
+                        showPostData: postData,
+                        path: $navigationPath,
+                        isShowUserNameAndFollowButton: false
+                    )
+                    .id(postData.id)
+                    .onAppear {
+                        if profileVM.checkIsLastPost(postData: postData) {
+                            Task {
+                                guard let last = showPostsData.last,
+                                      let lastId = last.id else { return }
+                                await profileVM.fetchPostsDataByStatus(
+                                    uid: postData.uid,
+                                    lastId: lastId
+                                )
                             }
                         }
+                    }
                 }
                 .listRowSeparator(.hidden)
                 .onChange(of: showPostsData) { _ in
                     if let lastPost = lastPost {
-                        proxy.scrollTo(lastPost.id, anchor: .center)
+                        proxy.scrollTo(lastPost.id, anchor: .bottom)
                     }
                 }
             }

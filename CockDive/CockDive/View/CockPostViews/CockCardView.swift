@@ -29,110 +29,112 @@ struct CockCardView: View {
 
     var body: some View {
         // アイコン、ニックネーム、フォローボタン、区切り線のセクション
-        VStack {
-            HStack {
-                Button {
-                    let isFollow = cockCardVM.showIsFollow
-                    path.append(
-                        .profileView(
-                            userData: UserElement(
-                                id: showPostData.uid,
-                                nickName: showPostData.postUserNickName ?? "",
-                                introduction: nil,
-                                iconImage: showPostData.postUserIconImage,
-                                iconURL: nil
-                            ),
-                            showIsFollow: isFollow
+        if isShowUserNameAndFollowButton {
+            VStack {
+                HStack {
+                    Button {
+                        let isFollow = cockCardVM.showIsFollow
+                        path.append(
+                            .profileView(
+                                userData: UserElement(
+                                    id: showPostData.uid,
+                                    nickName: showPostData.postUserNickName ?? "",
+                                    introduction: nil,
+                                    iconImage: showPostData.postUserIconImage,
+                                    iconURL: nil
+                                ),
+                                showIsFollow: isFollow
+                            )
                         )
-                    )
-                } label: {
-                    HStack {
-                        // アイコン画像
-                        if let data = showPostData.postUserIconImage,
-                           let uiImage = UIImage(data: data) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.gray)
-                                .frame(width: screenWidth / 12, height: screenWidth / 12)
-                        } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.gray)
-                                .frame(width: screenWidth / 12, height: screenWidth / 12)
-                        }
-
-                        // ニックネーム
-                        Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
-                            .foregroundStyle(Color.black)
-                    }
-                }
-                .buttonStyle(BorderlessButtonStyle())
-
-                Menu {
-                    Button(action: {
-                        Task {
-                            /// ブロックするアクション
-                            if let uid = cockCardVM.postData?.uid {
-                                await cockCardVM.blockUser(friendUid: uid)
+                    } label: {
+                        HStack {
+                            // アイコン画像
+                            if let data = showPostData.postUserIconImage,
+                               let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundStyle(Color.gray)
+                                    .frame(width: screenWidth / 12, height: screenWidth / 12)
+                            } else {
+                                Image(systemName: "person.circle.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundStyle(Color.gray)
+                                    .frame(width: screenWidth / 12, height: screenWidth / 12)
                             }
-                        }
-                    }, label: {
-                        HStack {
-                            Image(systemName: "nosign")
-                            Spacer()
-                            Text("ブロック")
-                        }
-                    })
 
-                    Button(action: {
-                        /// 通報するアクション
-                        if let uid = cockCardVM.postData?.uid {
-                            cockCardVM.reportUser(friendUid: uid)
+                            // ニックネーム
+                            Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
+                                .foregroundStyle(Color.black)
                         }
-                    }, label: {
-                        HStack {
-                            Image(systemName: "exclamationmark.bubble")
-                            Spacer()
-                            Text("通報")
-                        }
-                    })
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .foregroundStyle(Color.black)
-                        .frame(width: 30, height: 30)
-                }
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
 
-                Spacer()
+                    Menu {
+                        Button(action: {
+                            Task {
+                                /// ブロックするアクション
+                                if let uid = cockCardVM.postData?.uid {
+                                    await cockCardVM.blockUser(friendUid: uid)
+                                }
+                            }
+                        }, label: {
+                            HStack {
+                                Image(systemName: "nosign")
+                                Spacer()
+                                Text("ブロック")
+                            }
+                        })
 
-                // フォローボタン
-                Button {
-                    // ボタンの無効化
-                    isFollowButtonDisabled = true
-                    // haptics
-                    hapticsManager.playHapticPattern()
-                    Task {
-                        // フォローデータ更新
-                        await cockCardVM.followUser(friendUid: showPostData.uid)
-                        // フォローデータ取得
-                        cockCardVM.checkIsFollow(friendUid: showPostData.uid)
+                        Button(action: {
+                            /// 通報するアクション
+                            if let uid = cockCardVM.postData?.uid {
+                                cockCardVM.reportUser(friendUid: uid)
+                            }
+                        }, label: {
+                            HStack {
+                                Image(systemName: "exclamationmark.bubble")
+                                Spacer()
+                                Text("通報")
+                            }
+                        })
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.black)
+                            .frame(width: 30, height: 30)
                     }
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        isFollowButtonDisabled = false
+                    Spacer()
+
+                    // フォローボタン
+                    Button {
+                        // ボタンの無効化
+                        isFollowButtonDisabled = true
+                        // haptics
+                        hapticsManager.playHapticPattern()
+                        Task {
+                            // フォローデータ更新
+                            await cockCardVM.followUser(friendUid: showPostData.uid)
+                            // フォローデータ取得
+                            cockCardVM.checkIsFollow(friendUid: showPostData.uid)
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isFollowButtonDisabled = false
+                        }
+                    } label: {
+                        StrokeButtonUI(
+                            text: cockCardVM.showIsFollow ? "フォロー中" : "フォロー" ,
+                            size: .small,
+                            isFill: cockCardVM.showIsFollow ? true : false
+                        )
+                        // 押せない時は少し白くする
+                        .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
                     }
-                } label: {
-                    StrokeButtonUI(
-                        text: cockCardVM.showIsFollow ? "フォロー中" : "フォロー" ,
-                        size: .small,
-                        isFill: cockCardVM.showIsFollow ? true : false
-                    )
-                    // 押せない時は少し白くする
-                    .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+                    .disabled(isFollowButtonDisabled)
+                    .buttonStyle(BorderlessButtonStyle())
                 }
-                .disabled(isFollowButtonDisabled)
-                .buttonStyle(BorderlessButtonStyle())
             }
         }
 
