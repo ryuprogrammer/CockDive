@@ -7,13 +7,6 @@ struct DynamicHeightTextEditorView: View {
 
     var body: some View {
         ZStack(alignment: .leading) {
-            // プレースホルダー
-            if text.isEmpty {
-                Text(placeholder)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 5)
-            }
-
             // テキストエディター
             HStack {
                 Text(text.isEmpty ? "placeholder" : text)
@@ -27,6 +20,13 @@ struct DynamicHeightTextEditorView: View {
                 TextEditor(text: $text)
                     .offset(y: 1.8)
             )
+
+            // プレースホルダー
+            if text.isEmpty {
+                Text(placeholder)
+                    .foregroundColor(.gray)
+                    .padding(.leading, 5)
+            }
         }
         .padding(.horizontal, 10)
         .frame(maxHeight: maxHeight) // テキストエディタの最大サイズを設定する
@@ -46,7 +46,7 @@ struct DynamicHeightTextEditorView: View {
 #Preview {
     struct PreviewView: View {
         @State private var text: String = ""
-        
+
         var body: some View {
             HStack {
                 DynamicHeightTextEditorView(

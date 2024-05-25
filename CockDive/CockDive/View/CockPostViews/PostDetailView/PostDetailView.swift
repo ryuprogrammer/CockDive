@@ -147,6 +147,10 @@ struct PostDetailView: View {
                 .padding()
 
                 ForEach(showPostData.comment.reversed(), id: \.id) { comment in
+                    Divider()
+                        .frame(height: 1)
+                        .padding(0)
+
                     PostCommentView(comment: comment) {
                         Task {
                             // ブロック
@@ -158,7 +162,8 @@ struct PostDetailView: View {
                             await postDetailVM.reportUser(friendUid: comment.uid)
                         }
                     }
-                    .padding([.horizontal, .top])
+                    .padding(.horizontal)
+                    .padding(.vertical, 3)
                 }
                 .listStyle(.plain)
 
@@ -194,7 +199,7 @@ struct PostDetailView: View {
                         )
                         // コメント追加
                         showPostData.comment.append(newComment)
-                        self.comment = ""
+                        comment = ""
                         // コメント保存
                         postDetailVM.updateComment(post: showPostData, newComment: newComment)
                         UIApplication.shared.keybordClose()
