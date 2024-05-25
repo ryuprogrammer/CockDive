@@ -166,7 +166,6 @@ struct ProfileView: View {
                         .frame(width: 25)
                         .foregroundStyle(Color.white)
                 }
-
             }
         }
         .onAppear {
