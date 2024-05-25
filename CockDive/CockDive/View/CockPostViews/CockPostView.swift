@@ -37,7 +37,7 @@ struct CockPostView: View {
                 switch pathData {
                 case .detailView(let postData, let firstLike, let firstFollow):
                     PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
-                case .profileView(userData: let userData, let isFollow):
+                case .profileView(let userData, let isFollow):
                     ProfileView(showUser: userData, showIsFollow: isFollow)
                 }
             }

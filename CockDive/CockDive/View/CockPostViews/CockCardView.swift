@@ -29,6 +29,7 @@ struct CockCardView: View {
         VStack {
             HStack {
                 Button {
+                    let isFollow = cockCardVM.showIsFollow
                     path.append(
                         .profileView(
                             userData: UserElement(
@@ -38,7 +39,7 @@ struct CockCardView: View {
                                 iconImage: showPostData.postUserIconImage,
                                 iconURL: nil
                             ),
-                            showIsFollow: cockCardVM.showIsFollow
+                            showIsFollow: isFollow
                         )
                     )
                 } label: {
