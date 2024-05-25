@@ -167,9 +167,9 @@ struct PostDataModel {
                 let decodedUserData = try document.data(as: PostElement.self)
                 posts.append(decodedUserData)
             }
-            completion(.success(posts))  // 成功時にデータをコールバック
+            completion(.success(posts))
         } catch {
-            completion(.failure(error))  // エラー時にエラーをコールバック
+            completion(.failure(error))
             print("Error getting documents: \(error)")
         }
     }
