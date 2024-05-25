@@ -24,35 +24,9 @@ struct PostDetailView: View {
 
     var body: some View {
         ZStack {
-            ScrollView {
+            List {
+                // ボタンを有効にするために分割
                 VStack {
-                    // フォローボタン
-                    Button {
-                        // ボタンの無効化
-                        isFollowButtonDisabled = true
-                        // haptics
-                        hapticsManager.playHapticPattern()
-                        showIsFollow.toggle()
-                        Task {
-                            // フォローデータ更新
-                            await postDetailVM.followUser(friendUid: showPostData.uid)
-                            // フォローデータ取得
-                            postDetailVM.checkIsFollow(friendUid: showPostData.uid)
-                        }
-
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            isFollowButtonDisabled = false
-                        }
-                    } label: {
-                        StrokeButtonUI(
-                            text: showIsFollow ? "フォロー中" : "フォロー",
-                            size: .small,
-                            isFill: showIsFollow ? true : false
-                        )
-                        // 押せない時は少し白くする
-                        .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
-                    }
-                    .disabled(isFollowButtonDisabled)
                     HStack {
                         // アイコン写真
                         if let data = showPostData.postUserIconImage,
@@ -122,85 +96,96 @@ struct PostDetailView: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 250)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .listRowSeparator(.hidden)
                     } else {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 250)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .listRowSeparator(.hidden)
                     }
-
-                    HStack {
-                        if let memo = showPostData.memo {
-                            DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
-                        }
-
-                        VStack {
-                            // ライクボタン
-                            Button {
-                                // ボタンの無効化
-                                isLikeButtonDisabled = true
-                                // haptics
-                                hapticsManager.playHapticPattern()
-
-                                if showIsLike {
-                                    showPostData.likeCount -= 1
-                                } else {
-                                    showPostData.likeCount += 1
-                                }
-                                showIsLike.toggle()
-                                Task {
-                                    // ライクデータ変更（FirebaseとCoreData）
-                                    await postDetailVM.likePost(post: showPostData)
-                                    // CoreDataからライクデータ取得
-                                    postDetailVM.checkIsLike(postId: showPostData.id)
-                                }
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    isLikeButtonDisabled = false
-                                }
-                            } label: {
-                                Image(systemName: showIsLike ? "heart.fill" : "heart")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30)
-                                    .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
-                            }
-                            .disabled(isLikeButtonDisabled)
-                            .buttonStyle(BorderlessButtonStyle())
-
-                            Text("\(showPostData.likeCount)")
-                                .font(.footnote)
-                        }
-                    }
-                    .padding(.top)
                 }
-                .padding()
+                .listRowSeparator(.hidden)
+
+                // ボタンを有効にするために分割
+                HStack {
+                    if let memo = showPostData.memo {
+                        DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
+                    }
+
+                    VStack {
+                        // ライクボタン
+                        Button {
+                            // ボタンの無効化
+                            isLikeButtonDisabled = true
+                            // haptics
+                            hapticsManager.playHapticPattern()
+
+                            if showIsLike {
+                                showPostData.likeCount -= 1
+                            } else {
+                                showPostData.likeCount += 1
+                            }
+                            showIsLike.toggle()
+                            Task {
+                                // ライクデータ変更（FirebaseとCoreData）
+                                await postDetailVM.likePost(post: showPostData)
+                                // CoreDataからライクデータ取得
+                                postDetailVM.checkIsLike(postId: showPostData.id)
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                isLikeButtonDisabled = false
+                            }
+                        } label: {
+                            Image(systemName: showIsLike ? "heart.fill" : "heart")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
+                        }
+                        .disabled(isLikeButtonDisabled)
+                        .buttonStyle(BorderlessButtonStyle())
+
+                        Text("\(showPostData.likeCount)")
+                            .font(.footnote)
+                    }
+                }
+                .padding(.top, 3)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowSeparator(.hidden)
+                .padding(.horizontal)
 
                 ForEach(showPostData.comment.reversed(), id: \.id) { comment in
-                    Divider()
-                        .frame(height: 1)
-                        .padding(0)
+                    VStack {
+                        Divider()
+                            .frame(height: 1)
+                            .padding(0)
 
-                    PostCommentView(comment: comment) {
-                        Task {
-                            // ブロック
-                            await postDetailVM.blockUser(friendUid: comment.uid)
-                        }
-                    } reportAction: {
-                        Task {
-                            // 通報
-                            await postDetailVM.reportUser(friendUid: comment.uid)
+                        PostCommentView(comment: comment) {
+                            Task {
+                                // ブロック
+                                await postDetailVM.blockUser(friendUid: comment.uid)
+                            }
+                        } reportAction: {
+                            Task {
+                                // 通報
+                                await postDetailVM.reportUser(friendUid: comment.uid)
+                            }
                         }
                     }
-                    .padding(.horizontal)
                     .padding(.vertical, 3)
                 }
-                .listStyle(.plain)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowSeparator(.hidden)
+                .padding(.horizontal)
 
                 Spacer()
                     .frame(height: 400)
+                    .listRowSeparator(.hidden)
             }
+            .listStyle(.plain)
 
             // コメント入力
             VStack {
