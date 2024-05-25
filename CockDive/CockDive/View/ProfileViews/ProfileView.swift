@@ -3,11 +3,10 @@ import SwiftUI
 struct ProfileView: View {
     @State var showUser: UserElement
     @State var showIsFollow: Bool
+    @State var showPostsData: [PostElement] = []
     @ObservedObject var profileVM = ProfileViewModel()
     @StateObject private var hapticsManager = HapticsManager()
-    // 投稿
-    @State private var showPostsData: [PostElement] = []
-    // このViewで取得
+    @State private var lastPost: PostElement?
     @State private var showUserFriends: UserFriendElement = UserFriendElement(
         followCount: 0,
         follow: [],
@@ -22,12 +21,9 @@ struct ProfileView: View {
         likePostCount: 0,
         likePost: []
     )
-    // フォローボタン無効状態
     @State private var isFollowButtonDisabled: Bool = false
-
-    // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
-    // 画面サイズ取得
+
     var screenWidth: CGFloat {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let screen = windowScene.windows.first?.screen {
@@ -39,139 +35,76 @@ struct ProfileView: View {
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                // アイコン、投稿数、フォロー数、フォロワー数
-                HStack(spacing: 10) {
-                    Spacer()
-                    // アイコン画像
-                    if let data = showUser.iconImage,
-                       let uiImage = UIImage(data: data) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundStyle(Color.gray)
-                            .frame(width: screenWidth / 6, height: screenWidth / 6)
-                            .padding()
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundStyle(Color.gray)
-                            .frame(width: screenWidth / 6, height: screenWidth / 6)
-                            .padding()
-                    }
-
-                    Spacer()
-
-                    VStack {
-                        Text("\(showUserPosts.postCount)")
-                        Text("投稿")
-                    }
-
-                    VStack {
-                        Text("\(showUserFriends.followCount)")
-                        Text("フォロー")
-                    }
-
-                    VStack {
-                        Text("\(showUserFriends.followerCount)")
-                        Text("フォロワー")
-                    }
-
-                    Spacer()
-                }
+                ProfileHeaderView(
+                    showUser: showUser,
+                    showUserFriends: showUserFriends,
+                    showUserPosts: showUserPosts,
+                    screenWidth: screenWidth
+                )
                 .listRowSeparator(.hidden)
-                // 自己紹介文
+
                 DynamicHeightCommentView(message: showUser.introduction ?? "", maxTextCount: 30)
                     .padding(.horizontal)
                     .listRowSeparator(.hidden)
-                // フォローボタン
-                HStack {
-                    Spacer()
-                    // フォローボタン
-                    Button {
-                        // ボタンの無効化
-                        isFollowButtonDisabled = true
-                        // haptics
-                        hapticsManager.playHapticPattern()
-                        Task {
-                            // フォローデータ更新
-                            await profileVM.followUser(friendUid: showUser.id ?? "")
-                            // フォローデータ取得
-                            profileVM.checkIsFollow(friendUid: showUser.id ?? "")
-                        }
 
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            isFollowButtonDisabled = false
-                        }
-                    } label: {
-                        StrokeButtonUI(
-                            text: showIsFollow ? "フォロー中" : "フォロー" ,
-                            size: .small,
-                            isFill: showIsFollow ? true : false
-                        )
-                        // 押せない時は少し白くする
-                        .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
-                    }
-                    .disabled(isFollowButtonDisabled)
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding(.trailing)
-                }
+                FollowButtonView(
+                    showIsFollow: $showIsFollow,
+                    isFollowButtonDisabled: $isFollowButtonDisabled,
+                    hapticsManager: hapticsManager,
+                    profileVM: profileVM,
+                    showUser: showUser
+                )
                 .padding(.horizontal)
                 .listRowSeparator(.hidden)
 
                 Divider()
                     .listRowSeparator(.hidden)
 
-                ForEach(showPostData, id: \.id) { postData in
-                    Text("postData: \(postData.title)")
-                        .font(.largeTitle)
-                        .foregroundStyle(Color.white)
-                        .backgroundStyle(Color.black)
-                        .frame(width: 400, height: 300)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .id(postData.id)
-                    .onAppear {
-                        if profileVM.checkIsLastPost(postData: postData) {
-                            Task {
-                                await profileVM.fetchPostsDataByStatus()
+                ForEach(showPostsData, id: \.id) { postData in
+                    PostView(postData: postData)
+                        .id(postData.id)
+                        .onAppear {
+                            if profileVM.checkIsLastPost(postData: postData) {
+                                Task {
+                                    print("更新！！！！！！！！！！！")
+                                    guard let last = showPostsData.last,
+                                          let lastId = last.id else { return }
+                                    await profileVM.fetchPostsDataByStatus(
+                                        uid: postData.uid,
+                                        lastId: lastId
+                                    )
+                                }
                             }
                         }
+                }
+                .onChange(of: showPostsData) { _ in
+                    if let lastPost = lastPost {
+                        proxy.scrollTo(lastPost.id, anchor: .center)
                     }
                 }
-                .listRowSeparator(.hidden)
             }
-            .listStyle(.plain)
         }
-        // TabBar非表示
         .toolbar(.hidden, for: .tabBar)
-        // 戻るボタン非表示
         .navigationBarBackButtonHidden(true)
         .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            // 戻るボタン
             ToolbarItem(placement: .topBarLeading) {
                 ToolBarBackButtonView {
                     self.presentation.wrappedValue.dismiss()
                 }
             }
-
-            // タイトル
             ToolbarItem(placement: .principal) {
                 Text(showUser.nickName)
                     .foregroundStyle(Color.white)
                     .fontWeight(.bold)
                     .font(.title3)
             }
-
-            // 通報
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button {
-
-                    } label: {
+                    Button { } label: {
                         Image(systemName: "ellipsis")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -189,12 +122,20 @@ struct ProfileView: View {
             }
         }
         .onAppear {
-            Task {
-                guard let uid = showUser.id else { return }
-                await profileVM.fetchPostFromUid(uid: uid)
-                await profileVM.fetchUserFriendData(uid: uid)
-                await profileVM.fetchUserPostElement(uid: uid)
+            if profileVM.loadStatus == .initial {
+                Task {
+                    guard let uid = showUser.id else { return }
+                    await profileVM.fetchPostFromUid(uid: uid)
+                    await profileVM.fetchUserFriendData(uid: uid)
+                    await profileVM.fetchUserPostElement(uid: uid)
+                }
             }
+        }
+        .onChange(of: profileVM.newPostsData) { newPostData in
+            print("newPostData: \(newPostData.count)")
+            lastPost = showPostsData.last
+            showPostsData.append(contentsOf: newPostData)
+            print("showPostsData: \(showPostsData.count)")
         }
         .onChange(of: profileVM.userFriends) { userFriends in
             if let userFriends {
@@ -211,6 +152,95 @@ struct ProfileView: View {
         .onChange(of: profileVM.isFollow) { isFollow in
             showIsFollow = isFollow
         }
+    }
+}
+
+struct ProfileHeaderView: View {
+    var showUser: UserElement
+    var showUserFriends: UserFriendElement
+    var showUserPosts: UserPostElement
+    var screenWidth: CGFloat
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Spacer()
+            if let data = showUser.iconImage,
+               let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundStyle(Color.gray)
+                    .frame(width: screenWidth / 6, height: screenWidth / 6)
+                    .padding()
+            } else {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundStyle(Color.gray)
+                    .frame(width: screenWidth / 6, height: screenWidth / 6)
+                    .padding()
+            }
+            Spacer()
+            VStack {
+                Text("\(showUserPosts.postCount)")
+                Text("投稿")
+            }
+            VStack {
+                Text("\(showUserFriends.followCount)")
+                Text("フォロー")
+            }
+            VStack {
+                Text("\(showUserFriends.followerCount)")
+                Text("フォロワー")
+            }
+            Spacer()
+        }
+    }
+}
+
+struct FollowButtonView: View {
+    @Binding var showIsFollow: Bool
+    @Binding var isFollowButtonDisabled: Bool
+    var hapticsManager: HapticsManager
+    var profileVM: ProfileViewModel
+    var showUser: UserElement
+
+    var body: some View {
+        HStack {
+            Spacer()
+            Button {
+                isFollowButtonDisabled = true
+                hapticsManager.playHapticPattern()
+                Task {
+                    await profileVM.followUser(friendUid: showUser.id ?? "")
+                    profileVM.checkIsFollow(friendUid: showUser.id ?? "")
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isFollowButtonDisabled = false
+                }
+            } label: {
+                StrokeButtonUI(
+                    text: showIsFollow ? "フォロー中" : "フォロー" ,
+                    size: .small,
+                    isFill: showIsFollow ? true : false
+                )
+                .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+            }
+            .disabled(isFollowButtonDisabled)
+            .buttonStyle(BorderlessButtonStyle())
+            .padding(.trailing)
+        }
+    }
+}
+
+struct PostView: View {
+    var postData: PostElement
+
+    var body: some View {
+        Text("postData: \(postData.title)")
+            .font(.largeTitle)
+            .frame(width: 400, height: 300)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 

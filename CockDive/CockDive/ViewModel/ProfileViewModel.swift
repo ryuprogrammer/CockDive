@@ -58,6 +58,7 @@ class ProfileViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.newPostsData = postData
             self.loadStatus = .completion
+            print("デーーーーーーーたpostData: \(postData.count)")
         }
     }
 

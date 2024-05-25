@@ -50,9 +50,7 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
-            print("loadStatus: \(cockPostVM.loadStatus)")
             if cockPostVM.loadStatus == .initial {
-                print("最初の更新！")
                 Task {
                     await cockPostVM.fetchPostsDataByStatus()
                 }
@@ -91,6 +89,7 @@ struct CockPostView: View {
             .listStyle(.plain)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
+                    // スクロールを制御
                     proxy.scrollTo(lastPost.id, anchor: .center)
                 }
             }
