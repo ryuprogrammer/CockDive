@@ -33,11 +33,8 @@ struct ProfileView: View {
            let screen = windowScene.windows.first?.screen {
             return screen.bounds.width
         }
-        return 50
+        return 400
     }
-
-    @State private var offset: CGFloat = 0
-    @State private var currentIndex: Int = 0
 
     var body: some View {
         ScrollView {
@@ -114,40 +111,13 @@ struct ProfileView: View {
             }
 
             // ここで使用
-            GeometryReader { geometry in
-                ScrollViewReader { proxy in
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 0) {
-                            cardView(text: "Card 1", color: .blue, width: screenWidth)
-                            cardView(text: "Card 2", color: .green, width: screenWidth)
-                        }
-                        .frame(width: screenWidth * 2, height: geometry.size.height)
-                    }
-                    .content.offset(x: -CGFloat(currentIndex) * screenWidth + offset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                self.offset = value.translation.width
-                            }
-                            .onEnded { value in
-                                withAnimation {
-                                    if value.translation.width < -screenWidth / 2 {
-                                        currentIndex = 1
-                                    } else if value.translation.width > screenWidth / 2 {
-                                        currentIndex = 0
-                                    }
-                                    offset = 0
-                                }
-                            }
-                    )
-                    .onAppear {
-                        offset = 0
-                    }
+            SwipeableCardView(screenWidth: screenWidth) {
+                Group {
+                    cardView(text: "Card 1", color: .blue, width: screenWidth)
+                    cardView(text: "Card 2", color: .green, width: screenWidth)
                 }
             }
-            .frame(height: 200)
         }
-        .padding()
         // TabBar非表示
         .toolbar(.hidden, for: .tabBar)
         // 戻るボタン非表示
@@ -192,6 +162,7 @@ struct ProfileView: View {
                         .frame(width: 25)
                         .foregroundStyle(Color.white)
                 }
+
             }
         }
         .onAppear {
@@ -228,6 +199,48 @@ struct ProfileView: View {
     }
 }
 
+struct SwipeableCardView<Content: View>: View {
+    let screenWidth: CGFloat
+    let content: () -> Content
+    @State private var offset: CGFloat = 0
+    @State private var currentIndex: Int = 0
+
+    var body: some View {
+        GeometryReader { geometry in
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 0) {
+                        content()
+                            .frame(width: screenWidth, height: geometry.size.height)
+                    }
+                    .frame(width: screenWidth * 2, height: geometry.size.height)
+                }
+                .content.offset(x: -CGFloat(currentIndex) * screenWidth + offset)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            self.offset = value.translation.width
+                        }
+                        .onEnded { value in
+                            withAnimation {
+                                if value.translation.width < -screenWidth / 2 {
+                                    currentIndex = 1
+                                } else if value.translation.width > screenWidth / 2 {
+                                    currentIndex = 0
+                                }
+                                offset = 0
+                            }
+                        }
+                )
+                .onAppear {
+                    offset = 0
+                }
+            }
+        }
+        .frame(height: 200)
+    }
+}
+
 #Preview {
     NavigationStack {
         ProfileView(
@@ -241,9 +254,3 @@ struct ProfileView: View {
         )
     }
 }
-
-///　プロフィール情報
-
-/// 通報、ブロック
-/// フォロー
-/// 投稿リスト、カレンダー

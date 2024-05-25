@@ -31,6 +31,7 @@
 		4253F6212BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F61D2BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift */; };
 		4253F6242C006D730067BF14 /* MyDataCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6232C006D730067BF14 /* MyDataCoreDataManager.swift */; };
 		4253F6262C00E0A00067BF14 /* MyPostCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6252C00E0A00067BF14 /* MyPostCoreDataManager.swift */; };
+		4253F6282C01B2420067BF14 /* AutoFitSwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6272C01B2420067BF14 /* AutoFitSwipeView.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -111,6 +112,7 @@
 		4253F61D2BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyDataModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4253F6232C006D730067BF14 /* MyDataCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataCoreDataManager.swift; sourceTree = "<group>"; };
 		4253F6252C00E0A00067BF14 /* MyPostCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCoreDataManager.swift; sourceTree = "<group>"; };
+		4253F6272C01B2420067BF14 /* AutoFitSwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFitSwipeView.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */,
 				42DB94A32BF662E600ECDD84 /* CameraView.swift */,
 				4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */,
+				4253F6272C01B2420067BF14 /* AutoFitSwipeView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */,
 				423B2A922BFA293C00489BCC /* UIApplication+.swift in Sources */,
 				42DB94912BF470EC00ECDD84 /* CommentElement.swift in Sources */,
+				4253F6282C01B2420067BF14 /* AutoFitSwipeView.swift in Sources */,
 				42DB94952BF48A5E00ECDD84 /* PostDataModel.swift in Sources */,
 				4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */,
 				42C02AC62BF79077000D7CE4 /* SectioinTitleView.swift in Sources */,
