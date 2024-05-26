@@ -3,19 +3,19 @@ import SwiftUI
 struct MainTabView: View {
     // TabViewのViewSelection
     @State private var viewSelection: ViewType = .cockCard
-    @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
-    @State private var settingNavigationPath: [SettingViewPath] = []
+    @State private var cockPostNavigationPath: [CockCardNavigationPath] = []
+    @State private var myPageNavigationPath: [CockCardNavigationPath] = []
 
     var body: some View {
         TabView(selection: $viewSelection) {
-            CockPostView(cockCardNavigationPath: $cockCardNavigationPath)
+            CockPostView(cockCardNavigationPath: $cockPostNavigationPath)
                 .tabItem {
                     Image(systemName: "fork.knife")
                     Text("ご飯")
                 }
                 .tag(ViewType.cockCard)
             
-            MyPageView(settingPath: $settingNavigationPath)
+            MyPageView(cockCardNavigationPath: $myPageNavigationPath)
                 .tabItem {
                     Image(systemName: "house")
                     Text("ホーム")
@@ -37,16 +37,16 @@ enum CockCardNavigationPath: Hashable {
     case profileView(userData: UserElement, showIsFollow: Bool)
 }
 
-enum SettingViewPath {
-    case settingView
-    case newsView
-    case privacyPolicyView
-    case termsOfServiceView
-    case blockListView
-    case contactView
-    case logoutView
-    case deleteAccountView
-}
+//enum SettingViewPath {
+//    case settingView
+//    case newsView
+//    case privacyPolicyView
+//    case termsOfServiceView
+//    case blockListView
+//    case contactView
+//    case logoutView
+//    case deleteAccountView
+//}
 
 #Preview {
     MainTabView()

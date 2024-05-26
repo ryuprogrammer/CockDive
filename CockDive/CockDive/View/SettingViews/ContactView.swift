@@ -3,8 +3,8 @@ import SwiftUI
 struct ContactView: View {
     
     // ルート階層から受け取った配列パスの参照
-    @Binding var path: [SettingViewPath]
-    
+//    @Binding var path: [NavigationDestination]
+
     var body: some View {
         Text("ContactView")
             .navigationBarTitleDisplayMode(.inline)
@@ -14,7 +14,7 @@ struct ContactView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-                        path.removeLast()
+//                        path.removeLast()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -28,12 +28,5 @@ struct ContactView: View {
 }
 
 #Preview {
-    struct PreviewView: View {
-        @State private var path: [SettingViewPath] = []
-        
-        var body: some View {
-            ContactView(path: $path)
-        }
-    }
-    return PreviewView()
+    ContactView()
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingView: View {
     // ルート階層から受け取った配列パスの参照
-    @Binding var path: [SettingViewPath]
+//    @Binding var path: [NavigationDestination]
     // TabBar用
     @State var flag: Visibility = .hidden
     
@@ -10,15 +10,15 @@ struct SettingView: View {
         List {
             Section {
                 NavigationLinkButtonView(icon: "bell", text: "お知らせ") {
-                    path.append(.newsView)
+//                    path.append(.newsView)
                 }
                 
                 NavigationLinkButtonView(icon: "book.pages", text: "プライバシーポリシー") {
-                    path.append(.privacyPolicyView)
+//                    path.append(.privacyPolicyView)
                 }
                 
                 NavigationLinkButtonView(icon: "book.pages", text: "利用規約") {
-                    path.append(.termsOfServiceView)
+//                    path.append(.termsOfServiceView)
                 }
             } header: {
                 Text("アプリ情報")
@@ -26,7 +26,7 @@ struct SettingView: View {
             
             Section {
                 NavigationLinkButtonView(icon: "nosign", text: "ブロックリスト") {
-                    path.append(.blockListView)
+//                    path.append(.blockListView)
                 }
             } header: {
                 Text("友達")
@@ -34,15 +34,15 @@ struct SettingView: View {
             
             Section {
                 NavigationLinkButtonView(icon: "star", text: "レビューを書く") {
-                    path.append(.contactView)
+//                    path.append(.contactView)
                 }
                 
                 NavigationLinkButtonView(icon: "square.and.arrow.up", text: "アプリをシェア") {
-                    path.append(.contactView)
+//                    path.append(.contactView)
                 }
                 
                 NavigationLinkButtonView(icon: "envelope", text: "お問合せ") {
-                    path.append(.contactView)
+//                    path.append(.contactView)
                 }
             } header: {
                 Text("フィードバック")
@@ -50,11 +50,11 @@ struct SettingView: View {
             
             Section {
                 NavigationLinkButtonView(icon: "person.crop.circle.badge.minus", text: "ログアウト") {
-                    path.append(.logoutView)
+//                    path.append(.logoutView)
                 }
                 
                 NavigationLinkButtonView(icon: "person.crop.circle.badge.xmark", text: "退会") {
-                    path.append(.deleteAccountView)
+//                    path.append(.deleteAccountView)
                 }
             } header: {
                 Text("アカウント")
@@ -69,7 +69,7 @@ struct SettingView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 ToolBarBackButtonView {
-                    path.removeLast()
+//                    path.removeLast()
                 }
             }
             ToolbarItem(placement: .principal) {
@@ -83,12 +83,5 @@ struct SettingView: View {
 }
 
 #Preview {
-    struct PreviewView: View {
-        @State private var path: [SettingViewPath] = []
-        
-        var body: some View {
-            SettingView(path: $path)
-        }
-    }
-    return PreviewView()
+    SettingView()
 }
