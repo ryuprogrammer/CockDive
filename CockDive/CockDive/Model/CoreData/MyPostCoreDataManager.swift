@@ -10,18 +10,6 @@ class MyPostCoreDataManager {
     }
 
     // MARK: - データの取得
-
-    /// 全てのMyPostModelを取得する
-    func fetchAll() -> [MyPostModel] {
-        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
-        do {
-            return try context.fetch(request)
-        } catch {
-            print("Failed to fetch MyPostModel: \(error)")
-            return []
-        }
-    }
-
     /// 指定された月のMyPostModelを取得する
     /// - Parameter date: 検索する月を含む日付
     /// - Returns: 指定された月に作成されたMyPostModelとその日のタプルの配列
@@ -52,6 +40,18 @@ class MyPostCoreDataManager {
             // エラーハンドリング
             print("Failed to fetch MyPostModel for the month: \(error)")
             return []
+        }
+    }
+
+    /// 全てのMyPostModelの数を取得する
+    /// - Returns: MyPostModelの数
+    func countAllPosts() -> Int {
+        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
+        do {
+            return try context.count(for: request)
+        } catch {
+            print("Failed to count MyPostModel: \(error)")
+            return 0
         }
     }
 
