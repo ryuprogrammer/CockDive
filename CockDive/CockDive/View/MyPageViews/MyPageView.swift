@@ -81,9 +81,6 @@ struct MyPageView: View {
             myPageVM.fetchMyPostCount()
             Task {
                 await myPageVM.fetchUserFriendElement()
-                if myPageVM.loadStatus == .initial {
-                    await myPageVM.fetchPostsDataByStatus(lastId: nil)
-                }
             }
         }
         .onChange(of: myPageVM.userData) { userData in
@@ -138,6 +135,13 @@ struct MyPageView: View {
                 }
             }
             .listStyle(.plain)
+            .onAppear {
+                Task {
+                    if myPageVM.loadStatus == .initial {
+                        await myPageVM.fetchPostsDataByStatus(lastId: nil)
+                    }
+                }
+            }
         }
     }
 }

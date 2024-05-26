@@ -10,15 +10,25 @@ struct MainTabView: View {
         TabView(selection: $viewSelection) {
             CockPostView(cockCardNavigationPath: $cockPostNavigationPath)
                 .tabItem {
-                    Image(systemName: "fork.knife")
-                    Text("ご飯")
+                    VStack {
+                        Image(systemName: "fork.knife")
+                        Text("ご飯")
+                    }
+                    .onTapGesture {
+                        cockPostNavigationPath.removeAll()
+                    }
                 }
                 .tag(ViewType.cockCard)
             
             MyPageView(cockCardNavigationPath: $myPageNavigationPath)
                 .tabItem {
-                    Image(systemName: "house")
-                    Text("ホーム")
+                    VStack {
+                        Image(systemName: "house")
+                        Text("ホーム")
+                    }
+                    .onTapGesture {
+                        myPageNavigationPath.removeAll()
+                    }
                 }.tag(ViewType.home)
         }
     }
