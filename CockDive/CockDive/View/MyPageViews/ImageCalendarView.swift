@@ -5,7 +5,7 @@ struct ImageCalendarView: View {
     // 表示されている月
     @Binding var showingDate: Date
     // 投稿データ
-    @Binding var showMyPostData: [(day: Int, post: [MyPostModel])]
+    @Binding var showMyPostData: [(day: Int, posts: [MyPostModel])]
 
     var body: some View {
         VStack {
@@ -59,7 +59,7 @@ struct ImageCalendarView: View {
 
     // 指定した日付の投稿をすべて取得する関数
     private func getPosts(for day: Int) -> [MyPostModel] {
-        return showMyPostData.first(where: { $0.day == day })?.post ?? []
+        return showMyPostData.first(where: { $0.day == day })?.posts ?? []
     }
 }
 
@@ -67,9 +67,9 @@ struct ImageCalendarView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.preview.container.viewContext
         let samplePosts = [
-            (day: 1, post: [createSamplePost(context: context, id: "1", title: "Sample 1", memo: "Memo 1")]),
-            (day: 3, post: [createSamplePost(context: context, id: "2", title: "Sample 2", memo: "Memo 2")]),
-            (day: 15, post: [createSamplePost(context: context, id: "3", title: "Sample 3", memo: "Memo 3")])
+            (day: 1, posts: [createSamplePost(context: context, id: "1", title: "Sample 1", memo: "Memo 1")]),
+            (day: 3, posts: [createSamplePost(context: context, id: "2", title: "Sample 2", memo: "Memo 2")]),
+            (day: 15, posts: [createSamplePost(context: context, id: "3", title: "Sample 3", memo: "Memo 3")])
         ]
         ImageCalendarView(showingDate: .constant(Date()), showMyPostData: .constant(samplePosts))
     }

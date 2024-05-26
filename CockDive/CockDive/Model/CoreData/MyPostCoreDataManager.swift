@@ -13,18 +13,27 @@ class MyPostCoreDataManager {
     /// 指定された月のMyPostModelを取得する
     /// - Parameter date: 検索する月を含む日付
     /// - Returns: 指定された月に作成されたMyPostModelとその日のタプルの配列
-    func fetchByMonth(date: Date) -> [(day: Int, post: MyPostModel)] {
+    func fetchByMonth(date: Date) -> [(day: Int, posts: [MyPostModel])] {
         let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
 
         // Calendarを使って指定された月の開始日を取得
         let calendar = Calendar.current
-        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date)) else {
+            print("開始日を計算できませんでした")
+            return []
+        }
 
         // 指定された月の日数を取得
-        let range = calendar.range(of: .day, in: .month, for: startOfMonth)!
+        guard let range = calendar.range(of: .day, in: .month, for: startOfMonth) else {
+            print("月の日数を取得できませんでした")
+            return []
+        }
 
         // 月の最終日を計算
-        let endOfMonth = calendar.date(byAdding: .day, value: range.count - 1, to: startOfMonth)!
+        guard let endOfMonth = calendar.date(byAdding: .day, value: range.count, to: startOfMonth) else {
+            print("月の最終日を計算できませんでした")
+            return []
+        }
 
         // フェッチリクエストに使用する述語を作成
         let predicate = NSPredicate(format: "createAt >= %@ AND createAt < %@", startOfMonth as NSDate, endOfMonth as NSDate)
@@ -34,11 +43,12 @@ class MyPostCoreDataManager {
             // データをフェッチ
             let results = try context.fetch(request)
 
-            // フェッチした結果をタプルの配列に変換し、返す
-            return results.map { (day: calendar.component(.day, from: $0.createAt ?? Date()), post: $0) }
+            // フェッチした結果を日付ごとにグループ化して返す
+            let groupedResults = Dictionary(grouping: results, by: { calendar.component(.day, from: $0.createAt ?? Date()) })
+            return groupedResults.map { (day: $0.key, posts: $0.value) }.sorted { $0.day < $1.day }
         } catch {
             // エラーハンドリング
-            print("Failed to fetch MyPostModel for the month: \(error)")
+            print("指定された月のMyPostModelをフェッチできませんでした: \(error)")
             return []
         }
     }

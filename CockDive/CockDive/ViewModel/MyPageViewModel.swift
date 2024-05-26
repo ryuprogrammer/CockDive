@@ -5,8 +5,6 @@ class MyPageViewModel: ObservableObject {
     @Published var userData: UserElementForUserDefaults? = nil
     /// UserFriendElement（フォロー、フォロワー）
     @Published var friendData: UserFriendElement? = nil
-    /// 投稿データ
-    @Published var myPostData: [(day: Int, post: MyPostModel)] = []
     /// 投稿数
     @Published var myPostCount: Int = 0
 
@@ -26,8 +24,8 @@ class MyPageViewModel: ObservableObject {
     }
 
     /// 投稿データ取得
-    func fetchMyPostData(date: Date) {
-        myPostData = myPostManager.fetchByMonth(date: date)
+    func fetchMyPostData(date: Date) -> [(day: Int, posts: [MyPostModel])] {
+        return myPostManager.fetchByMonth(date: date)
     }
 
     /// 投稿数取得

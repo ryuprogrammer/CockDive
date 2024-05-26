@@ -14,7 +14,7 @@ struct UserElement: Encodable, Decodable, Equatable, Hashable {
 }
 
 /// UserDefaults用
-struct UserElementForUserDefaults: Encodable, Decodable {
+struct UserElementForUserDefaults: Encodable, Decodable, Equatable {
     /// ニックネーム
     var nickName: String
     /// 自己紹介文

@@ -7,12 +7,11 @@ struct MyPageView: View {
     // UserFriendElement（フォロー、フォロワー）
     @State var showFriendData = UserFriendElement(followCount: 0, follow: [], followerCount: 0, follower: [], block: [], blockedByFriend: [])
     // 投稿データ: 表示している月の
-    @State var showMyPostData: [(day: Int, post: [MyPostModel])] = []
-    // 投稿数
-    @State var myPostCount: Int = 0
-
+    @State var showMyPostData: [(day: Int, posts: [MyPostModel])] = []
     // 表示している月
     @State private var showDate: Date = Date()
+    // 投稿数
+    @State var myPostCount: Int = 0
 
     // 画面遷移用
     @State private var navigationPath: [SettingViewPath] = []
@@ -74,6 +73,23 @@ struct MyPageView: View {
                     DeleteAccountView(path: $navigationPath)
                 }
             }
+        }
+        .onAppear {
+            myPageVM.fetchUserData()
+            showMyPostData = myPageVM.fetchMyPostData(date: showDate)
+            myPageVM.fetchMyPostCount()
+            Task {
+                await myPageVM.fetchUserFriendElement(uid: "")
+            }
+        }
+        .onChange(of: myPageVM.userData) { userData in
+
+        }
+        .onChange(of: myPageVM.friendData) { friendData in
+
+        }
+        .onChange(of: myPageVM.myPostCount) { myPostCount in
+
         }
     }
 }
