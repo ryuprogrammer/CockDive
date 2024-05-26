@@ -4,8 +4,23 @@ import FirebaseFirestore
 import FirebaseStorage
 
 /*
- ここに、PostDataModelのメソッドの目次を書いて。
+ メソッド目次:
+ 1. createNewDocId() - 新しいドキュメントIDを作成する。
+ 2. addPost(post:newDocId:) - 新しい投稿を追加または既存の投稿を更新する。
+ 3. changeLikeToPost(post:toLike:) - 投稿の「いいね」状態を変更する。
+ 4. uploadPostImage(postImage:postId:) - 画像をFirebase Storageにアップロードする。
+ 5. fetchUid() - 現在のユーザーのUIDを取得する。
+ 6. fetchPostIdData() - 投稿IDを指定した件数だけ取得する。
+ 7. fetchMorePostData(lastDocumentId:completion:) - 最後に取得したドキュメントIDを基準にさらに投稿を取得する。
+ 8. fetchPostFromUid(uid:) - 指定したUIDの投稿を取得する。
+ 9. fetchMorePostDataFromUid(uid:lastDocumentId:completion:) - 指定したUIDの最後に取得したドキュメントIDを基準にさらに投稿を取得する。
+ 10. fetchPostFromPostId(postId:) - 指定した投稿IDから投稿データを取得する。
+ 11. listenToPostData(postId:completion:) - 指定した投稿IDの投稿データをリッスンする。
+ 12. removeListeners() - すべてのリスナーを停止する。
+ 13. fetchPostsFromUids(uids:) - 複数のUIDを指定して投稿を取得する。
+ 14. fetchMorePostsFromUids(uids:lastDocumentId:completion:) - 複数のUIDを指定して、最後に取得したドキュメントIDを基準にさらに投稿を取得する。
  */
+
 struct PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "posts"
