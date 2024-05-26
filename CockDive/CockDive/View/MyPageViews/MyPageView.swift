@@ -6,8 +6,8 @@ struct MyPageView: View {
     @State var showUserData = UserElementForUserDefaults(nickName: "テスト")
     // UserFriendElement（フォロー、フォロワー）
     @State var showFriendData = UserFriendElement(followCount: 0, follow: [], followerCount: 0, follower: [], block: [], blockedByFriend: [])
-    // 投稿データ
-    @State var showMyPostData: [(day: Int, post: MyPostModel)] = []
+    // 投稿データ: 表示している月の
+    @State var showMyPostData: [(day: Int, post: [MyPostModel])] = []
     // 投稿数
     @State var myPostCount: Int = 0
 
@@ -27,7 +27,7 @@ struct MyPageView: View {
                 )
 
                 SwipeableTabView(tabs: [
-                    (title: "カレンダー", view: AnyView(ImageCalendarView())),
+                    (title: "カレンダー", view: AnyView(ImageCalendarView(showingDate: $showDate, showMyPostData: $showMyPostData))),
                     (title: "投稿", view: AnyView(Text("投稿"))),
                     (title: "いいね", view: AnyView(Text("いいね")))
                 ])
