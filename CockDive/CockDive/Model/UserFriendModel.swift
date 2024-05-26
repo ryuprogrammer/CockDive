@@ -5,9 +5,9 @@ import FirebaseFirestore
 class UserFriendModel {
     /// コレクション名
     private let userFriendCollection: String = "userFriendData"
-    
+
     private var db = Firestore.firestore()
-    
+
     // MARK: - データ追加
     /// UserFriendDataを編集
     func addUserFriend(friendUid: String, friendType: FriendType) async {
@@ -23,7 +23,7 @@ class UserFriendModel {
             block: [],
             blockedByFriend: []
         )
-        
+
         // UserFriendElement取得: 自分
         if let myUserFriend = await fetchUserFriendData(uid: myUid) {
             myNewUserFriendElement = myUserFriend
@@ -52,10 +52,10 @@ class UserFriendModel {
                 myNewUserFriendElement.block.append(friendUid)
             }
         }
-        
+
         // 自分のUserFriendElementを追加/ 更新
         await addUserFriendByUid(uid: myUid, userFriend: myNewUserFriendElement)
-        
+
         // 相手のUserFriendElement: 初期値
         var friendNewUserFriendElement = UserFriendElement(
             id: friendUid,
@@ -66,7 +66,7 @@ class UserFriendModel {
             block: [],
             blockedByFriend: []
         )
-        
+
         // UserFriendElement取得: 相手
         if let friendUserFriend = await fetchUserFriendData(uid: friendUid) {
             friendNewUserFriendElement = friendUserFriend
@@ -95,11 +95,11 @@ class UserFriendModel {
                 friendNewUserFriendElement.blockedByFriend.append(myUid)
             }
         }
-        
+
         // 相手のUserFriendElementを追加/ 更新
         await addUserFriendByUid(uid: friendUid, userFriend: friendNewUserFriendElement)
     }
-    
+
     /// Uidを元にUserFriend追加/ 更新
     func addUserFriendByUid(uid: String, userFriend: UserFriendElement) async {
         do {
@@ -109,23 +109,28 @@ class UserFriendModel {
             print("Error adding/updating userFriend: \(error)")
         }
     }
-    
+
     // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String? {
         return Auth.auth().currentUser?.uid
     }
-    
+
     /// uidを指定してuserFriendDataを取得
     func fetchUserFriendData(uid: String) async -> UserFriendElement? {
+        if uid.isEmpty {
+            return nil
+        }
+
         do {
+
             let document = try await db.collection(userFriendCollection).document(uid).getDocument()
-            
+
             guard document.data() != nil else {
                 print("Document does not exist: fetchUserFriendData")
                 return nil
             }
-            
+
             let decodedUserFriendData = try document.data(as: UserFriendElement.self)
             return decodedUserFriendData
         } catch {

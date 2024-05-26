@@ -14,37 +14,46 @@ struct MyPageHeaderView: View {
     }
 
     var body: some View {
-        HStack {
-            if let data = showUserData.iconImage,
-               let uiImage = UIImage(data: data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(Color.gray)
-                    .frame(width: screenWidth / 6, height: screenWidth / 6)
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(Color.gray)
-                    .frame(width: screenWidth / 6, height: screenWidth / 6)
+        VStack {
+            HStack {
+                if let data = showUserData.iconImage,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.gray)
+                        .frame(width: screenWidth / 6, height: screenWidth / 6)
+                } else {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.gray)
+                        .frame(width: screenWidth / 6, height: screenWidth / 6)
+                }
+                Spacer()
+                HStack(spacing: 15) {
+                    VStack {
+                        Text("\(postCount)")
+                        Text("投稿")
+                    }
+                    VStack {
+                        Text("\(showFriendData.followCount)")
+                        Text("フォロー")
+                    }
+                    VStack {
+                        Text("\(showFriendData.followerCount)")
+                        Text("フォロワー")
+                    }
+                }
+                Spacer()
             }
-            Spacer()
-            HStack(spacing: 15) {
-                VStack {
-                    Text("\(postCount)")
-                    Text("投稿")
-                }
-                VStack {
-                    Text("\(showFriendData.followCount)")
-                    Text("フォロー")
-                }
-                VStack {
-                    Text("\(showFriendData.followerCount)")
-                    Text("フォロワー")
-                }
+            
+            if let introduction = showUserData.introduction {
+                DynamicHeightCommentView(
+                    message: introduction,
+                    maxTextCount: 30
+                )
             }
-            Spacer()
         }
         .padding()
     }

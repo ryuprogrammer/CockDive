@@ -8,7 +8,7 @@ struct ImageCalendarView: View {
     @Binding var showMyPostData: [(day: Int, posts: [MyPostModel])]
 
     var body: some View {
-        VStack {
+        ScrollView {
             // 月の切り替えボタンと現在の月の表示
             HStack {
                 // 前の月へのボタン
@@ -28,6 +28,7 @@ struct ImageCalendarView: View {
                     StrokeButtonUI(text: "\(showingDate.nextMonth().month())月", size: .small, isFill: false)
                 }
             }
+            .padding(.top)
 
             // 曜日の表示 (月火水木金土日)
             HStack {

@@ -19,8 +19,13 @@ class MyPageViewModel: ObservableObject {
     }
 
     /// UserFriendElement取得（フォロー、フォロワー）
-    func fetchUserFriendElement(uid: String) async {
-        friendData = await userFriendModel.fetchUserFriendData(uid: uid)
+    func fetchUserFriendElement() async {
+        if let uid = userFriendModel.fetchUid() {
+            let friend = await userFriendModel.fetchUserFriendData(uid: uid)
+            DispatchQueue.main.async {
+                self.friendData = friend
+            }
+        }
     }
 
     /// 投稿データ取得

@@ -11,7 +11,7 @@ struct MyPageView: View {
     // 表示している月
     @State private var showDate: Date = Date()
     // 投稿数
-    @State var myPostCount: Int = 0
+    @State var showMyPostCount: Int = 0
 
     // 画面遷移用
     @State private var navigationPath: [SettingViewPath] = []
@@ -21,7 +21,7 @@ struct MyPageView: View {
             VStack {
                 MyPageHeaderView(
                     showUserData: $showUserData,
-                    postCount: $myPostCount,
+                    postCount: $showMyPostCount,
                     showFriendData: $showFriendData
                 )
 
@@ -31,6 +31,7 @@ struct MyPageView: View {
                     (title: "いいね", view: AnyView(Text("いいね")))
                 ])
             }
+            .frame(maxHeight: .infinity)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -79,17 +80,21 @@ struct MyPageView: View {
             showMyPostData = myPageVM.fetchMyPostData(date: showDate)
             myPageVM.fetchMyPostCount()
             Task {
-                await myPageVM.fetchUserFriendElement(uid: "")
+                await myPageVM.fetchUserFriendElement()
             }
         }
         .onChange(of: myPageVM.userData) { userData in
-
+            if let userData {
+                showUserData = userData
+            }
         }
         .onChange(of: myPageVM.friendData) { friendData in
-
+            if let friendData {
+                showFriendData = friendData
+            }
         }
         .onChange(of: myPageVM.myPostCount) { myPostCount in
-
+            showMyPostCount = myPostCount
         }
     }
 }
