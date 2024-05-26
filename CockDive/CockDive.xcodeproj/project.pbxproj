@@ -35,6 +35,8 @@
 		4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62B2C023F8E0067BF14 /* FollowButtonView.swift */; };
 		4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */; };
 		4253F6302C02E6CF0067BF14 /* MyPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */; };
+		4253F6322C02EF560067BF14 /* testView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6312C02EF560067BF14 /* testView.swift */; };
+		4253F6342C02FAE90067BF14 /* test2view.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6332C02FAE90067BF14 /* test2view.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -119,6 +121,8 @@
 		4253F62B2C023F8E0067BF14 /* FollowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtonView.swift; sourceTree = "<group>"; };
 		4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageHeaderView.swift; sourceTree = "<group>"; };
+		4253F6312C02EF560067BF14 /* testView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testView.swift; sourceTree = "<group>"; };
+		4253F6332C02FAE90067BF14 /* test2view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2view.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -307,6 +311,8 @@
 			isa = PBXGroup;
 			children = (
 				4298D8452BEDE782005AB08F /* MyPageView.swift */,
+				4253F6312C02EF560067BF14 /* testView.swift */,
+				4253F6332C02FAE90067BF14 /* test2view.swift */,
 				4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */,
 				4298D8552BF0984E005AB08F /* ImageCalendarView.swift */,
 				4298D8592BF0BD8C005AB08F /* SmallImageView.swift */,
@@ -500,6 +506,7 @@
 				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
+				4253F6342C02FAE90067BF14 /* test2view.swift in Sources */,
 				4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */,
 				4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
@@ -539,6 +546,7 @@
 				4298D86E2BF107DB005AB08F /* DeleteAccountView.swift in Sources */,
 				422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */,
 				422C69C72BED1C570012FB8F /* Persistence.swift in Sources */,
+				4253F6322C02EF560067BF14 /* testView.swift in Sources */,
 				4253F62A2C023F3D0067BF14 /* ProfileHeaderView.swift in Sources */,
 				4253F61E2BFEBA840067BF14 /* MyPostModel+CoreDataClass.swift in Sources */,
 				4253F61F2BFEBA840067BF14 /* MyPostModel+CoreDataProperties.swift in Sources */,
