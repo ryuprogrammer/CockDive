@@ -3,6 +3,9 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
+/*
+ ここに、PostDataModelのメソッドの目次を書いて。
+ */
 struct PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "posts"
@@ -280,5 +283,65 @@ struct PostDataModel {
     mutating func removeListeners() {
         listeners.forEach { $0.remove() }
         listeners.removeAll()
+    }
+
+    /// 複数のUIDを指定して投稿を取得
+    func fetchPostsFromUids(uids: [String]) async -> [PostElement] {
+        let docRef = db.collection(postDataCollection)
+            .whereField("uid", in: uids)
+            .order(by: "createAt", descending: true)
+            .limit(to: fetchPostLimit)
+        var posts: [PostElement] = []
+
+        do {
+            let querySnapshot = try await docRef.getDocuments()
+            for document in querySnapshot.documents {
+                let result = try document.data(as: PostElement.self)
+                posts.append(result)
+            }
+        } catch {
+            print("Error getting documents: \(error)")
+        }
+
+        return posts
+    }
+
+    /// 複数のUIDを指定してさらに投稿を取得
+    func fetchMorePostsFromUids(uids: [String], lastDocumentId: String?, completion: @escaping (Result<[PostElement], Error>) -> Void) async {
+        var docRef = db.collection(postDataCollection)
+            .whereField("uid", in: uids)
+            .order(by: "createAt", descending: true)
+            .limit(to: fetchPostLimit)
+
+        if let lastDocumentId = lastDocumentId, !lastDocumentId.isEmpty {
+            do {
+                let lastDocumentSnapshot = try await db.collection(postDataCollection).document(lastDocumentId).getDocument()
+                if lastDocumentSnapshot.exists {
+                    docRef = docRef.start(afterDocument: lastDocumentSnapshot)
+                } else {
+                    print("The document with ID \(lastDocumentId) does not exist or could not be fetched.")
+                    completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "The document with ID \(lastDocumentId) does not exist or could not be fetched."])))
+                    return
+                }
+            } catch {
+                print("Error fetching last document: \(error)")
+                completion(.failure(error))
+                return
+            }
+        }
+
+        var posts: [PostElement] = []
+
+        do {
+            let querySnapshot = try await docRef.getDocuments()
+            for document in querySnapshot.documents {
+                let decodedUserData = try document.data(as: PostElement.self)
+                posts.append(decodedUserData)
+            }
+            completion(.success(posts))  // 成功時にデータをコールバック
+        } catch {
+            completion(.failure(error))  // エラー時にエラーをコールバック
+            print("Error getting documents: \(error)")
+        }
     }
 }
