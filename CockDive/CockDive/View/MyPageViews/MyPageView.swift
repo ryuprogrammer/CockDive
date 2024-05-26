@@ -12,6 +12,7 @@ struct MyPageView: View {
     @State private var showDate: Date = Date()
     // 投稿数
     @State var showMyPostCount: Int = 0
+    @Binding var settingPath: [SettingViewPath]
 
     // 画面遷移用
     @State private var navigationPath: [SettingViewPath] = []
@@ -102,17 +103,6 @@ struct MyPageView: View {
     }
 }
 
-enum SettingViewPath {
-    case settingView
-    case newsView
-    case privacyPolicyView
-    case termsOfServiceView
-    case blockListView
-    case contactView
-    case logoutView
-    case deleteAccountView
-}
-
 #Preview {
-    MyPageView()
+    MyPageView(settingPath: .constant([]))
 }

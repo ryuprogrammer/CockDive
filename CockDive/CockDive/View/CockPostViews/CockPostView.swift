@@ -8,7 +8,7 @@ struct CockPostView: View {
 
     @ObservedObject var cockPostVM = CockPostViewModel()
 
-    @State private var cockCardNavigationPath: [CockCardNavigationPath] = []
+    @Binding var cockCardNavigationPath: [CockCardNavigationPath]
 
     @State private var lastPost: PostElement?
 
@@ -122,11 +122,6 @@ struct CockPostView: View {
     }
 }
 
-enum CockCardNavigationPath: Hashable {
-    case detailView(postData: PostElement, firstLike: Bool, firstFollow: Bool)
-    case profileView(userData: UserElement, showIsFollow: Bool)
-}
-
 #Preview {
-    CockPostView()
+    CockPostView(cockCardNavigationPath: .constant([]))
 }
