@@ -33,6 +33,7 @@
 		4253F6262C00E0A00067BF14 /* MyPostCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6252C00E0A00067BF14 /* MyPostCoreDataManager.swift */; };
 		4253F62A2C023F3D0067BF14 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6292C023F3D0067BF14 /* ProfileHeaderView.swift */; };
 		4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62B2C023F8E0067BF14 /* FollowButtonView.swift */; };
+		4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -115,6 +116,7 @@
 		4253F6252C00E0A00067BF14 /* MyPostCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCoreDataManager.swift; sourceTree = "<group>"; };
 		4253F6292C023F3D0067BF14 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		4253F62B2C023F8E0067BF14 /* FollowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtonView.swift; sourceTree = "<group>"; };
+		4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */,
 				423B2A8D2BF8994000489BCC /* PostDetailViewModel.swift */,
 				4253F6182BFE0ECA0067BF14 /* ProfileViewModel.swift */,
+				4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */,
+				4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
 				42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */,
 				42DB94882BF3C30100ECDD84 /* MainTabView.swift in Sources */,
