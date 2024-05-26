@@ -236,6 +236,8 @@ struct PostDetailView: View {
                 .background(Color.mainColor)
             }
         }
+        // TabBar非表示
+        .toolbar(.hidden, for: .tabBar)
         // 戻るボタン非表示
         .navigationBarBackButtonHidden(true)
         .listStyle(.plain)
