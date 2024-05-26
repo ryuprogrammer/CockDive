@@ -1,7 +1,14 @@
 import SwiftUI
 
 struct MyPageView: View {
-    
+    @ObservedObject var myPageVM = MyPageViewModel()
+    /// UserDefaultsの基本データ（ニックネーム、自己紹介、アイコン）
+    @State var showUserData = UserElementForUserDefaults(nickName: "テスト")
+    /// UserFriendElement（フォロー、フォロワー）
+    @State var showFriendData = UserFriendElement(followCount: 0, follow: [], followerCount: 0, follower: [], block: [], blockedByFriend: [])
+    /// 投稿データ
+    @State var showMyPostData: [(day: Int, post: MyPostModel)] = []
+
     // 画面遷移用
     @State private var navigationPath: [SettingViewPath] = []
     
