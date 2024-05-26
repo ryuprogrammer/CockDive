@@ -16,17 +16,21 @@ struct MyPageView: View {
 
     // 画面遷移用
     @State private var navigationPath: [SettingViewPath] = []
-    
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            ScrollView {
+            VStack {
                 MyPageHeaderView(
                     showUserData: $showUserData,
                     postCount: $myPostCount,
                     showFriendData: $showFriendData
                 )
 
-                ImageCalendarView()
+                SwipeableTabView(tabs: [
+                    (title: "カレンダー", view: AnyView(ImageCalendarView())),
+                    (title: "投稿", view: AnyView(Text("投稿"))),
+                    (title: "いいね", view: AnyView(Text("いいね")))
+                ])
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
@@ -88,4 +92,3 @@ enum SettingViewPath {
 #Preview {
     MyPageView()
 }
-
