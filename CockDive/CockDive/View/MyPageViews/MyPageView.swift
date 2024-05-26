@@ -96,6 +96,9 @@ struct MyPageView: View {
         .onChange(of: myPageVM.myPostCount) { myPostCount in
             showMyPostCount = myPostCount
         }
+        .onChange(of: showDate) { newDate in
+            showMyPostData = myPageVM.fetchMyPostData(date: newDate)
+        }
     }
 }
 

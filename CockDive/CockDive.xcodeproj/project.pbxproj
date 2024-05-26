@@ -309,10 +309,10 @@
 			isa = PBXGroup;
 			children = (
 				4298D8452BEDE782005AB08F /* MyPageView.swift */,
-				4253F6332C02FAE90067BF14 /* SwipeableTabView.swift */,
 				4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */,
 				4298D8552BF0984E005AB08F /* ImageCalendarView.swift */,
 				4298D8592BF0BD8C005AB08F /* SmallImageView.swift */,
+				4253F6332C02FAE90067BF14 /* SwipeableTabView.swift */,
 			);
 			path = MyPageViews;
 			sourceTree = "<group>";
