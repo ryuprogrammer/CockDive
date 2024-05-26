@@ -90,6 +90,7 @@ class MyPageViewModel: ObservableObject {
                     self.loadStatus = .completion
                 }
             case .failure(let error):
+                print("fetchMorePosts: error: \(error)")
                 // エラーが発生した場合の処理
                 DispatchQueue.main.async {
                     self.loadStatus = .error
