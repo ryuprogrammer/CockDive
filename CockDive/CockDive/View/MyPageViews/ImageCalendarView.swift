@@ -42,13 +42,15 @@ struct ImageCalendarView: View {
             // 日付と投稿画像のグリッド表示
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7), spacing: 5) {
                 ForEach(0..<showingDate.numberOfDaysInMonth + showingDate.weekdayOfFirstDay.rawValue, id: \.self) { index in
-                    if index >= showingDate.weekdayOfFirstDay.rawValue {
-                        let showDay = index - showingDate.weekdayOfFirstDay.rawValue + 1
+                    
+                    if index <= showingDate.weekdayOfFirstDay.rawValue {
+                        Spacer()
+                    } else {
+                        // ForEach（index）とWeekdayが0スタートなので、2で相殺する
+                        let showDay = index - showingDate.weekdayOfFirstDay.rawValue
                         let showPosts = getPosts(for: showDay)
                         SmallImageView(day: showDay, posts: showPosts)
                             .frame(maxWidth: .infinity)
-                    } else {
-                        Spacer()
                     }
                 }
             }
