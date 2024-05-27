@@ -8,9 +8,12 @@ class MyPageViewModel: ObservableObject {
     /// 投稿数
     @Published var myPostCount: Int = 0
     // ロードステータス
-    @Published var loadStatus: LoadStatus = .initial
+    @Published var loadStatusMyPost: LoadStatus = .initial
+    @Published var loadStatusLikePost: LoadStatus = .initial
     /// 投稿リスト用
-    @Published var newPostListData: [PostElement] = []
+    @Published var newMyPostListData: [PostElement] = []
+    /// ライクした投稿
+    @Published var newLikePostListData: [PostElement] = []
 
     let userDefaultsDataModel = UserDefaultsDataModel()
     let userFriendModel = UserFriendModel()
@@ -51,9 +54,11 @@ class MyPageViewModel: ObservableObject {
         myPostCount = myPostManager.countAllPosts()
     }
 
+    // MARK: - 自分の投稿
+
     /// PostをloadStatusに応じて取得
-    func fetchPostsDataByStatus(lastId: String?) async {
-        switch loadStatus {
+    func fetchMyPostsDataByStatus(lastId: String?) async {
+        switch loadStatusMyPost {
         case .initial: // 初回は普通にデータ取得
             await fetchPostFromUid()
         case .loading: // 取得中なので、何もしない
@@ -69,8 +74,8 @@ class MyPageViewModel: ObservableObject {
         guard let uid = postDataModel.fetchUid() else { return }
         let postData = await postDataModel.fetchPostFromUid(uid: uid)
         DispatchQueue.main.async {
-            self.newPostListData = postData
-            self.loadStatus = .completion
+            self.newMyPostListData = postData
+            self.loadStatusMyPost = .completion
         }
     }
 
@@ -78,7 +83,7 @@ class MyPageViewModel: ObservableObject {
     func fetchMorePosts(lastDocumentId: String) async {
         DispatchQueue.main.async {
             // ロード開始のステータスに変更
-            self.loadStatus = .loading
+            self.loadStatusMyPost = .loading
         }
         guard let uid = postDataModel.fetchUid() else { return }
         await postDataModel.fetchMorePostDataFromUid(uid: uid, lastDocumentId: lastDocumentId) { result in
@@ -86,23 +91,38 @@ class MyPageViewModel: ObservableObject {
             case .success(let posts):
                 // データの取得が成功した場合の処理
                 DispatchQueue.main.async {
-                    self.newPostListData = posts
-                    self.loadStatus = .completion
+                    self.newMyPostListData = posts
+                    self.loadStatusMyPost = .completion
                 }
             case .failure(let error):
                 print("fetchMorePosts: error: \(error)")
                 // エラーが発生した場合の処理
                 DispatchQueue.main.async {
-                    self.loadStatus = .error
+                    self.loadStatusMyPost = .error
                 }
             }
+        }
+    }
+
+    // MARK: - いいねした投稿
+
+    /// PostをloadStatusに応じて取得
+    func fetchLikePostsDataByStatus(lastId: String?) async {
+        switch loadStatusMyPost {
+        case .initial: // 初回は普通にデータ取得
+            await fetchPostFromUid()
+        case .loading: // 取得中なので、何もしない
+            return
+        case .completion, .error:
+            guard let lastId else { return }
+            await fetchMorePosts(lastDocumentId: lastId)
         }
     }
 
     // MARK: - その他
     /// 表示されたPostが最後か判定
     func checkIsLastPost(postData: PostElement) -> Bool {
-        if postData.id == newPostListData.last?.id {
+        if postData.id == newMyPostListData.last?.id {
             return true
         }
         return false

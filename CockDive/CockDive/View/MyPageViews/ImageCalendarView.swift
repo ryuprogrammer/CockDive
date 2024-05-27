@@ -42,7 +42,7 @@ struct ImageCalendarView: View {
             // 日付と投稿画像のグリッド表示
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7), spacing: 5) {
                 ForEach(0..<showingDate.numberOfDaysInMonth + showingDate.weekdayOfFirstDay.rawValue, id: \.self) { index in
-                    
+
                     if index <= showingDate.weekdayOfFirstDay.rawValue {
                         Spacer()
                     } else {

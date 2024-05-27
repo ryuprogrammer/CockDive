@@ -270,36 +270,6 @@ struct PostDataModel {
         return nil
     }
 
-    // MARK: - データのリッスン
-
-    /// idを指定して投稿をリッスン
-    func listenToPostData(postId: String, completion: @escaping (PostElement?) -> Void) -> ListenerRegistration {
-        var postData: PostElement?
-        let listener = db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
-            guard let document = documentSnapshot else {
-                print("Error fetching document: \(error!)")
-                completion(postData)
-                return
-            }
-            do {
-                postData = try document.data(as: PostElement.self)
-
-                completion(postData)
-            } catch {
-                print("Error decoding post data: \(error)")
-                completion(postData)
-            }
-        }
-
-        return listener
-    }
-
-    /// リスナーを停止
-    mutating func removeListeners() {
-        listeners.forEach { $0.remove() }
-        listeners.removeAll()
-    }
-
     /// 複数のUIDを指定して投稿を取得
     func fetchPostsFromUids(uids: [String]) async -> [PostElement] {
         let docRef = db.collection(postDataCollection)
@@ -358,5 +328,35 @@ struct PostDataModel {
             completion(.failure(error))  // エラー時にエラーをコールバック
             print("Error getting documents: \(error)")
         }
+    }
+
+    // MARK: - データのリッスン
+
+    /// idを指定して投稿をリッスン
+    func listenToPostData(postId: String, completion: @escaping (PostElement?) -> Void) -> ListenerRegistration {
+        var postData: PostElement?
+        let listener = db.collection(postDataCollection).document(postId).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                completion(postData)
+                return
+            }
+            do {
+                postData = try document.data(as: PostElement.self)
+
+                completion(postData)
+            } catch {
+                print("Error decoding post data: \(error)")
+                completion(postData)
+            }
+        }
+
+        return listener
+    }
+
+    /// リスナーを停止
+    mutating func removeListeners() {
+        listeners.forEach { $0.remove() }
+        listeners.removeAll()
     }
 }

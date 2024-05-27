@@ -99,7 +99,7 @@ struct MyPageView: View {
         .onChange(of: showDate) { newDate in
             showMyPostData = myPageVM.fetchMyPostData(date: newDate)
         }
-        .onChange(of: myPageVM.newPostListData) { newPost in
+        .onChange(of: myPageVM.newMyPostListData) { newPost in
             showPostListData.append(contentsOf: newPost)
         }
     }
@@ -120,7 +120,7 @@ struct MyPageView: View {
                             Task {
                                 guard let last = showPostListData.last,
                                       let lastId = last.id else { return }
-                                await myPageVM.fetchPostsDataByStatus(
+                                await myPageVM.fetchMyPostsDataByStatus(
                                     lastId: lastId
                                 )
                             }
@@ -137,8 +137,8 @@ struct MyPageView: View {
             .listStyle(.plain)
             .onAppear {
                 Task {
-                    if myPageVM.loadStatus == .initial {
-                        await myPageVM.fetchPostsDataByStatus(lastId: nil)
+                    if myPageVM.loadStatusMyPost == .initial {
+                        await myPageVM.fetchMyPostsDataByStatus(lastId: nil)
                     }
                 }
             }
