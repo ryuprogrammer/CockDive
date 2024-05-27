@@ -14,10 +14,13 @@ class MyPageViewModel: ObservableObject {
     @Published var newMyPostListData: [PostElement] = []
     /// ライクした投稿
     @Published var newLikePostListData: [PostElement] = []
+    /// ライクした投稿のidデータ（CoreData）
+    var remainingLikePostIdData: [(id: String, date: Date)] = []
 
     let userDefaultsDataModel = UserDefaultsDataModel()
     let userFriendModel = UserFriendModel()
     let myPostManager = MyPostCoreDataManager.shared
+    let myDataManager = MyDataCoreDataManager.shared
     let postDataModel = PostDataModel()
 
     // ロードステータス
@@ -60,17 +63,17 @@ class MyPageViewModel: ObservableObject {
     func fetchMyPostsDataByStatus(lastId: String?) async {
         switch loadStatusMyPost {
         case .initial: // 初回は普通にデータ取得
-            await fetchPostFromUid()
+            await fetchMyPosts()
         case .loading: // 取得中なので、何もしない
             return
         case .completion, .error:
             guard let lastId else { return }
-            await fetchMorePosts(lastDocumentId: lastId)
+            await fetchMoreMyPosts(lastDocumentId: lastId)
         }
     }
 
-    /// UidからPost取得
-    func fetchPostFromUid() async {
+    /// 自分のPost取得
+    private func fetchMyPosts() async {
         guard let uid = postDataModel.fetchUid() else { return }
         let postData = await postDataModel.fetchPostFromUid(uid: uid)
         DispatchQueue.main.async {
@@ -79,8 +82,8 @@ class MyPageViewModel: ObservableObject {
         }
     }
 
-    /// 最後に取得したDocmentIdを基準にさらにPostを取得
-    func fetchMorePosts(lastDocumentId: String) async {
+    /// 最後に取得したDocmentIdを基準にさらにPostを取得（自分の）
+    private func fetchMoreMyPosts(lastDocumentId: String) async {
         DispatchQueue.main.async {
             // ロード開始のステータスに変更
             self.loadStatusMyPost = .loading
@@ -106,16 +109,44 @@ class MyPageViewModel: ObservableObject {
 
     // MARK: - いいねした投稿
 
-    /// PostをloadStatusに応じて取得
-    func fetchLikePostsDataByStatus(lastId: String?) async {
+    /// いいねした投稿をloadStatusに応じて取得
+    func fetchLikePostsDataByStatus() async {
         switch loadStatusMyPost {
-        case .initial: // 初回は普通にデータ取得
-            await fetchPostFromUid()
-        case .loading: // 取得中なので、何もしない
+        case .initial:
+            // ライクした投稿のidを初期化
+            fetchLikePostIdData()
+            // ライクした投稿を取得
+            await fetchLikePosts(likePostIdData: remainingLikePostIdData)
+        case .loading:
+            // 取得中なので、何もしない
             return
         case .completion, .error:
-            guard let lastId else { return }
-            await fetchMorePosts(lastDocumentId: lastId)
+            // ライクした投稿を取得
+            await fetchLikePosts(likePostIdData: remainingLikePostIdData)
+        }
+    }
+
+    // Core DataからlikePostIdDataの取得
+    private func fetchLikePostIdData() {
+        let myDataModels = myDataManager.fetchMyDataModels()
+        guard let myDataModel = myDataModels.first else { return }
+        self.remainingLikePostIdData = myDataModel.wrappedLikePostIds
+    }
+
+    /// ライクした投稿を取得
+    private func fetchLikePosts(
+        likePostIdData: [(id: String, date: Date)]
+    ) async {
+        DispatchQueue.main.async {
+            // ロード開始のステータスに変更
+            self.loadStatusLikePost = .loading
+        }
+        let postAndIds = await postDataModel.fetchLimitedPostsFromDocumentIds(documentIdsWithDates: likePostIdData)
+        // 取得しきれなかったライクした投稿のidと日付
+        self.remainingLikePostIdData = postAndIds.remainingDocumentIdsWithDates
+        DispatchQueue.main.async {
+            self.newLikePostListData = postAndIds.posts
+            self.loadStatusLikePost = .completion
         }
     }
 

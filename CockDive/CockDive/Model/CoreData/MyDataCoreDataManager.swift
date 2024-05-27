@@ -49,7 +49,7 @@ class MyDataCoreDataManager {
     // いいね状態を判定する
     func checkIsLike(postId: String) -> Bool {
         let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        return myDataModel?.wrappedLikePostIds.contains(postId) ?? false
+        return myDataModel?.wrappedLikePostIds.contains { $0.id == postId } ?? false
     }
 
     // MARK: - データの変更
@@ -91,7 +91,7 @@ class MyDataCoreDataManager {
     func addLikePostId(postId: String) {
         let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
         var postIds = myDataModel?.wrappedLikePostIds ?? []
-        postIds.append(postId)
+        postIds.append((id: postId, date: Date()))
         myDataModel?.likePostIds = postIds as NSObject
 
         saveContext()
@@ -125,7 +125,7 @@ class MyDataCoreDataManager {
     func removeLikePostId(postId: String) {
         let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
         var postIds = myDataModel?.wrappedLikePostIds ?? []
-        if let index = postIds.firstIndex(of: postId) {
+        if let index = postIds.firstIndex(where: { $0.id == postId }) {
             postIds.remove(at: index)
         }
         myDataModel?.likePostIds = postIds as NSObject

@@ -19,6 +19,7 @@ import FirebaseStorage
  12. removeListeners() - すべてのリスナーを停止する。
  13. fetchPostsFromUids(uids:) - 複数のUIDを指定して投稿を取得する。
  14. fetchMorePostsFromUids(uids:lastDocumentId:completion:) - 複数のUIDを指定して、最後に取得したドキュメントIDを基準にさらに投稿を取得する。
+ 15. fetchLimitedPostsFromDocumentIds(documentIdsWithDates:) - 複数のドキュメントIDと日付を指定して投稿を取得し、CreateAt順で並べる。
  */
 
 struct PostDataModel {
@@ -328,6 +329,33 @@ struct PostDataModel {
             completion(.failure(error))  // エラー時にエラーをコールバック
             print("Error getting documents: \(error)")
         }
+    }
+
+    /// 複数のドキュメントIDと日付を指定して投稿を取得し、CreateAt順で並べる
+    func fetchLimitedPostsFromDocumentIds(
+        documentIdsWithDates: [(id: String, date: Date)]
+    ) async -> (
+        posts: [PostElement],
+        remainingDocumentIdsWithDates: [(id: String, date: Date)]
+    ) {
+        var posts: [PostElement] = []
+        var remainingDocumentIdsWithDates: [(id: String, date: Date)] = []
+
+        // 日付順にソート
+        let sortedDocumentIdsWithDates = documentIdsWithDates.sorted { $0.date > $1.date }
+
+        // ドキュメントIDごとにPostElementを取得
+        for (documentId, date) in sortedDocumentIdsWithDates {
+            if let post = await fetchPostFromPostId(postId: documentId) {
+                posts.append(post)
+            }
+            if posts.count >= fetchPostLimit {
+                remainingDocumentIdsWithDates = Array(sortedDocumentIdsWithDates.dropFirst(posts.count))
+                break
+            }
+        }
+
+        return (posts, remainingDocumentIdsWithDates)
     }
 
     // MARK: - データのリッスン

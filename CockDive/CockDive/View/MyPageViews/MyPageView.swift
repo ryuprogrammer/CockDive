@@ -9,15 +9,19 @@ struct MyPageView: View {
     // 投稿数
     @State var showMyPostCount: Int = 0
 
-    // MARK: - 自分の投稿画面
-    @State var showPostListData: [PostElement] = []
-    @State private var lastPost: PostElement?
-
     // MARK: - カレンダー画面
     // 投稿データ: 表示している月の
     @State var showMyPostData: [(day: Int, posts: [MyPostModel])] = []
     // 表示している月
     @State private var showDate: Date = Date()
+
+    // MARK: - 自分の投稿画面用
+    @State var showPostListData: [PostElement] = []
+    @State private var lastPost: PostElement?
+
+    // MARK: - ライクした投稿画面用
+    @State var showLikePostListData: [PostElement] = []
+    @State private var lastLikePost: PostElement?
 
     // 画面遷移用
     @Binding var cockCardNavigationPath: [CockCardNavigationPath]
@@ -36,10 +40,10 @@ struct MyPageView: View {
                         ImageCalendarView(showingDate: $showDate, showMyPostData: $showMyPostData)
                     )),
                     (title: "投稿", view: AnyView(
-                        postListView()
+                        myPostListView()
                     )),
                     (title: "いいね", view: AnyView(
-                        Text("いいね")
+                        likePostListView()
                     ))
                 ])
             }
@@ -104,8 +108,9 @@ struct MyPageView: View {
         }
     }
 
+    // 自分の投稿リスト
     @ViewBuilder
-    func postListView() -> some View {
+    func myPostListView() -> some View {
         ScrollViewReader { proxy in
             List {
                 ForEach(showPostListData, id: \.id) { postData in
@@ -139,6 +144,46 @@ struct MyPageView: View {
                 Task {
                     if myPageVM.loadStatusMyPost == .initial {
                         await myPageVM.fetchMyPostsDataByStatus(lastId: nil)
+                    }
+                }
+            }
+        }
+    }
+
+    // ライクした投稿リスト
+    @ViewBuilder
+    func likePostListView() -> some View {
+        ScrollViewReader { proxy in
+            List {
+                ForEach(showLikePostListData, id: \.id) { postData in
+                    CockCardView(
+                        showPostData: postData,
+                        path: $cockCardNavigationPath,
+                        isShowUserNameAndFollowButton: true
+                    )
+                    .id(postData.id)
+                    .onAppear {
+                        if myPageVM.checkIsLastPost(postData: postData) {
+                            Task {
+                                guard let last = showLikePostListData.last,
+                                      let lastId = last.id else { return }
+                                await myPageVM.fetchLikePostsDataByStatus()
+                            }
+                        }
+                    }
+                }
+                .listRowSeparator(.hidden)
+                .onChange(of: showLikePostListData) { _ in
+                    if let lastPost = lastPost {
+                        proxy.scrollTo(lastPost.id, anchor: .bottom)
+                    }
+                }
+            }
+            .listStyle(.plain)
+            .onAppear {
+                Task {
+                    if myPageVM.loadStatusLikePost == .initial {
+                        await myPageVM.fetchLikePostsDataByStatus()
                     }
                 }
             }

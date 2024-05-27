@@ -12,7 +12,7 @@ extension MyDataModel {
     @NSManaged public var commentPostIds: NSObject?
 }
 
-extension MyDataModel : Identifiable {
+extension MyDataModel: Identifiable {
 }
 
 extension MyDataModel {
@@ -26,10 +26,10 @@ extension MyDataModel {
         }
     }
 
-    /// likePostIds→NSObject?型を[String]に変換
-    public var wrappedLikePostIds: [String] {
+    /// likePostIds→NSObject?型を[(id: String, date: Date)]に変換
+    public var wrappedLikePostIds: [(id: String, date: Date)] {
         get {
-            return (likePostIds as? [String]) ?? []
+            return (likePostIds as? [(id: String, date: Date)]) ?? []
         }
         set {
             likePostIds = newValue as NSObject
