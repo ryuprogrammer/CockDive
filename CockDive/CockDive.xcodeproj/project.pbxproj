@@ -36,6 +36,9 @@
 		4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */; };
 		4253F6302C02E6CF0067BF14 /* MyPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */; };
 		4253F6342C02FAE90067BF14 /* SwipeableTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6332C02FAE90067BF14 /* SwipeableTabView.swift */; };
+		4253F6372C047F780067BF14 /* LikePostModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6352C047F780067BF14 /* LikePostModel+CoreDataClass.swift */; };
+		4253F6382C047F780067BF14 /* LikePostModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6362C047F780067BF14 /* LikePostModel+CoreDataProperties.swift */; };
+		4253F63A2C047FD20067BF14 /* LikePostCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6392C047FD20067BF14 /* LikePostCoreDataManager.swift */; };
 		4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8402BEDA30C005AB08F /* CockPostView.swift */; };
 		4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8452BEDE782005AB08F /* MyPageView.swift */; };
 		4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298D8472BEE6C35005AB08F /* AddPostView.swift */; };
@@ -121,6 +124,9 @@
 		4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4253F62F2C02E6CF0067BF14 /* MyPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageHeaderView.swift; sourceTree = "<group>"; };
 		4253F6332C02FAE90067BF14 /* SwipeableTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableTabView.swift; sourceTree = "<group>"; };
+		4253F6352C047F780067BF14 /* LikePostModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikePostModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4253F6362C047F780067BF14 /* LikePostModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikePostModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4253F6392C047FD20067BF14 /* LikePostCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePostCoreDataManager.swift; sourceTree = "<group>"; };
 		4298D8402BEDA30C005AB08F /* CockPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostView.swift; sourceTree = "<group>"; };
 		4298D8452BEDE782005AB08F /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		4298D8472BEE6C35005AB08F /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
@@ -253,10 +259,13 @@
 				422C69C62BED1C570012FB8F /* Persistence.swift */,
 				4253F6232C006D730067BF14 /* MyDataCoreDataManager.swift */,
 				4253F6252C00E0A00067BF14 /* MyPostCoreDataManager.swift */,
+				4253F6392C047FD20067BF14 /* LikePostCoreDataManager.swift */,
 				4253F61A2BFEBA840067BF14 /* MyPostModel+CoreDataClass.swift */,
 				4253F61B2BFEBA840067BF14 /* MyPostModel+CoreDataProperties.swift */,
 				4253F61C2BFEBA840067BF14 /* MyDataModel+CoreDataClass.swift */,
 				4253F61D2BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift */,
+				4253F6352C047F780067BF14 /* LikePostModel+CoreDataClass.swift */,
+				4253F6362C047F780067BF14 /* LikePostModel+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -499,6 +508,7 @@
 				4298D8742BF12260005AB08F /* ToolBarBackButtonView.swift in Sources */,
 				42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */,
 				423B2A882BF8395300489BCC /* UserFriendModel.swift in Sources */,
+				4253F63A2C047FD20067BF14 /* LikePostCoreDataManager.swift in Sources */,
 				4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */,
 				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
@@ -516,6 +526,8 @@
 				4298D84B2BEF4E40005AB08F /* Color+.swift in Sources */,
 				42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */,
 				4253F6172BFE00DF0067BF14 /* ProfileView.swift in Sources */,
+				4253F6372C047F780067BF14 /* LikePostModel+CoreDataClass.swift in Sources */,
+				4253F6382C047F780067BF14 /* LikePostModel+CoreDataProperties.swift in Sources */,
 				4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */,
 				42DB949A2BF4A2AE00ECDD84 /* UserFriendElement.swift in Sources */,
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,

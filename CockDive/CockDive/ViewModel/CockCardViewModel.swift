@@ -12,6 +12,7 @@ class CockCardViewModel: ObservableObject {
     let userPostDataModel = UserPostDataModel()
     let postDataModel = PostDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
+    let coreDataLikePostModel = LikePostCoreDataManager.shared
 
     private var postListener: ListenerRegistration? = nil
 
@@ -49,7 +50,7 @@ class CockCardViewModel: ObservableObject {
         guard let id = post.id else { return }
         let toLike = !showIsLikePost
         // CoreDataのライク変更
-        coreDataMyDataModel.changeLike(postId: id, toLike: toLike)
+        coreDataLikePostModel.toggleLikePost(id: id, toLike: toLike)
         // FirestoreのPostDataModelのライク変更
         await postDataModel.changeLikeToPost(post: post, toLike: toLike)
         // FirestoreのUserPostDataModelのライク変更
@@ -78,7 +79,7 @@ class CockCardViewModel: ObservableObject {
     /// ライクしているか判定（CoreData）
     func checkIsLike(postId: String?) {
         if let postId {
-            showIsLikePost = coreDataMyDataModel.checkIsLike(postId: postId)
+            showIsLikePost = coreDataLikePostModel.checkIsLike(id: postId)
             print("ライク:\(showIsLikePost)")
         }
     }

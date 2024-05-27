@@ -15,12 +15,13 @@ class MyPageViewModel: ObservableObject {
     /// ライクした投稿
     @Published var newLikePostListData: [PostElement] = []
     /// ライクした投稿のidデータ（CoreData）
-    var remainingLikePostIdData: [(id: String, date: Date)] = []
+    var remainingLikePostIdData: [LikePostModel] = []
 
     let userDefaultsDataModel = UserDefaultsDataModel()
     let userFriendModel = UserFriendModel()
     let myPostManager = MyPostCoreDataManager.shared
     let myDataManager = MyDataCoreDataManager.shared
+    let coreDataLikePostModel = LikePostCoreDataManager.shared
     let postDataModel = PostDataModel()
 
     // ロードステータス
@@ -128,22 +129,20 @@ class MyPageViewModel: ObservableObject {
 
     // Core DataからlikePostIdDataの取得
     private func fetchLikePostIdData() {
-        let myDataModels = myDataManager.fetchMyDataModels()
-        guard let myDataModel = myDataModels.first else { return }
-        self.remainingLikePostIdData = myDataModel.wrappedLikePostIds
+        self.remainingLikePostIdData = coreDataLikePostModel.fetchAllLikePost()
     }
 
     /// ライクした投稿を取得
     private func fetchLikePosts(
-        likePostIdData: [(id: String, date: Date)]
+        likePostIdData: [LikePostModel]
     ) async {
         DispatchQueue.main.async {
             // ロード開始のステータスに変更
             self.loadStatusLikePost = .loading
         }
-        let postAndIds = await postDataModel.fetchLimitedPostsFromDocumentIds(documentIdsWithDates: likePostIdData)
+        let postAndIds = await postDataModel.fetchLimitedPostsFromLikePosts(likePosts: remainingLikePostIdData)
         // 取得しきれなかったライクした投稿のidと日付
-        self.remainingLikePostIdData = postAndIds.remainingDocumentIdsWithDates
+        self.remainingLikePostIdData = postAndIds.remainingLikePosts
         DispatchQueue.main.async {
             self.newLikePostListData = postAndIds.posts
             self.loadStatusLikePost = .completion
@@ -151,9 +150,17 @@ class MyPageViewModel: ObservableObject {
     }
 
     // MARK: - その他
-    /// 表示されたPostが最後か判定
-    func checkIsLastPost(postData: PostElement) -> Bool {
+    /// 表示されたPostが最後か判定→自分の投稿用
+    func checkIsLastMyPost(postData: PostElement) -> Bool {
         if postData.id == newMyPostListData.last?.id {
+            return true
+        }
+        return false
+    }
+
+    /// 表示されたPostが最後か判定→いいね用
+    func checkIsLastLikePost(postData: PostElement) -> Bool {
+        if postData.id == newLikePostListData.last?.id {
             return true
         }
         return false

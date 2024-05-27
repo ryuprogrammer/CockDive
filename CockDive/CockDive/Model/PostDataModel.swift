@@ -331,31 +331,33 @@ struct PostDataModel {
         }
     }
 
-    /// 複数のドキュメントIDと日付を指定して投稿を取得し、CreateAt順で並べる
-    func fetchLimitedPostsFromDocumentIds(
-        documentIdsWithDates: [(id: String, date: Date)]
+    /// 複数のLikePostModelを指定して投稿を取得し、CreateAt順で並べる
+    /// - Parameter likePosts: LikePostModelの配列
+    /// - Returns: (posts: PostElementの配列, remainingLikePosts: LikePostModelの配列)
+    func fetchLimitedPostsFromLikePosts(
+        likePosts: [LikePostModel]
     ) async -> (
         posts: [PostElement],
-        remainingDocumentIdsWithDates: [(id: String, date: Date)]
+        remainingLikePosts: [LikePostModel]
     ) {
         var posts: [PostElement] = []
-        var remainingDocumentIdsWithDates: [(id: String, date: Date)] = []
+        var remainingLikePosts: [LikePostModel] = []
 
         // 日付順にソート
-        let sortedDocumentIdsWithDates = documentIdsWithDates.sorted { $0.date > $1.date }
+        let sortedLikePosts = likePosts.sorted { $0.wrappedCreateAt > $1.wrappedCreateAt }
 
-        // ドキュメントIDごとにPostElementを取得
-        for (documentId, date) in sortedDocumentIdsWithDates {
-            if let post = await fetchPostFromPostId(postId: documentId) {
+        // LikePostModelごとにPostElementを取得
+        for likePost in sortedLikePosts {
+            if let post = await fetchPostFromPostId(postId: likePost.wrappedId) {
                 posts.append(post)
             }
             if posts.count >= fetchPostLimit {
-                remainingDocumentIdsWithDates = Array(sortedDocumentIdsWithDates.dropFirst(posts.count))
+                remainingLikePosts = Array(sortedLikePosts.dropFirst(posts.count))
                 break
             }
         }
 
-        return (posts, remainingDocumentIdsWithDates)
+        return (posts, remainingLikePosts)
     }
 
     // MARK: - データのリッスン

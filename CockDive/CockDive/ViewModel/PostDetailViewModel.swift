@@ -13,6 +13,7 @@ class PostDetailViewModel: ObservableObject {
     let commentDataModel = CommentDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
     let userDefaultsDataModel = UserDefaultsDataModel()
+    let coreDataLikePostModel = LikePostCoreDataManager.shared
 
     // ロードステータス
     private var loadStatus: LoadStatus = .initial
@@ -46,7 +47,7 @@ class PostDetailViewModel: ObservableObject {
         guard let id = post.id else { return }
         let toLike = !isLike
         // CoreDataのライク変更
-        coreDataMyDataModel.changeLike(postId: id, toLike: toLike)
+        coreDataLikePostModel.toggleLikePost(id: id, toLike: toLike)
         // FirestoreのPostDataModelのライク変更
         await postDataModel.changeLikeToPost(post: post, toLike: toLike)
         // FirestoreのUserPostDataModelのライク変更
@@ -93,8 +94,7 @@ class PostDetailViewModel: ObservableObject {
     /// ライクしているか判定（CoreData）
     func checkIsLike(postId: String?) {
         if let postId {
-            isLike = coreDataMyDataModel.checkIsLike(postId: postId)
-            print("ライク:\(isLike)")
+            isLike = coreDataLikePostModel.checkIsLike(id: postId)
         }
     }
 

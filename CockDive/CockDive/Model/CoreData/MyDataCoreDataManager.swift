@@ -46,12 +46,6 @@ class MyDataCoreDataManager {
         return myDataModel?.wrappedFollowUids.contains(uid) ?? false
     }
 
-    // いいね状態を判定する
-    func checkIsLike(postId: String) -> Bool {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        return myDataModel?.wrappedLikePostIds.contains { $0.id == postId } ?? false
-    }
-
     // MARK: - データの変更
 
     // フォロー状態を変更する
@@ -63,18 +57,6 @@ class MyDataCoreDataManager {
         }
     }
 
-    // いいね状態を変更する
-    func changeLike(postId: String, toLike: Bool) {
-        let beforeLike = checkIsLike(postId: postId)
-        if toLike != beforeLike {
-            if toLike {
-                addLikePostId(postId: postId)
-            } else {
-                removeLikePostId(postId: postId)
-            }
-        }
-    }
-
     // MARK: - データの追加
 
     // フォローUIDを追加する
@@ -83,16 +65,6 @@ class MyDataCoreDataManager {
         var uids = myDataModel?.wrappedFollowUids ?? []
         uids.append(uid)
         myDataModel?.followUids = uids as NSObject
-
-        saveContext()
-    }
-
-    // いいねポストIDを追加する
-    func addLikePostId(postId: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var postIds = myDataModel?.wrappedLikePostIds ?? []
-        postIds.append((id: postId, date: Date()))
-        myDataModel?.likePostIds = postIds as NSObject
 
         saveContext()
     }
@@ -117,18 +89,6 @@ class MyDataCoreDataManager {
             uids.remove(at: index)
         }
         myDataModel?.followUids = uids as NSObject
-
-        saveContext()
-    }
-
-    // いいねポストIDを削除する
-    func removeLikePostId(postId: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var postIds = myDataModel?.wrappedLikePostIds ?? []
-        if let index = postIds.firstIndex(where: { $0.id == postId }) {
-            postIds.remove(at: index)
-        }
-        myDataModel?.likePostIds = postIds as NSObject
 
         saveContext()
     }

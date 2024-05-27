@@ -103,9 +103,6 @@ struct MyPageView: View {
         .onChange(of: showDate) { newDate in
             showMyPostData = myPageVM.fetchMyPostData(date: newDate)
         }
-        .onChange(of: myPageVM.newMyPostListData) { newPost in
-            showPostListData.append(contentsOf: newPost)
-        }
     }
 
     // 自分の投稿リスト
@@ -121,7 +118,7 @@ struct MyPageView: View {
                     )
                     .id(postData.id)
                     .onAppear {
-                        if myPageVM.checkIsLastPost(postData: postData) {
+                        if myPageVM.checkIsLastMyPost(postData: postData) {
                             Task {
                                 guard let last = showPostListData.last,
                                       let lastId = last.id else { return }
@@ -147,6 +144,10 @@ struct MyPageView: View {
                     }
                 }
             }
+            .onChange(of: myPageVM.newMyPostListData) { newPost in
+                // データを画面に描画
+                showPostListData.append(contentsOf: newPost)
+            }
         }
     }
 
@@ -163,10 +164,8 @@ struct MyPageView: View {
                     )
                     .id(postData.id)
                     .onAppear {
-                        if myPageVM.checkIsLastPost(postData: postData) {
+                        if myPageVM.checkIsLastLikePost(postData: postData) {
                             Task {
-                                guard let last = showLikePostListData.last,
-                                      let lastId = last.id else { return }
                                 await myPageVM.fetchLikePostsDataByStatus()
                             }
                         }
@@ -186,6 +185,10 @@ struct MyPageView: View {
                         await myPageVM.fetchLikePostsDataByStatus()
                     }
                 }
+            }
+            .onChange(of: myPageVM.newLikePostListData) { newPost in
+                // データを画面に描画
+                showLikePostListData.append(contentsOf: newPost)
             }
         }
     }

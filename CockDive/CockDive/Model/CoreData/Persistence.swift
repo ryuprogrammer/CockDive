@@ -10,7 +10,6 @@ struct PersistenceController {
         for _ in 0..<10 {
             let newMyData = MyDataModel(context: viewContext)
             newMyData.followUids = [] as NSObject
-            newMyData.likePostIds = [] as NSObject
             newMyData.commentPostIds = [] as NSObject
         }
 
@@ -21,6 +20,12 @@ struct PersistenceController {
             newMyPost.title = "Sample Title \(i)"
             newMyPost.memo = "Sample Memo \(i)"
             newMyPost.createAt = Date()
+        }
+
+        for i in 0..<10 {
+            let newLikePost = LikePostModel(context: viewContext)
+            newLikePost.id = UUID().uuidString
+            newLikePost.createAt = Date()
         }
 
         do {
