@@ -31,21 +31,32 @@ struct MyPageHeaderView: View {
                         .clipShape(Circle())
                 }
                 Spacer()
-                HStack(spacing: 15) {
-                    VStack {
+                HStack(spacing: 5) {
+                    VStack(alignment: .center) {
                         Text("\(postCount)")
+                            .fontWeight(.semibold)
                         Text("投稿")
+                            .font(.callout)
                     }
-                    VStack {
+                    .frame(width: screenWidth/7)
+
+                    VStack(alignment: .center) {
                         Text("\(showFriendData.followCount)")
+                            .fontWeight(.semibold)
                         Text("フォロー")
+                            .font(.callout)
                     }
-                    VStack {
+                    .frame(width: screenWidth/5)
+
+                    VStack(alignment: .center) {
                         Text("\(showFriendData.followerCount)")
+                            .fontWeight(.semibold)
                         Text("フォロワー")
+                            .font(.callout)
                     }
+                    .frame(width: screenWidth/5)
                 }
-                Spacer()
+                .padding(.horizontal)
             }
             
             if let introduction = showUserData.introduction {
