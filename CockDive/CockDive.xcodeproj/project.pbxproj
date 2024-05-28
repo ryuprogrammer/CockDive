@@ -21,6 +21,7 @@
 		422EFAAC2C05CA39000DE24C /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAB2C05CA39000DE24C /* UIImage+.swift */; };
 		422EFAAE2C05F1AD000DE24C /* MyProfileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */; };
 		422EFAB02C05F7C0000DE24C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAF2C05F7C0000DE24C /* Data+.swift */; };
+		422EFAB22C061E45000DE24C /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB12C061E44000DE24C /* SettingViewModel.swift */; };
 		423B2A882BF8395300489BCC /* UserFriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A872BF8395300489BCC /* UserFriendModel.swift */; };
 		423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A892BF8605800489BCC /* UserPostDataModel.swift */; };
 		423B2A8C2BF86CDB00489BCC /* CommentDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */; };
@@ -115,6 +116,7 @@
 		422EFAAB2C05CA39000DE24C /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditViewModel.swift; sourceTree = "<group>"; };
 		422EFAAF2C05F7C0000DE24C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
+		422EFAB12C061E44000DE24C /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		423B2A872BF8395300489BCC /* UserFriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriendModel.swift; sourceTree = "<group>"; };
 		423B2A892BF8605800489BCC /* UserPostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostDataModel.swift; sourceTree = "<group>"; };
 		423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDataModel.swift; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 				4253F6182BFE0ECA0067BF14 /* ProfileViewModel.swift */,
 				4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */,
 				422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */,
+				422EFAB12C061E44000DE24C /* SettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				4298D85C2BF0DD3B005AB08F /* StrokeButtonUI.swift in Sources */,
 				422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */,
 				4298D8682BF1073D005AB08F /* BlockListView.swift in Sources */,
+				422EFAB22C061E45000DE24C /* SettingViewModel.swift in Sources */,
 				42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */,
 				423B2A922BFA293C00489BCC /* UIApplication+.swift in Sources */,
 				42DB94912BF470EC00ECDD84 /* CommentElement.swift in Sources */,
