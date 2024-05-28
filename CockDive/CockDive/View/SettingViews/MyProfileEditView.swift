@@ -2,8 +2,10 @@ import SwiftUI
 import PhotosUI
 
 struct MyProfileEditView: View {
+    @ObservedObject var myProfileEditVM = MyProfileEditViewModel()
     @State private var nickName: String = ""
-    @State private var memo: String = ""
+    @State private var introduction: String = ""
+    @State private var uiImage: UIImage? = UIImage()
     // PhotosPickerで選択された写真
     @State private var selectedImage: [PhotosPickerItem] = []
 
@@ -34,13 +36,21 @@ struct MyProfileEditView: View {
                     preferredItemEncoding: .current,
                     photoLibrary: .shared()) {
                         ZStack {
-                            Image("cockImage")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: screenWidth / 3, height: screenWidth / 3)
-                                .clipShape(Circle())
-                                .padding(0)
-                                .padding(.bottom)
+                            if let uiImage {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
+                                    .clipShape(Circle())
+                                    .padding(.bottom)
+                            } else {
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
+                                    .clipShape(Circle())
+                                    .padding(.bottom)
+                            }
 
                             Image(systemName: "plus")
                                 .resizable()
@@ -54,7 +64,14 @@ struct MyProfileEditView: View {
                         }
                     }
                     .onChange(of: selectedImage) { newPhotoPickerItems in
-
+                        Task {
+                            guard let imageData = newPhotoPickerItems.first,
+                                  let uiImage = await imageData.castImageType() else {
+                                      return
+                                  }
+                            self.uiImage = uiImage
+                            selectedImage.removeAll()
+                        }
                     }
 
                 SectioinTitleView(text: "名前", isRequired: false)
@@ -72,7 +89,7 @@ struct MyProfileEditView: View {
 
                 SectioinTitleView(text: "自己紹介文", isRequired: false)
 
-                TextEditor(text: $memo)
+                TextEditor(text: $introduction)
                     .padding(5)
                     .focused($keybordFocuse)
                     .frame(height: 100)
@@ -82,7 +99,7 @@ struct MyProfileEditView: View {
                             .stroke(Color.gray, lineWidth: 0.6)
                     )
                     .overlay(alignment: .topLeading) {
-                        Text(memo == "" ? "毎日自炊してます！" : "")
+                        Text(introduction == "" ? "毎日自炊してます！" : "")
                             .foregroundStyle(Color.gray.opacity(0.5))
                             .padding(12)
                     }
@@ -112,8 +129,15 @@ struct MyProfileEditView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "保存") {
-
-                        dismiss()
+                        Task {
+                            let imageData = uiImage?.castToData()
+                            await myProfileEditVM.upDateUserData(
+                                nickName: nickName,
+                                introduction: introduction,
+                                iconImage: imageData
+                            )
+                            dismiss()
+                        }
                     }
                 }
 
@@ -123,6 +147,14 @@ struct MyProfileEditView: View {
                         self.keybordFocuse = false
                     }
                 }
+            }
+        }
+        .onAppear {
+            if let userData = myProfileEditVM.fetchUserData() {
+                nickName = userData.nickName
+                introduction = userData.introduction ?? ""
+                guard let iconData = userData.iconImage else { return }
+                uiImage = UIImage(data: iconData)
             }
         }
     }

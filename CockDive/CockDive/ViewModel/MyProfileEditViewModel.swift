@@ -4,6 +4,11 @@ class MyProfileEditViewModel: ObservableObject {
     private let userDataModel = UserDataModel()
     private let userDefaultsDataModel = UserDefaultsDataModel()
 
+    /// UserData取得
+    func fetchUserData() -> UserElementForUserDefaults? {
+        return userDefaultsDataModel.fetchUserData()
+    }
+
     /// Userの登録
     func upDateUserData(
         nickName: String,
