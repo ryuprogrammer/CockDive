@@ -29,7 +29,6 @@ struct MyPageView: View {
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             VStack {
-                Text("名前: \(showUserData.nickName)")
                 MyPageHeaderView(
                     showUserData: $showUserData,
                     postCount: $showMyPostCount,
@@ -68,7 +67,7 @@ struct MyPageView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("マイページ")
+                    Text("ごはんのきろく")
                         .foregroundStyle(Color.white)
                         .fontWeight(.bold)
                         .font(.title3)

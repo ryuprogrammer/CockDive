@@ -21,14 +21,13 @@ struct MyPageHeaderView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth / 6, height: screenWidth / 6)
+                        .frame(width: screenWidth / 4, height: screenWidth / 4)
                         .clipShape(Circle())
                 } else {
-                    Image(systemName: "person.circle.fill")
+                    Image("iconSample4")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .foregroundStyle(Color.gray)
-                        .frame(width: screenWidth / 6, height: screenWidth / 6)
+                        .frame(width: screenWidth / 4, height: screenWidth / 4)
                         .clipShape(Circle())
                 }
                 Spacer()

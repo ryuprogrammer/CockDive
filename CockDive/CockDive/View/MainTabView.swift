@@ -12,7 +12,7 @@ struct MainTabView: View {
                 .tabItem {
                     VStack {
                         Image(systemName: "fork.knife")
-                        Text("ご飯")
+                        Text("みんなのごはん")
                     }
                     .onTapGesture {
                         cockPostNavigationPath.removeAll()
@@ -23,8 +23,8 @@ struct MainTabView: View {
             MyPageView(cockCardNavigationPath: $myPageNavigationPath)
                 .tabItem {
                     VStack {
-                        Image(systemName: "house")
-                        Text("ホーム")
+                        Image(systemName: "frying.pan")
+                        Text("ごはんのきろく")
                     }
                     .onTapGesture {
                         myPageNavigationPath.removeAll()
