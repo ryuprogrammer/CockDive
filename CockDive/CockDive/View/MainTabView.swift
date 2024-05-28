@@ -45,18 +45,28 @@ enum CockCardNavigationPath: Hashable {
     case detailView(postData: PostElement, firstLike: Bool, firstFollow: Bool)
     /// プロフィール
     case profileView(userData: UserElement, showIsFollow: Bool)
+
+    /// 設定画面
+    case settingView
+    case newsView
+    case privacyPolicyView
+    case termsOfServiceView
+    case blockListView
+    case contactView
+    case logoutView
+    case deleteAccountView
 }
 
-//enum SettingViewPath {
-//    case settingView
-//    case newsView
-//    case privacyPolicyView
-//    case termsOfServiceView
-//    case blockListView
-//    case contactView
-//    case logoutView
-//    case deleteAccountView
-//}
+enum SettingViewPath {
+    case settingView
+    case newsView
+    case privacyPolicyView
+    case termsOfServiceView
+    case blockListView
+    case contactView
+    case logoutView
+    case deleteAccountView
+}
 
 #Preview {
     MainTabView()

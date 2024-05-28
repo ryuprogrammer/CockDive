@@ -59,8 +59,8 @@ struct MyPageView: View {
                         .font(.title3)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SettingView()
+                    Button {
+                        cockCardNavigationPath.append(.settingView)
                     } label: {
                         Image(systemName: "gearshape")
                             .resizable()
@@ -76,6 +76,22 @@ struct MyPageView: View {
                     PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
                 case .profileView(let userData, let showIsFollow):
                     ProfileView(showUser: userData, showIsFollow: showIsFollow, navigationPath: $cockCardNavigationPath)
+                case .settingView:
+                    SettingView(path: $cockCardNavigationPath)
+                case .newsView:
+                    NewsView(path: $cockCardNavigationPath)
+                case .privacyPolicyView:
+                    PrivacyPolicyView(path: $cockCardNavigationPath)
+                case .termsOfServiceView:
+                    TermsOfServiceView(path: $cockCardNavigationPath)
+                case .blockListView:
+                    BlockListView(path: $cockCardNavigationPath)
+                case .contactView:
+                    ContactView(path: $cockCardNavigationPath)
+                case .logoutView:
+                    LogoutView(path: $cockCardNavigationPath)
+                case .deleteAccountView:
+                    DeleteAccountView(path: $cockCardNavigationPath)
                 }
             }
         }

@@ -1,10 +1,9 @@
 import SwiftUI
 
 struct TermsOfServiceView: View {
-    
     // ルート階層から受け取った配列パスの参照
-//    @Binding var path: [NavigationDestination]
-    
+    @Binding var path: [CockCardNavigationPath]
+
     var body: some View {
         Text("TermsOfServiceView")
             .navigationBarTitleDisplayMode(.inline)
@@ -14,7 +13,7 @@ struct TermsOfServiceView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-//                        path.removeLast()
+                        path.removeLast()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -28,5 +27,5 @@ struct TermsOfServiceView: View {
 }
 
 #Preview {
-    TermsOfServiceView()
+    TermsOfServiceView(path: .constant([]))
 }

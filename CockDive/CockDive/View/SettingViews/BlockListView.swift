@@ -1,10 +1,9 @@
 import SwiftUI
 
 struct BlockListView: View {
-    
     // ルート階層から受け取った配列パスの参照
-//    @Binding var path: [NavigationDestination]
-    
+    @Binding var path: [CockCardNavigationPath]
+
     var body: some View {
         Text("BlockListView")
             .navigationBarTitleDisplayMode(.inline)
@@ -14,7 +13,7 @@ struct BlockListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-//                        path.removeLast()
+                        path.removeLast()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -28,5 +27,5 @@ struct BlockListView: View {
 }
 
 #Preview {
-    BlockListView()
+    BlockListView(path: .constant([]))
 }

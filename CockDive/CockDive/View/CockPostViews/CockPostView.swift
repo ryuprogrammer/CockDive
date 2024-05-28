@@ -39,6 +39,8 @@ struct CockPostView: View {
                     PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
                 case .profileView(let userData, let isFollow):
                     ProfileView(showUser: userData, showIsFollow: isFollow, navigationPath: $cockCardNavigationPath)
+                default:
+                    EmptyView()
                 }
             }
         }

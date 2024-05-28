@@ -3,8 +3,8 @@ import SwiftUI
 struct PrivacyPolicyView: View {
     
     // ルート階層から受け取った配列パスの参照
-//    @Binding var path: [NavigationDestination]
-    
+    @Binding var path: [CockCardNavigationPath]
+
     var body: some View {
         Text("ProvacyPolicyView")
             .navigationBarTitleDisplayMode(.inline)
@@ -14,7 +14,7 @@ struct PrivacyPolicyView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-//                        path.removeLast()
+                        path.removeLast()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -28,5 +28,5 @@ struct PrivacyPolicyView: View {
 }
 
 #Preview {
-    PrivacyPolicyView()
+    PrivacyPolicyView(path: .constant([]))
 }

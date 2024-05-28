@@ -2,8 +2,8 @@ import SwiftUI
 
 struct LogoutView: View {
     // ルート階層から受け取った配列パスの参照
-//    @Binding var path: [NavigationDestination]
-    
+    @Binding var path: [CockCardNavigationPath]
+
     var body: some View {
         Text("LogoutView")
             .navigationBarTitleDisplayMode(.inline)
@@ -13,7 +13,7 @@ struct LogoutView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-//                        path.removeLast()
+                        path.removeLast()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -27,5 +27,5 @@ struct LogoutView: View {
 }
 
 #Preview {
-    LogoutView()
+    LogoutView(path: .constant([]))
 }
