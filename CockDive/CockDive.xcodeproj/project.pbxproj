@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A53992C05705C00795317 /* MyProfileEditView.swift */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
 		422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */; };
@@ -93,6 +94,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		421A53992C05705C00795317 /* MyProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditView.swift; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
 		422C69C62BED1C570012FB8F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				4298D85E2BF101C4005AB08F /* SettingView.swift */,
+				421A53992C05705C00795317 /* MyProfileEditView.swift */,
 				4298D8612BF10693005AB08F /* NewsView.swift */,
 				4298D8632BF106BD005AB08F /* PrivacyPolicyView.swift */,
 				4298D8652BF1071B005AB08F /* TermsOfServiceView.swift */,
@@ -537,6 +540,7 @@
 				423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */,
 				42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */,
 				4253F60E2BFDD0DA0067BF14 /* PostMockData.swift in Sources */,
+				421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */,
 				4298D8622BF10694005AB08F /* NewsView.swift in Sources */,
 				4298D8412BEDA30C005AB08F /* CockPostView.swift in Sources */,
 				42DB94602BF2562E00ECDD84 /* DynamicHeightCommentView.swift in Sources */,

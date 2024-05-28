@@ -5,9 +5,44 @@ struct SettingView: View {
     @Binding var path: [CockCardNavigationPath]
     // TabBar用
     @State var flag: Visibility = .hidden
-    
+
+    // 画面サイズ取得
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    var screenWidth: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
+    }
+
     var body: some View {
         List {
+            Button {
+
+            } label: {
+                HStack {
+                    Image("cockImage")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: screenWidth / 7, height: screenWidth / 7)
+                        .clipShape(Circle())
+                        .padding(0)
+
+                    VStack(alignment: .leading) {
+                        Text("なまえ")
+                            .font(.title)
+                            .foregroundStyle(Color.black)
+                        Text("プロフィールを編集")
+                            .foregroundStyle(Color.gray)
+                    }
+
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(Color.gray)
+                }
+            }
+
             Section {
                 NavigationLinkButtonView(icon: "bell", text: "お知らせ") {
                     path.append(.newsView)
@@ -83,5 +118,7 @@ struct SettingView: View {
 }
 
 #Preview {
-    SettingView(path: .constant([]))
+    NavigationStack {
+        SettingView(path: .constant([]))
+    }
 }
