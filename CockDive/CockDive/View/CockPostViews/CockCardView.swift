@@ -53,13 +53,13 @@ struct CockCardView: View {
                                let uiImage = UIImage(data: data) {
                                 Image(uiImage: uiImage)
                                     .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                    .aspectRatio(contentMode: .fill)
                                     .foregroundStyle(Color.gray)
                                     .frame(width: screenWidth / 12, height: screenWidth / 12)
                             } else {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                    .aspectRatio(contentMode: .fill)
                                     .foregroundStyle(Color.gray)
                                     .frame(width: screenWidth / 12, height: screenWidth / 12)
                             }

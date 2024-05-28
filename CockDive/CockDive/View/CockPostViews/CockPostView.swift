@@ -46,6 +46,14 @@ struct CockPostView: View {
         }
         .sheet(isPresented: $isShowSheet) {
             AddPostView()
+                .onDisappear {
+                    cockPostVM.loadStatus = .initial
+                    showPostsData.removeAll()
+                    cockPostVM.newPostsData.removeAll()
+                    Task {
+                        await cockPostVM.fetchPostsDataByStatus()
+                    }
+                }
         }
         .onChange(of: cockPostVM.newPostsData) { newPostData in
             lastPost = showPostsData.last
