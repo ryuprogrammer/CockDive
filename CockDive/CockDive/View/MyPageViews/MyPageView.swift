@@ -29,11 +29,21 @@ struct MyPageView: View {
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             VStack {
+                Text("名前: \(showUserData.nickName)")
                 MyPageHeaderView(
                     showUserData: $showUserData,
                     postCount: $showMyPostCount,
                     showFriendData: $showFriendData
                 )
+                .onAppear {
+                    print("onAppear")
+                    myPageVM.fetchUserData()
+                    showMyPostData = myPageVM.fetchMyPostData(date: showDate)
+                    myPageVM.fetchMyPostCount()
+                    Task {
+                        await myPageVM.fetchUserFriendElement()
+                    }
+                }
 
                 SwipeableTabView(tabs: [
                     (title: "カレンダー", view: AnyView(
@@ -95,16 +105,10 @@ struct MyPageView: View {
                 }
             }
         }
-        .onAppear {
-            myPageVM.fetchUserData()
-            showMyPostData = myPageVM.fetchMyPostData(date: showDate)
-            myPageVM.fetchMyPostCount()
-            Task {
-                await myPageVM.fetchUserFriendElement()
-            }
-        }
         .onChange(of: myPageVM.userData) { userData in
+            print("onChange")
             if let userData {
+                print("userData: \(userData)")
                 showUserData = userData
             }
         }
