@@ -38,7 +38,6 @@ struct MyPageView: View {
                 .onAppear {
                     print("onAppear")
                     myPageVM.fetchUserData()
-                    showMyPostData = myPageVM.fetchMyPostData(date: showDate)
                     myPageVM.fetchMyPostCount()
                     Task {
                         await myPageVM.fetchUserFriendElement()
@@ -47,7 +46,13 @@ struct MyPageView: View {
 
                 SwipeableTabView(tabs: [
                     (title: "カレンダー", view: AnyView(
-                        ImageCalendarView(showingDate: $showDate, showMyPostData: $showMyPostData)
+                        ImageCalendarView(
+                            showingDate: $showDate,
+                            showMyPostData: $showMyPostData
+                        )
+                        .onAppear {
+                            showMyPostData = myPageVM.fetchMyPostData(date: showDate)
+                        }
                     )),
                     (title: "投稿", view: AnyView(
                         myPostListView()
@@ -106,9 +111,7 @@ struct MyPageView: View {
             }
         }
         .onChange(of: myPageVM.userData) { userData in
-            print("onChange")
             if let userData {
-                print("userData: \(userData)")
                 showUserData = userData
             }
         }
@@ -164,6 +167,14 @@ struct MyPageView: View {
                     }
                 }
             }
+            .refreshable {
+                myPageVM.loadStatusMyPost = .initial
+                showPostListData.removeAll()
+                myPageVM.newMyPostListData.removeAll()
+                Task {
+                    await myPageVM.fetchMyPostsDataByStatus(lastId: nil)
+                }
+            }
             .onChange(of: myPageVM.newMyPostListData) { newPost in
                 // データを画面に描画
                 showPostListData.append(contentsOf: newPost)
@@ -204,6 +215,14 @@ struct MyPageView: View {
                     if myPageVM.loadStatusLikePost == .initial {
                         await myPageVM.fetchLikePostsDataByStatus()
                     }
+                }
+            }
+            .refreshable {
+                myPageVM.loadStatusLikePost = .initial
+                showLikePostListData.removeAll()
+                myPageVM.newLikePostListData.removeAll()
+                Task {
+                    await myPageVM.fetchLikePostsDataByStatus()
                 }
             }
             .onChange(of: myPageVM.newLikePostListData) { newPost in
