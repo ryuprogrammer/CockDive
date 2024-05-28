@@ -60,7 +60,7 @@ struct MyPageHeaderView: View {
 }
 
 struct MyPageHeaderView_Previews: PreviewProvider {
-    @State static var userData = UserElementForUserDefaults(nickName: "nickName", introduction: "TestUser", iconImage: Data())
+    @State static var userData = UserElementForUserDefaults(nickName: "nickName", introduction: "プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章プロフィール文章", iconImage: Data())
     @State static var postCount = 10
     @State static var friendData = UserFriendElement(followCount: 10, follow: [], followerCount: 10, follower: [], block: [], blockedByFriend: [])
 
