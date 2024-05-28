@@ -20,7 +20,7 @@ class StartViewModel: ObservableObject {
                     userStatus = .normalUser
                     print("userStatus: \(userStatus)")
                 } else {
-                    userStatus = .registrationRequired
+                    userStatus = .nameRegistrationRequired
                     print("userStatus: \(userStatus)")
                 }
             } else {
@@ -45,6 +45,7 @@ class StartViewModel: ObservableObject {
     
     /// Userの追加
     func addUser(nickName: String) async {
+        // Firebaseに追加
         await userDataModel.addUser(user: UserElement(nickName: nickName))
         if let uid = userDataModel.fetchUid() {
             userDefaultsDataModel.addUserData(user: UserElement(

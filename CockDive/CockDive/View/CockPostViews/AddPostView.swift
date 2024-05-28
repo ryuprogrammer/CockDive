@@ -54,10 +54,12 @@ struct AddPostView: View {
                             }
                             .onChange(of: selectedImage) { newPhotoPickerItems in
                                 Task {
-                                    guard let uiImage = await cockPostVM.castImageType(images: newPhotoPickerItems) else {
-                                        return
-                                    }
+                                    guard let imageData = newPhotoPickerItems.first,
+                                          let uiImage = await imageData.castImageType() else {
+                                              return
+                                          }
                                     image = uiImage
+                                    selectedImage.removeAll()
                                 }
                             }
                         
@@ -135,7 +137,8 @@ struct AddPostView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
                         Task {
-                            guard let dataImage = cockPostVM.castUIImageToData(uiImage: image) else { return }
+                            guard let dataImage = image?.castToData() else { return }
+
                             // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                             await cockPostVM.addPost(post: PostElement(
                                 uid: cockPostVM.fetchUid(),

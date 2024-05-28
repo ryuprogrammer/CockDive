@@ -12,13 +12,10 @@ struct StartView: View {
         case .signInRequired:
             // サインイン
             SignInView()
-        case .registrationRequired:
-            // 登録
-            RegistrationView(nickName: $nickName) {
-                Task {
-                    await startViewModel.addUser(nickName: nickName)
-                }
-            }
+        case .nameRegistrationRequired:
+            Text("垢BANしてるお")
+        case .iconRegistrationRequired:
+            Text("垢BANしてるお")
         case .normalUser:
             // メイン画面
             MainTabView()

@@ -15,7 +15,7 @@ class AuthenticationManager: ObservableObject {
             if let _ = user {
                 print("Sign-in")
                 self.isSignIn = true
-                self.userStatus = .registrationRequired
+                self.userStatus = .nameRegistrationRequired
             } else {
                 print("Sign-out")
                 self.isSignIn = false

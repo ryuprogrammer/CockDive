@@ -29,8 +29,10 @@ struct UserElementForUserDefaults: Encodable, Decodable, Equatable {
 enum UserStatus {
     /// SingInが必要
     case signInRequired
-    /// 登録が必要
-    case registrationRequired
+    /// 名前の登録が必要
+    case nameRegistrationRequired
+    /// アイコン写真の登録が必要
+    case iconRegistrationRequired
     /// 通常のユーザー
     case normalUser
     /// 垢BANされたユーザー

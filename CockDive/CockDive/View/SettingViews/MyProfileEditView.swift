@@ -117,12 +117,10 @@ struct MyProfileEditView: View {
                     }
                 }
 
-                if keybordFocuse {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("完了") {
-                            self.keybordFocuse = false
-                        }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("完了") {
+                        self.keybordFocuse = false
                     }
                 }
             }
