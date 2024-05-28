@@ -24,8 +24,6 @@ class UserDataModel {
                 // storageに画像をアップロード
                 await addUserIconImage(iconImage: iconImage, uid: uid)
             }
-            
-            print("addUser完了")
         } catch {
             print("Error adding/updating user: \(error)")
         }
