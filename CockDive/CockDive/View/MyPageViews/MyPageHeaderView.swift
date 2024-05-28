@@ -20,13 +20,13 @@ struct MyPageHeaderView: View {
                    let uiImage = UIImage(data: data) {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .foregroundStyle(Color.gray)
                         .frame(width: screenWidth / 6, height: screenWidth / 6)
                 } else {
                     Image(systemName: "person.circle.fill")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .foregroundStyle(Color.gray)
                         .frame(width: screenWidth / 6, height: screenWidth / 6)
                 }
