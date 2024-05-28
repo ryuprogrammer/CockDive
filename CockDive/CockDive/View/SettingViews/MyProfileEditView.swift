@@ -5,12 +5,13 @@ struct MyProfileEditView: View {
     @ObservedObject var myProfileEditVM = MyProfileEditViewModel()
     @State private var nickName: String = ""
     @State private var introduction: String = ""
-    @State private var uiImage: UIImage? = UIImage()
+    @State private var uiImage: UIImage? = nil
     // PhotosPickerで選択された写真
     @State private var selectedImage: [PhotosPickerItem] = []
 
     // モーダル制御
     @Environment(\.dismiss) private var dismiss
+    @State private var showImageDialog: Bool = false
 
     // MARK: - その他
     // 画面サイズ取得
@@ -28,51 +29,38 @@ struct MyProfileEditView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
-                // アルバムから選択
-                PhotosPicker(
-                    selection: $selectedImage,
-                    maxSelectionCount: 1,
-                    matching: .images,
-                    preferredItemEncoding: .current,
-                    photoLibrary: .shared()) {
-                        ZStack {
-                            if let uiImage {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
-                                    .clipShape(Circle())
-                                    .padding(.bottom)
-                            } else {
-                                Image(systemName: "person.circle")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
-                                    .clipShape(Circle())
-                                    .padding(.bottom)
-                            }
 
-                            Image(systemName: "plus")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.white)
-                                .padding(8)
-                                .frame(width: screenWidth/9, height: screenWidth/9)
-                                .background(Color.mainColor)
-                                .clipShape(Circle())
-                                .offset(x: screenWidth / 9, y: screenWidth / 9)
-                        }
+                ZStack {
+                    if let uiImage {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: screenWidth / 3, height: screenWidth / 3)
+                            .clipShape(Circle())
+                            .padding(.bottom)
+                    } else {
+                        Image(systemName: "person.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundStyle(Color.gray.opacity(0.5))
+                            .frame(width: screenWidth / 3, height: screenWidth / 3)
+                            .clipShape(Circle())
+                            .padding(.bottom)
                     }
-                    .onChange(of: selectedImage) { newPhotoPickerItems in
-                        Task {
-                            guard let imageData = newPhotoPickerItems.first,
-                                  let uiImage = await imageData.castImageType() else {
-                                      return
-                                  }
-                            self.uiImage = uiImage
-                            selectedImage.removeAll()
-                        }
-                    }
+
+                    Image(systemName: "plus")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.white)
+                        .padding(8)
+                        .frame(width: screenWidth/9, height: screenWidth/9)
+                        .background(Color.mainColor)
+                        .clipShape(Circle())
+                        .offset(x: screenWidth / 9, y: screenWidth / 9)
+                }
+                .onTapGesture {
+                    showImageDialog.toggle()
+                }
 
                 SectioinTitleView(text: "名前", isRequired: false)
 
@@ -158,6 +146,28 @@ struct MyProfileEditView: View {
                 guard let iconData = userData.iconImage else { return }
                 uiImage = UIImage(data: iconData)
             }
+        }
+        .onChange(of: selectedImage) { newPhotoPickerItems in
+            Task {
+                guard let imageData = newPhotoPickerItems.first,
+                      let uiImage = await imageData.castImageType() else {
+                          return
+                      }
+                self.uiImage = uiImage
+                selectedImage.removeAll()
+            }
+        }
+        .confirmationDialog("", isPresented: $showImageDialog) {
+            // アクションボタンリスト
+            // アルバムから選択
+            PhotosPicker(
+                selection: $selectedImage,
+                maxSelectionCount: 1,
+                matching: .images,
+                preferredItemEncoding: .current,
+                photoLibrary: .shared()) {
+                    Text("あああああ")
+                }
         }
     }
 }
