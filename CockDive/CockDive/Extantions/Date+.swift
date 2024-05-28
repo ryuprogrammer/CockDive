@@ -32,10 +32,13 @@ extension Date {
         return range.count
     }
     
-    /// 月の最初の曜日を取得
+    /// その月の1日目の曜日を取得
     var weekdayOfFirstDay: Weekday {
         let calendar = Calendar.current
-        let weekdayNumber = calendar.component(.weekday, from: self)
+        var components = calendar.dateComponents([.year, .month], from: self)
+        components.day = 1
+        let firstDayOfMonth = calendar.date(from: components)!
+        let weekdayNumber = calendar.component(.weekday, from: firstDayOfMonth) - 1 // 日曜日を0とする
         return Weekday(rawValue: weekdayNumber) ?? Weekday.monday
     }
     

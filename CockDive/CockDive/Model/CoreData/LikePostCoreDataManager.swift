@@ -24,7 +24,7 @@ class LikePostCoreDataManager {
     ///   - id: LikePostModelのID
     ///   - createAt: 今日
     func toggleLikePost(id: String, toLike: Bool) {
-        if let likePost = fetchById(id: id) { // ライクしてあるけど、
+        if let _ = fetchById(id: id) { // ライクしてあるけど、
             if !toLike { // ライクを外したい！
                 deleteById(id: id)
             }
