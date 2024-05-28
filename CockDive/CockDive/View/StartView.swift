@@ -4,6 +4,8 @@ struct StartView: View {
     @ObservedObject var startViewModel = StartViewModel()
     // 登録するニックネーム
     @State private var nickName: String = ""
+    // 登録するアイコン写真
+    @State private var iconImage: UIImage? = nil
     // キーボード制御
     @FocusState private var keybordFocuse: Bool
     
@@ -13,9 +15,20 @@ struct StartView: View {
             // サインイン
             SignInView()
         case .nameRegistrationRequired:
-            Text("垢BANしてるお")
+            // 名前登録画面
+            NameRegistrationView(nickName: $nickName) {
+                // アイコン設定画面に画面遷移
+                startViewModel.userStatus = .iconRegistrationRequired
+            }
         case .iconRegistrationRequired:
-            Text("垢BANしてるお")
+            // アイコン写真登録画面
+            IconRegistrationView(uiImage: $iconImage) {
+                let iconImageData = iconImage?.castToData()
+                Task {
+                    // ユーザー登録
+                    await startViewModel.addUser(nickName: nickName, iconImageData: iconImageData)
+                }
+            }
         case .normalUser:
             // メイン画面
             MainTabView()

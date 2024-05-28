@@ -43,14 +43,19 @@ class StartViewModel: ObservableObject {
         }
     }
     
-    /// Userの追加
-    func addUser(nickName: String) async {
+    /// Userの登録
+    func addUser(nickName: String, iconImageData: Data?) async {
         // Firebaseに追加
-        await userDataModel.addUser(user: UserElement(nickName: nickName))
+        await userDataModel.addUser(user: UserElement(
+            nickName: nickName,
+            iconImage: iconImageData
+        ))
+        // uidを取得して、UserDefaultsに追加
         if let uid = userDataModel.fetchUid() {
             userDefaultsDataModel.addUserData(user: UserElement(
                 id: uid,
-                nickName: nickName
+                nickName: nickName,
+                iconImage: iconImageData
             ))
             DispatchQueue.main.async {
                 self.userStatus = .normalUser
