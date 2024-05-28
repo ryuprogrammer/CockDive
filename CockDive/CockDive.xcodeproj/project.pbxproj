@@ -81,7 +81,6 @@
 		42DB94822BF328F300ECDD84 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */; };
 		42DB94842BF329BE00ECDD84 /* FirebaseAuthUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */; };
 		42DB94882BF3C30100ECDD84 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94872BF3C30000ECDD84 /* MainTabView.swift */; };
-		42DB948A2BF45E5200ECDD84 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94892BF45E5200ECDD84 /* RegistrationView.swift */; };
 		42DB948C2BF4603E00ECDD84 /* UserElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB948B2BF4603E00ECDD84 /* UserElement.swift */; };
 		42DB948F2BF470E100ECDD84 /* PostElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB948E2BF470E100ECDD84 /* PostElement.swift */; };
 		42DB94912BF470EC00ECDD84 /* CommentElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94902BF470EB00ECDD84 /* CommentElement.swift */; };
@@ -170,7 +169,6 @@
 		42DB94812BF328F300ECDD84 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthUIView.swift; sourceTree = "<group>"; };
 		42DB94872BF3C30000ECDD84 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		42DB94892BF45E5200ECDD84 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		42DB948B2BF4603E00ECDD84 /* UserElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserElement.swift; sourceTree = "<group>"; };
 		42DB948E2BF470E100ECDD84 /* PostElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostElement.swift; sourceTree = "<group>"; };
 		42DB94902BF470EB00ECDD84 /* CommentElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentElement.swift; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 			isa = PBXGroup;
 			children = (
 				42DB94622BF2F8E600ECDD84 /* SignInView.swift */,
-				42DB94892BF45E5200ECDD84 /* RegistrationView.swift */,
 				422EFAA52C05C4C9000DE24C /* NameRegistrationView.swift */,
 				422EFAA72C05C4D5000DE24C /* IconRegistrationView.swift */,
 				42DB94832BF329BE00ECDD84 /* FirebaseAuthUIView.swift */,
@@ -579,7 +576,6 @@
 				4253F61F2BFEBA840067BF14 /* MyPostModel+CoreDataProperties.swift in Sources */,
 				4253F6202BFEBA840067BF14 /* MyDataModel+CoreDataClass.swift in Sources */,
 				4253F6212BFEBA840067BF14 /* MyDataModel+CoreDataProperties.swift in Sources */,
-				42DB948A2BF45E5200ECDD84 /* RegistrationView.swift in Sources */,
 				42DB94632BF2F8E600ECDD84 /* SignInView.swift in Sources */,
 				4253F6302C02E6CF0067BF14 /* MyPageHeaderView.swift in Sources */,
 				4253F6262C00E0A00067BF14 /* MyPostCoreDataManager.swift in Sources */,
