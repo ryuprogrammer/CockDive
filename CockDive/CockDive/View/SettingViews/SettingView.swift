@@ -5,6 +5,7 @@ struct SettingView: View {
     @Binding var path: [CockCardNavigationPath]
     // TabBar用
     @State var flag: Visibility = .hidden
+    @State var isShowProfileEditView: Bool = false
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -19,7 +20,7 @@ struct SettingView: View {
     var body: some View {
         List {
             Button {
-
+                isShowProfileEditView = true
             } label: {
                 HStack {
                     Image("cockImage")
@@ -113,6 +114,9 @@ struct SettingView: View {
                     .fontWeight(.bold)
                     .font(.title3)
             }
+        }
+        .sheet(isPresented: $isShowProfileEditView) {
+            MyProfileEditView()
         }
     }
 }

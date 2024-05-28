@@ -119,6 +119,12 @@ struct AddPostView: View {
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    ToolBarBackButtonView {
+                        dismiss()
+                    }
+                }
+
                 ToolbarItem(placement: .principal) {
                     Text("ご飯を投稿")
                         .foregroundStyle(Color.white)
