@@ -18,7 +18,7 @@ struct SignInView: View {
             VStack {
                 Spacer()
                 
-                Text("みんなのご飯")
+                Text("みんなのごはん")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.white)
