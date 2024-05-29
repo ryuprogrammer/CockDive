@@ -1,12 +1,20 @@
 import SwiftUI
 
 struct PrivacyPolicyView: View {
-    
+    @State private var isLoading = true
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [CockCardNavigationPath]
 
     var body: some View {
-        Text("ProvacyPolicyView")
+        ZStack {
+            WebView(urlString: "https://minnanogohan.hp.peraichi.com/termsofservice", isLoading: $isLoading)
+                .edgesIgnoringSafeArea(.all)
+
+            if isLoading {
+                ProgressView("読み込んでるよ")
+                    .progressViewStyle(CircularProgressViewStyle())
+            }
+        }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
@@ -28,5 +36,7 @@ struct PrivacyPolicyView: View {
 }
 
 #Preview {
-    PrivacyPolicyView(path: .constant([]))
+    NavigationStack {
+        PrivacyPolicyView(path: .constant([]))
+    }
 }
