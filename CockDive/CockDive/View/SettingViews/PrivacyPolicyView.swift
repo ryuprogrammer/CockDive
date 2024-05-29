@@ -7,7 +7,7 @@ struct PrivacyPolicyView: View {
 
     var body: some View {
         ZStack {
-            WebView(urlString: "https://minnanogohan.hp.peraichi.com/termsofservice", isLoading: $isLoading)
+            WebView(urlString: "https://minnanogohan.hp.peraichi.com/privacypolicy", isLoading: $isLoading)
                 .edgesIgnoringSafeArea(.all)
 
             if isLoading {
