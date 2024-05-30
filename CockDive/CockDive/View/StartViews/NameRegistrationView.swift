@@ -4,7 +4,7 @@ import PhotosUI
 struct NameRegistrationView: View {
     // 登録するニックネーム
     @Binding var nickName: String
-    @State private var showAlert = false
+    @State private var errorMessage = ""
     // 登録ボタンの処理
     let registrationAction: () -> Void
 
@@ -31,18 +31,27 @@ struct NameRegistrationView: View {
                     .foregroundStyle(Color.white)
 
                 // 名前入力欄
-                TextField("8文字以内で入力！", text: $nickName)
+                TextField("2～8文字以内で入力！", text: $nickName)
                     .padding(8)
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 20)
+                    .onChange(of: nickName) { _ in
+                        validateNickName()
+                    }
+
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .foregroundStyle(Color.red)
+                        .fontWeight(.bold)
+                        .padding(.top, 5)
+                }
 
                 Spacer()
 
                 LongBarButton(text: "次へ", isStroke: true) {
-                    if nickName.containsNGWord() {
-                        showAlert = true
-                    } else {
+                    validateNickName()
+                    if errorMessage.isEmpty {
                         registrationAction()
                     }
                 }
@@ -51,14 +60,23 @@ struct NameRegistrationView: View {
                     .frame(height: 100)
             }
         }
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("エラー"), message: Text("ニックネームに不適切な言葉が含まれています。別のニックネームを入力してください。"), dismissButton: .default(Text("OK")))
+    }
+
+    private func validateNickName() {
+        errorMessage = ""
+        if nickName.isEmpty {
+            errorMessage = "ニックネームを入力してください"
+        } else if nickName.containsNGWord() {
+            errorMessage = "不適切な言葉が含まれています"
+        } else if nickName.count < 2 || nickName.count > 8 {
+            errorMessage = "2文字以上8文字以下で入力してください。"
         }
     }
 }
 
 #Preview {
-    NameRegistrationView(nickName: .constant("ニックネーム")) {
-
+    @State var nickName: String = ""
+    return NameRegistrationView(nickName: $nickName) {
+        print("登録処理")
     }
 }
