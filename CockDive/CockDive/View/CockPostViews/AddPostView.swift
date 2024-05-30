@@ -116,7 +116,7 @@ struct AddPostView: View {
                     }
 
 //                    SectioinTitleView(text: "誰に見てもらう？", isRequired: false)
-
+//
 //                    Toggle(isPrivate ? "みんなに向けて投稿する" : "非公開", isOn: $isPrivate)
 //                        .toggleStyle(.switch)
 
@@ -147,23 +147,27 @@ struct AddPostView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
-                        Task {
-                            guard let dataImage = image?.castToData() else { return }
+                        validateTitle()
+                        validateMemo()
+                        if titleErrorMessage.isEmpty && memoErrorMessage.isEmpty {
+                            Task {
+                                guard let dataImage = image?.castToData() else { return }
 
-                            // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
-                            await cockPostVM.addPost(post: PostElement(
-                                uid: cockPostVM.fetchUid(),
-                                postImage: dataImage,
-                                title: title,
-                                memo: memo,
-                                isPrivate: isPrivate,
-                                createAt: Date(),
-                                likeCount: 0,
-                                likedUser: [],
-                                comment: []
-                            ))
+                                // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
+                                await cockPostVM.addPost(post: PostElement(
+                                    uid: cockPostVM.fetchUid(),
+                                    postImage: dataImage,
+                                    title: title,
+                                    memo: memo,
+                                    isPrivate: isPrivate,
+                                    createAt: Date(),
+                                    likeCount: 0,
+                                    likedUser: [],
+                                    comment: []
+                                ))
+                            }
+                            dismiss()
                         }
-                        dismiss()
                     }
                 }
 
