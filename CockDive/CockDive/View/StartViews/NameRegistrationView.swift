@@ -36,9 +36,6 @@ struct NameRegistrationView: View {
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 20)
-                    .onChange(of: nickName) { _ in
-                        validateNickName()
-                    }
 
                 if !errorMessage.isEmpty {
                     Text(errorMessage)
@@ -60,6 +57,9 @@ struct NameRegistrationView: View {
                     .frame(height: 100)
             }
         }
+        .onChange(of: nickName) { _ in
+            validateNickName()
+        }
     }
 
     private func validateNickName() {
@@ -75,8 +75,14 @@ struct NameRegistrationView: View {
 }
 
 #Preview {
-    @State var nickName: String = ""
-    return NameRegistrationView(nickName: $nickName) {
-        print("登録処理")
+    struct PreviewView: View {
+        @State var nickName: String = ""
+        var body: some View {
+            NameRegistrationView(nickName: $nickName) {
+                print("登録処理")
+            }
+        }
     }
+
+    return PreviewView()
 }
