@@ -23,6 +23,7 @@
 		422EFAB02C05F7C0000DE24C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAF2C05F7C0000DE24C /* Data+.swift */; };
 		422EFAB22C061E45000DE24C /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB12C061E44000DE24C /* SettingViewModel.swift */; };
 		422EFAB42C077DD5000DE24C /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB32C077DD5000DE24C /* WebView.swift */; };
+		422EFAB62C08013E000DE24C /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB52C08013E000DE24C /* BlockListViewModel.swift */; };
 		423B2A882BF8395300489BCC /* UserFriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A872BF8395300489BCC /* UserFriendModel.swift */; };
 		423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A892BF8605800489BCC /* UserPostDataModel.swift */; };
 		423B2A8C2BF86CDB00489BCC /* CommentDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */; };
@@ -119,6 +120,7 @@
 		422EFAAF2C05F7C0000DE24C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		422EFAB12C061E44000DE24C /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		422EFAB32C077DD5000DE24C /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		422EFAB52C08013E000DE24C /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
 		423B2A872BF8395300489BCC /* UserFriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriendModel.swift; sourceTree = "<group>"; };
 		423B2A892BF8605800489BCC /* UserPostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostDataModel.swift; sourceTree = "<group>"; };
 		423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDataModel.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */,
 				422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */,
 				422EFAB12C061E44000DE24C /* SettingViewModel.swift */,
+				422EFAB52C08013E000DE24C /* BlockListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */,
 				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
+				422EFAB62C08013E000DE24C /* BlockListViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4253F6342C02FAE90067BF14 /* SwipeableTabView.swift in Sources */,
 				4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */,

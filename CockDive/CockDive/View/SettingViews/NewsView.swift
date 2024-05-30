@@ -5,7 +5,7 @@ struct NewsView: View {
     @Binding var path: [CockCardNavigationPath]
 
     var body: some View {
-        Text("NewsView")
+        Text("まだお知らせはありません、")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
@@ -27,5 +27,7 @@ struct NewsView: View {
 }
 
 #Preview {
-    NewsView(path: .constant([]))
+    NavigationStack {
+        NewsView(path: .constant([]))
+    }
 }
