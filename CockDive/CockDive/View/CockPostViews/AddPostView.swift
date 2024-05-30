@@ -2,13 +2,13 @@ import SwiftUI
 import PhotosUI
 
 struct AddPostView: View {
-    let cockPostVM = AddPostViewModel()
+    @StateObject private var cockPostVM = AddPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var isPrivate: Bool = true
     @State private var titleErrorMessage = ""
     @State private var memoErrorMessage = ""
-
+    @State private var showErrorDialog = false
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
     @State private var selectedImage: [PhotosPickerItem] = []
@@ -104,7 +104,7 @@ struct AddPostView: View {
                             keybordFocuse.toggle()
                         }
                         .id(1)
-                        .onChange(of: keybordFocuse) {_ in
+                        .onChange(of: keybordFocuse) { _ in
                             withAnimation {
                                 reader.scrollTo(1, anchor: .top)
                             }
@@ -115,11 +115,6 @@ struct AddPostView: View {
                             .foregroundStyle(Color.red)
                     }
 
-//                    SectioinTitleView(text: "誰に見てもらう？", isRequired: false)
-//
-//                    Toggle(isPrivate ? "みんなに向けて投稿する" : "非公開", isOn: $isPrivate)
-//                        .toggleStyle(.switch)
-
                     Spacer()
                         .frame(height: 10)
                         .listRowSeparator(.hidden)
@@ -127,6 +122,17 @@ struct AddPostView: View {
                     Spacer()
                 }
                 .padding(.horizontal)
+                .overlay {
+                    if cockPostVM.loadStatus == .loading {
+                        ProgressView("投稿中🥕🥕🥕")
+                            .font(.title)
+                            .foregroundStyle(Color.white)
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.black.opacity(0.5))
+                            .edgesIgnoringSafeArea(.all)
+                    }
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
@@ -147,14 +153,16 @@ struct AddPostView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
+                        print("投稿ボタン押された")
                         validateTitle()
                         validateMemo()
                         if titleErrorMessage.isEmpty && memoErrorMessage.isEmpty {
+                            print("ワードチェック完了")
                             Task {
                                 guard let dataImage = image?.castToData() else { return }
 
                                 // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
-                                await cockPostVM.addPost(post: PostElement(
+                                cockPostVM.addPost(post: PostElement(
                                     uid: cockPostVM.fetchUid(),
                                     postImage: dataImage,
                                     title: title,
@@ -165,8 +173,13 @@ struct AddPostView: View {
                                     likedUser: [],
                                     comment: []
                                 ))
+
+                                if case .error(let errorMessage) = cockPostVM.loadStatus {
+                                    showErrorDialog = true
+                                } else if case .success = cockPostVM.loadStatus {
+                                    dismiss()
+                                }
                             }
-                            dismiss()
                         }
                     }
                 }
@@ -184,6 +197,13 @@ struct AddPostView: View {
         .fullScreenCover(isPresented: $isPresentedCameraView) {
             CameraView(image: $image)
                 .ignoresSafeArea(.all)
+        }
+        .alert(isPresented: $showErrorDialog) {
+            Alert(
+                title: Text("エラー"),
+                message: Text(cockPostVM.loadStatus?.errorDescription ?? "不明なエラーが発生しました"),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 
@@ -205,6 +225,15 @@ struct AddPostView: View {
         } else if memo.count > 150 {
             memoErrorMessage = "メモは150文字以下で入力してください。"
         }
+    }
+}
+
+extension PostStatus {
+    var errorDescription: String? {
+        if case .error(let message) = self {
+            return message
+        }
+        return nil
     }
 }
 

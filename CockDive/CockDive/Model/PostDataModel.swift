@@ -45,32 +45,72 @@ struct PostDataModel {
     }
 
     // MARK: - データ追加
-    /// Post追加/ 更新→PostIdがnilの場合、新規作成なので、newDocIdを使用
-    func addPost(
-        post: PostElement,
-        newDocId: String
-    ) async {
-        // DocmentId取得、ない場合は新しいDocIdを使用
-        let docId = post.id ?? newDocId
+    /// Post追加
+    func addPost(post: PostElement, completion: @escaping (Result<String, Error>) -> Void) {
+        // 新しいドキュメントIDを生成
+        let docRef = db.collection(postDataCollection).document()
+        let docId = post.id ?? docRef.documentID
+
         // リファレンスを作成
-        let docRef = db.collection(postDataCollection).document(docId)
+        let finalDocRef = db.collection(postDataCollection).document(docId)
+
+        var postWithId = post
+        // 画像データを削除：firestoreには画像あげない。
+        var postNotImageData = post
+        postNotImageData.postImage = nil
+        postWithId.id = finalDocRef.documentID
 
         do {
-            var postWithId = post
-            postWithId.id = docRef.documentID
-
             // Firestoreにデータを保存
-            try docRef.setData(from: postWithId)
+            try finalDocRef.setData(from: postNotImageData) { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
 
-            if let postImage = post.postImage {
-                // Storageに画像をアップロード
-                if let postImageURL = await uploadPostImage(postImage: postImage, postId: docRef.documentID) {
-                    // 画像のURLをFirestoreに更新
-                    try await docRef.updateData(["postImageURL": postImageURL])
+                if let postImage = postWithId.postImage {
+                    self.uploadPostImage(postImage: postImage, postId: finalDocRef.documentID) { result in
+                        switch result {
+                        case .success(let postImageURL):
+                            finalDocRef.updateData(["postImageURL": postImageURL]) { error in
+                                if let error = error {
+                                    completion(.failure(error))
+                                } else {
+                                    completion(.success(finalDocRef.documentID))
+                                }
+                            }
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                } else {
+                    completion(.success(finalDocRef.documentID))
                 }
             }
         } catch {
-            print("Error adding post: \(error)")
+            completion(.failure(error))
+        }
+    }
+
+    /// Storageに画像をアップロード
+    func uploadPostImage(postImage: Data, postId: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let storageRef = Storage.storage().reference().child("postImages/\(postId)/post.jpg")
+
+        storageRef.putData(postImage, metadata: nil) { metadata, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            storageRef.downloadURL { url, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else if let downloadURL = url {
+                    completion(.success(downloadURL.absoluteString))
+                } else {
+                    completion(.failure(NSError(domain: "DownloadURL", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get download URL."])))
+                }
+            }
         }
     }
 
@@ -112,26 +152,6 @@ struct PostDataModel {
                     print("Error addHeartToPost: \(error)")
                 }
             }
-        }
-    }
-
-    /// Storageに画像をアップロード
-    func uploadPostImage(postImage: Data, postId: String) async -> String? {
-        let storageRef = Storage.storage().reference().child("postImages/\(postId)/post.jpg")
-
-        do {
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/jpeg"
-
-            let _ = try await storageRef.putDataAsync(postImage, metadata: metadata)
-
-            // 画像のダウンロードURLを取得
-            let downloadURL = try await storageRef.downloadURL()
-
-            return downloadURL.absoluteString
-        } catch {
-            print("Error uploading post image: \(error)")
-            return nil
         }
     }
 
