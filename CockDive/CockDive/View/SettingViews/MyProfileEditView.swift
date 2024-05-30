@@ -7,6 +7,8 @@ struct MyProfileEditView: View {
     @State private var introduction: String = ""
     @State private var uiImage: UIImage? = nil
     @State private var selectedImage: [PhotosPickerItem] = []
+    @State private var nickNameErrorMessage = ""
+    @State private var introductionErrorMessage = ""
 
     @Environment(\.dismiss) private var dismiss
 
@@ -72,9 +74,21 @@ struct MyProfileEditView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.gray, lineWidth: 0.6)
                 )
-                .padding(.bottom)
+                .onChange(of: nickName) { newValue in
+                    validateNickName()
+                }
+
+                if !nickNameErrorMessage.isEmpty {
+                    HStack {
+                        Text(nickNameErrorMessage)
+                            .foregroundColor(.red)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
 
                 SectioinTitleView(text: "自己紹介文", isRequired: false)
+                    .padding(.top)
 
                 TextEditor(text: $introduction)
                     .padding(5)
@@ -90,9 +104,22 @@ struct MyProfileEditView: View {
                             .foregroundStyle(Color.gray.opacity(0.5))
                             .padding(12)
                     }
+                    .onChange(of: introduction) { newValue in
+                        validateIntroduction()
+                    }
                     .onTapGesture {
                         keybordFocuse.toggle()
                     }
+
+                if !introductionErrorMessage.isEmpty {
+                    HStack {
+                        Text(introductionErrorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
 
                 Spacer()
             }
@@ -116,14 +143,18 @@ struct MyProfileEditView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "保存") {
-                        Task {
-                            let imageData = uiImage?.castToData()
-                            await myProfileEditVM.upDateUserData(
-                                nickName: nickName,
-                                introduction: introduction,
-                                iconImage: imageData
-                            )
-                            dismiss()
+                        validateNickName()
+                        validateIntroduction()
+                        if nickNameErrorMessage.isEmpty && introductionErrorMessage.isEmpty {
+                            Task {
+                                let imageData = uiImage?.castToData()
+                                await myProfileEditVM.upDateUserData(
+                                    nickName: nickName,
+                                    introduction: introduction,
+                                    iconImage: imageData
+                                )
+                                dismiss()
+                            }
                         }
                     }
                 }
@@ -155,6 +186,24 @@ struct MyProfileEditView: View {
                 self.uiImage = uiImage
                 selectedImage.removeAll()
             }
+        }
+    }
+
+    private func validateNickName() {
+        nickNameErrorMessage = ""
+        if nickName.isEmpty {
+            nickNameErrorMessage = "ニックネームを入力してください"
+        } else if nickName.containsNGWord() {
+            nickNameErrorMessage = "不適切な言葉が含まれています"
+        } else if nickName.count < 2 || nickName.count > 8 {
+            nickNameErrorMessage = "2文字以上8文字以下で入力してください。"
+        }
+    }
+
+    private func validateIntroduction() {
+        introductionErrorMessage = ""
+        if introduction.count > 150 {
+            introductionErrorMessage = "自己紹介文は150文字以内で入力してください。"
         }
     }
 }

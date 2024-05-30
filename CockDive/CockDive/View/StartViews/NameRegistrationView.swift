@@ -4,9 +4,10 @@ import PhotosUI
 struct NameRegistrationView: View {
     // 登録するニックネーム
     @Binding var nickName: String
+    @State private var showAlert = false
     // 登録ボタンの処理
     let registrationAction: () -> Void
-    
+
     // MARK: - その他
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -39,18 +40,25 @@ struct NameRegistrationView: View {
                 Spacer()
 
                 LongBarButton(text: "次へ", isStroke: true) {
-                    registrationAction()
+                    if nickName.containsNGWord() {
+                        showAlert = true
+                    } else {
+                        registrationAction()
+                    }
                 }
 
                 Spacer()
                     .frame(height: 100)
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("エラー"), message: Text("ニックネームに不適切な言葉が含まれています。別のニックネームを入力してください。"), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
 #Preview {
     NameRegistrationView(nickName: .constant("ニックネーム")) {
-        
+
     }
 }
