@@ -6,34 +6,31 @@ struct AddPostView: View {
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var isPrivate: Bool = true
-    
+    @State private var titleErrorMessage = ""
+    @State private var memoErrorMessage = ""
+
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
-    // PhotosPickerで選択された写真
     @State private var selectedImage: [PhotosPickerItem] = []
-    // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
-    // キーボード制御
     @FocusState private var keybordFocuse: Bool
-    // モーダル制御
     @Environment(\.dismiss) private var dismiss
-    
+
     var body: some View {
         NavigationStack {
             ScrollViewReader { reader in
                 VStack(spacing: 15) {
                     SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
                         .padding(.top)
-                    
+
                     if let image {
-                        // 写真
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(maxWidth: .infinity)
                             .frame(height: 200)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
-                        
+
                         HStack {
                             Spacer()
                             Button {
@@ -43,7 +40,6 @@ struct AddPostView: View {
                             }
                         }
                     } else {
-                        // アルバムから選択
                         PhotosPicker(
                             selection: $selectedImage,
                             maxSelectionCount: 1,
@@ -62,26 +58,33 @@ struct AddPostView: View {
                                     selectedImage.removeAll()
                                 }
                             }
-                        
-                        // カメラで撮影
+
                         Button {
                             isPresentedCameraView = true
                         } label: {
                             StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
                         }
                     }
-                    
+
                     SectioinTitleView(text: "料理名を入力", isRequired: true)
-                    
+
                     TextField("料理名を入力", text: $title)
                         .padding(6)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
-                    
+                        .onChange(of: title) { _ in
+                            validateTitle()
+                        }
+
+                    if !titleErrorMessage.isEmpty {
+                        Text(titleErrorMessage)
+                            .foregroundStyle(Color.red)
+                    }
+
                     SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
-                    
+
                     TextEditor(text: $memo)
                         .focused($keybordFocuse)
                         .frame(height: 100)
@@ -90,9 +93,12 @@ struct AddPostView: View {
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
                         .overlay(alignment: .topLeading) {
-                            Text(memo == "" ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
+                            Text(memo.isEmpty ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
                                 .foregroundStyle(Color.gray.opacity(0.5))
                                 .padding(5)
+                        }
+                        .onChange(of: memo) { _ in
+                            validateMemo()
                         }
                         .onTapGesture {
                             keybordFocuse.toggle()
@@ -103,16 +109,21 @@ struct AddPostView: View {
                                 reader.scrollTo(1, anchor: .top)
                             }
                         }
-                    
-                    SectioinTitleView(text: "誰に見てもらう？", isRequired: false)
-                    
-                    Toggle(isPrivate ? "みんなに向けて投稿する" : "非公開", isOn: $isPrivate)
-                        .toggleStyle(.switch)
-                    
+
+                    if !memoErrorMessage.isEmpty {
+                        Text(memoErrorMessage)
+                            .foregroundStyle(Color.red)
+                    }
+
+//                    SectioinTitleView(text: "誰に見てもらう？", isRequired: false)
+
+//                    Toggle(isPrivate ? "みんなに向けて投稿する" : "非公開", isOn: $isPrivate)
+//                        .toggleStyle(.switch)
+
                     Spacer()
                         .frame(height: 10)
                         .listRowSeparator(.hidden)
-                    
+
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -133,7 +144,7 @@ struct AddPostView: View {
                         .font(.title3)
                         .fontWeight(.bold)
                 }
-                
+
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
                         Task {
@@ -155,7 +166,7 @@ struct AddPostView: View {
                         dismiss()
                     }
                 }
-                
+
                 if keybordFocuse {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
@@ -171,12 +182,28 @@ struct AddPostView: View {
                 .ignoresSafeArea(.all)
         }
     }
+
+    private func validateTitle() {
+        titleErrorMessage = ""
+        if title.isEmpty {
+            titleErrorMessage = "料理名を入力してください"
+        } else if title.containsNGWord() {
+            titleErrorMessage = "不適切な言葉が含まれています"
+        } else if title.count > 15 {
+            titleErrorMessage = "料理名は15文字以下で入力してください。"
+        }
+    }
+
+    private func validateMemo() {
+        memoErrorMessage = ""
+        if memo.containsNGWord() {
+            memoErrorMessage = "不適切な言葉が含まれています"
+        } else if memo.count > 150 {
+            memoErrorMessage = "メモは150文字以下で入力してください。"
+        }
+    }
 }
 
 #Preview {
     AddPostView()
 }
-
-
-
-
