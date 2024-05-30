@@ -35,6 +35,7 @@ class AuthenticationManager: ObservableObject {
         } catch {
             print("Error signing out: \(error.localizedDescription)")
         }
+        self.userStatus = .signInRequired
     }
 
     /// 登録終わって、Statusを通常ユーザーに変更
