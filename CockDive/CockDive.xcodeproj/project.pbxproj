@@ -20,7 +20,6 @@
 		422EFAAA2C05C999000DE24C /* PhotosPickerItem+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAA92C05C999000DE24C /* PhotosPickerItem+.swift */; };
 		422EFAAC2C05CA39000DE24C /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAB2C05CA39000DE24C /* UIImage+.swift */; };
 		422EFAAE2C05F1AD000DE24C /* MyProfileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */; };
-		422EFAB02C05F7C0000DE24C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAAF2C05F7C0000DE24C /* Data+.swift */; };
 		422EFAB22C061E45000DE24C /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB12C061E44000DE24C /* SettingViewModel.swift */; };
 		422EFAB42C077DD5000DE24C /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB32C077DD5000DE24C /* WebView.swift */; };
 		422EFAB62C08013E000DE24C /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422EFAB52C08013E000DE24C /* BlockListViewModel.swift */; };
@@ -118,7 +117,6 @@
 		422EFAA92C05C999000DE24C /* PhotosPickerItem+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosPickerItem+.swift"; sourceTree = "<group>"; };
 		422EFAAB2C05CA39000DE24C /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditViewModel.swift; sourceTree = "<group>"; };
-		422EFAAF2C05F7C0000DE24C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		422EFAB12C061E44000DE24C /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		422EFAB32C077DD5000DE24C /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		422EFAB52C08013E000DE24C /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
@@ -314,7 +312,6 @@
 				423B2A912BFA293C00489BCC /* UIApplication+.swift */,
 				422EFAA92C05C999000DE24C /* PhotosPickerItem+.swift */,
 				422EFAAB2C05CA39000DE24C /* UIImage+.swift */,
-				422EFAAF2C05F7C0000DE24C /* Data+.swift */,
 				422EFABD2C08974E000DE24C /* String+.swift */,
 			);
 			path = Extantions;
@@ -563,7 +560,6 @@
 				4253F6372C047F780067BF14 /* LikePostModel+CoreDataClass.swift in Sources */,
 				4253F6382C047F780067BF14 /* LikePostModel+CoreDataProperties.swift in Sources */,
 				4298D8702BF116CD005AB08F /* NavigationLinkButtonView.swift in Sources */,
-				422EFAB02C05F7C0000DE24C /* Data+.swift in Sources */,
 				42DB949A2BF4A2AE00ECDD84 /* UserFriendElement.swift in Sources */,
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,

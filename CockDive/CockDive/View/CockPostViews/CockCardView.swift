@@ -64,9 +64,15 @@ struct CockCardView: View {
                                     .frame(width: screenWidth / 12, height: screenWidth / 12)
                             }
 
-                            // ニックネーム
-                            Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
-                                .foregroundStyle(Color.black)
+                            VStack(alignment: .leading) {
+                                // ニックネーム
+                                Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
+                                    .foregroundStyle(Color.black)
+
+                                Text("\(showPostData.createAt.dateString())")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.black)
+                            }
                         }
                     }
                     .buttonStyle(BorderlessButtonStyle())
