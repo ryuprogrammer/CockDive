@@ -329,6 +329,7 @@
 				42DB945F2BF2562E00ECDD84 /* DynamicHeightCommentView.swift */,
 				42DB94A32BF662E600ECDD84 /* CameraView.swift */,
 				4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */,
+				422EFAB32C077DD5000DE24C /* WebView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -406,7 +407,6 @@
 				4253F62D2C02422A0067BF14 /* MyPageViewModel.swift */,
 				422EFAAD2C05F1AD000DE24C /* MyProfileEditViewModel.swift */,
 				422EFAB12C061E44000DE24C /* SettingViewModel.swift */,
-				422EFAB32C077DD5000DE24C /* WebView.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
