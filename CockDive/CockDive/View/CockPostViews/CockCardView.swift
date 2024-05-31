@@ -56,12 +56,14 @@ struct CockCardView: View {
                                     .aspectRatio(contentMode: .fill)
                                     .foregroundStyle(Color.gray)
                                     .frame(width: screenWidth / 12, height: screenWidth / 12)
+                                    .clipShape(Circle())
                             } else {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .foregroundStyle(Color.gray)
                                     .frame(width: screenWidth / 12, height: screenWidth / 12)
+                                    .clipShape(Circle())
                             }
 
                             VStack(alignment: .leading) {
@@ -147,14 +149,36 @@ struct CockCardView: View {
         // 写真、タイトル、メモ、コメント、ハート
         VStack {
             // Postの写真
-            if let data = showPostData.postImage,
-               let uiImage = UIImage(data: data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .background(Color.gray)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+            if let postImageURL = showPostData.postImageURL {
+                AsyncImage(url: URL(string: postImageURL)) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(height: 250)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 250)
+                            .background(Color.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    case .failure:
+                        Image(systemName: "birthday.cake")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 250)
+                            .background(Color.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    @unknown default:
+                        EmptyView()
+                            .frame(height: 250)
+                            .background(Color.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    }
+                }
             } else {
                 Image(systemName: "birthday.cake")
                     .resizable()
