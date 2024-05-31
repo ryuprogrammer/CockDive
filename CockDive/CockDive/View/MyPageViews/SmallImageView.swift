@@ -17,22 +17,31 @@ struct SmallImageView: View {
 
     var body: some View {
         ZStack {
-            if let data = posts.first?.image,
+            if let data = posts.last?.image,
                let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(
-                        width: (window?.screen.bounds.width ?? 400) / 7 - 5,
+                        width: screenWidth / 7 - 5,
                         height: (window?.screen.bounds.height ?? 800) / 10
                     )
             } else {
-                image
+                Image(systemName: "carrot")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundStyle(Color.white)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.mainColor.opacity(0.3))
+                            .frame(
+                                width: screenWidth / 7 - 5,
+                                height: (window?.screen.bounds.height ?? 800) / 10
+                            )
+                    }
                     .frame(
-                        width: (window?.screen.bounds.width ?? 400) / 7 - 5,
-                        height: (window?.screen.bounds.height ?? 800) / 10
+                        width: screenWidth / 13 - 5,
+                        height: screenWidth / 10
                     )
             }
 
@@ -56,15 +65,24 @@ struct SmallImageView: View {
 
                 Spacer()
 
-                Text("\(day)日")
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.white)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 400) / 7 - 5
-                    )
-                    .background(
-                        Color.black.blur(radius: 10)
-                    )
+                if posts.isEmpty {
+                    Text("\(day)日")
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.white)
+                        .frame(
+                            width: (window?.screen.bounds.width ?? 400) / 7 - 5
+                        )
+                } else {
+                    Text("\(day)日")
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.white)
+                        .frame(
+                            width: (window?.screen.bounds.width ?? 400) / 7 - 5
+                        )
+                        .background(
+                            Color.black.blur(radius: 10)
+                        )
+                }
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
