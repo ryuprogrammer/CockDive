@@ -11,8 +11,8 @@ struct AddPostView: View {
     @State private var showErrorDialog = false
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
-    @State private var selectedImage: [PhotosPickerItem] = []
-    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    @State private var showImagePicker: Bool = false
+    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @FocusState private var keybordFocuse: Bool
     @Environment(\.dismiss) private var dismiss
 
@@ -40,29 +40,30 @@ struct AddPostView: View {
                             }
                         }
                     } else {
-                        PhotosPicker(
-                            selection: $selectedImage,
-                            maxSelectionCount: 1,
-                            matching: .images,
-                            preferredItemEncoding: .current,
-                            photoLibrary: .shared()) {
-                                StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled", size: .large)
-                            }
-                            .onChange(of: selectedImage) { newPhotoPickerItems in
-                                Task {
-                                    guard let imageData = newPhotoPickerItems.first,
-                                          let uiImage = await imageData.castImageType() else {
-                                              return
-                                          }
-                                    image = uiImage
-                                    selectedImage.removeAll()
+                        Button {
+                            imagePickerSourceType = .photoLibrary
+                            showImagePicker = true
+                        } label: {
+                            StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled", size: .large)
+                        }
+                        .sheet(isPresented: $showImagePicker) {
+                            ImagePicker() { selectedImage in
+                                if let selectedImage = selectedImage {
+                                    image = cropToRectangle(image: selectedImage)
                                 }
                             }
+                            .ignoresSafeArea(.all)
+                        }
 
                         Button {
+                            imagePickerSourceType = .camera
                             isPresentedCameraView = true
                         } label: {
                             StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
+                        }
+                        .fullScreenCover(isPresented: $isPresentedCameraView) {
+                            CameraView(image: $image)
+                                .ignoresSafeArea()
                         }
                     }
 
@@ -194,10 +195,6 @@ struct AddPostView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $isPresentedCameraView) {
-            CameraView(image: $image)
-                .ignoresSafeArea(.all)
-        }
         .alert(isPresented: $showErrorDialog) {
             Alert(
                 title: Text("エラー"),
@@ -226,6 +223,14 @@ struct AddPostView: View {
             memoErrorMessage = "メモは150文字以下で入力してください。"
         }
     }
+
+    private func cropToRectangle(image: UIImage) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width * 2 / 3) // 横長の長方形にトリミング
+        guard let cgImage = image.cgImage?.cropping(to: rect) else {
+            return image
+        }
+        return UIImage(cgImage: cgImage, scale: image.scale, orientation: image.imageOrientation)
+    }
 }
 
 extension PostStatus {
@@ -235,6 +240,45 @@ extension PostStatus {
         }
         return nil
     }
+}
+
+struct ImagePicker: UIViewControllerRepresentable {
+    var onImagePicked: (UIImage?) -> Void
+
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: ImagePicker
+
+        init(parent: ImagePicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            if let uiImage = info[.editedImage] as? UIImage ?? info[.originalImage] as? UIImage {
+                parent.onImagePicked(uiImage)
+            } else {
+                parent.onImagePicked(nil)
+            }
+//            picker.dismiss(animated: true)
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.onImagePicked(nil)
+            picker.dismiss(animated: true)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.allowsEditing = true
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 }
 
 #Preview {
