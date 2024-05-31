@@ -14,15 +14,14 @@ struct CockCardView: View {
     let maxTextCount = 20
     @ObservedObject private var cockCardVM = CockCardViewModel()
     @State private var isLineLimit: Bool = false
+    // 画面サイズ取得
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     var screenWidth: CGFloat {
-#if DEBUG
-        return UIScreen.main.bounds.width
-#else
-        return UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows
-            .first?.screen.bounds.width ?? 50
-#endif
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
     }
 
     @StateObject private var hapticsManager = HapticsManager()
@@ -242,14 +241,6 @@ struct CockCardView: View {
                         .font(.footnote)
                 }
             }
-
-            if let memo = showPostData.memo {
-                DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
-            }
-
-            Divider()
-                .frame(height: 1)
-                .padding(0)
         }
         .onTapGesture {
             path.append(
