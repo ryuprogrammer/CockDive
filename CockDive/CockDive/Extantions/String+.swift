@@ -17,4 +17,14 @@ extension String {
         }
         return false
     }
+
+    func limitTextLength(maxLength: Int) -> String {
+        guard maxLength > 0 else { return self }
+        if self.count > maxLength - 1 {
+            let endIndex = self.index(self.startIndex, offsetBy: maxLength - 1)
+            return String(self[..<endIndex]) + "..."
+        } else {
+            return self
+        }
+    }
 }

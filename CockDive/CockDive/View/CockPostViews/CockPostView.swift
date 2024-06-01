@@ -12,6 +12,11 @@ struct CockPostView: View {
 
     @State private var lastPost: PostElement?
 
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
@@ -70,34 +75,36 @@ struct CockPostView: View {
 
     private var postListView: some View {
         ScrollViewReader { proxy in
-            List {
-                ForEach(showPostsData, id: \.id) { postData in
-                    CockCardView(
-                        showPostData: postData,
-                        path: $cockCardNavigationPath,
-                        isShowUserNameAndFollowButton: true
-                    )
-                    .id(postData.id)
-                    .onAppear {
-                        if cockPostVM.checkIsLastPost(postData: postData) {
-                            Task {
-                                await cockPostVM.fetchPostsDataByStatus()
+            ScrollView {
+                Spacer().frame(height: 3)
+                LazyVGrid(columns: columns, spacing: 3) {
+                    ForEach(showPostsData, id: \.id) { postData in
+                        CockCardView(
+                            showPostData: postData,
+                            path: $cockCardNavigationPath,
+                            isShowUserNameAndFollowButton: true
+                        )
+                        .id(postData.id)
+                        .onAppear {
+                            if cockPostVM.checkIsLastPost(postData: postData) {
+                                print("取得！！！！！！！！！！！！！！！！")
+                                Task {
+                                    await cockPostVM.fetchPostsDataByStatus()
+                                }
                             }
                         }
                     }
-                }
-                .listRowSeparator(.hidden)
 
-                if cockPostVM.loadStatus == .loading {
-                    HStack {
-                        Spacer()
-                        LoadingAnimationView()
-                        Spacer()
+                    if cockPostVM.loadStatus == .loading {
+                        HStack {
+                            Spacer()
+                            LoadingAnimationView()
+                            Spacer()
+                        }
                     }
-                    .listRowSeparator(.hidden)
                 }
             }
-            .listStyle(.plain)
+            .padding(.horizontal, 3)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
                     proxy.scrollTo(lastPost.id, anchor: .center)
@@ -113,6 +120,7 @@ struct CockPostView: View {
             }
         }
     }
+
 
     private var addButton: some View {
         Button(action: {
