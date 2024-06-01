@@ -166,7 +166,6 @@ struct CockCardView: View {
 
                         // ライクボタン
                         Button {
-                            print("ライク押された")
                             // ボタンの無効化
                             isLikeButtonDisabled = true
                             // haptics

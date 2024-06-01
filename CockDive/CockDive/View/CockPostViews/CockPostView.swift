@@ -87,7 +87,6 @@ struct CockPostView: View {
                         .id(postData.id)
                         .onAppear {
                             if cockPostVM.checkIsLastPost(postData: postData) {
-                                print("取得！！！！！！！！！！！！！！！！")
                                 Task {
                                     await cockPostVM.fetchPostsDataByStatus()
                                 }
