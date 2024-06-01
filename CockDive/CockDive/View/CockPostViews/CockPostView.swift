@@ -77,6 +77,7 @@ struct CockPostView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 Spacer().frame(height: 3)
+
                 LazyVGrid(columns: columns, spacing: 3) {
                     ForEach(showPostsData, id: \.id) { postData in
                         CockCardView(
@@ -93,20 +94,20 @@ struct CockPostView: View {
                             }
                         }
                     }
+                }
 
-                    if cockPostVM.loadStatus == .loading {
-                        HStack {
-                            Spacer()
-                            LoadingAnimationView()
-                            Spacer()
-                        }
+                if cockPostVM.loadStatus == .loading {
+                    HStack {
+                        Spacer()
+                        LoadingAnimationView()
+                        Spacer()
                     }
                 }
             }
             .padding(.horizontal, 3)
             .onChange(of: showPostsData) { _ in
                 if let lastPost = lastPost {
-                    proxy.scrollTo(lastPost.id, anchor: .center)
+                    proxy.scrollTo(lastPost.id, anchor: .bottom)
                 }
             }
             .refreshable {

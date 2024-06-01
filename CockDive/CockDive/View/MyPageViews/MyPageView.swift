@@ -26,6 +26,11 @@ struct MyPageView: View {
     // 画面遷移用
     @Binding var cockCardNavigationPath: [CockCardNavigationPath]
 
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             VStack {
@@ -131,34 +136,45 @@ struct MyPageView: View {
     @ViewBuilder
     func myPostListView() -> some View {
         ScrollViewReader { proxy in
-            List {
-                ForEach(showPostListData, id: \.id) { postData in
-                    CockCardView(
-                        showPostData: postData,
-                        path: $cockCardNavigationPath,
-                        isShowUserNameAndFollowButton: false
-                    )
-                    .id(postData.id)
-                    .onAppear {
-                        if myPageVM.checkIsLastMyPost(postData: postData) {
-                            Task {
-                                guard let last = showPostListData.last,
-                                      let lastId = last.id else { return }
-                                await myPageVM.fetchMyPostsDataByStatus(
-                                    lastId: lastId
-                                )
+            ScrollView {
+                Spacer().frame(height: 3)
+
+                LazyVGrid(columns: columns, spacing: 3) {
+                    ForEach(showPostListData, id: \.id) { postData in
+                        CockCardView(
+                            showPostData: postData,
+                            path: $cockCardNavigationPath,
+                            isShowUserNameAndFollowButton: true
+                        )
+                        .id(postData.id)
+                        .onAppear {
+                            if myPageVM.checkIsLastMyPost(postData: postData) {
+                                Task {
+                                    guard let last = showPostListData.last,
+                                          let lastId = last.id else { return }
+                                    await myPageVM.fetchMyPostsDataByStatus(
+                                        lastId: lastId
+                                    )
+                                }
                             }
                         }
                     }
                 }
-                .listRowSeparator(.hidden)
-                .onChange(of: showPostListData) { _ in
-                    if let lastPost = lastPost {
-                        proxy.scrollTo(lastPost.id, anchor: .bottom)
+
+                if myPageVM.loadStatusMyPost == .loading {
+                    HStack {
+                        Spacer()
+                        LoadingAnimationView()
+                        Spacer()
                     }
                 }
             }
-            .listStyle(.plain)
+            .padding(.horizontal, 3)
+            .onChange(of: showPostListData) { _ in
+                if let lastPost = lastPost {
+                    proxy.scrollTo(lastPost.id, anchor: .bottom)
+                }
+            }
             .onAppear {
                 Task {
                     if myPageVM.loadStatusMyPost == .initial {
