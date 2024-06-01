@@ -29,26 +29,14 @@ struct PostDetailView: View {
                 VStack {
                     HStack {
                         // アイコン写真
-                        if let data = showPostData.postUserIconImage,
-                           let uiImage = UIImage(data: data) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(
-                                    width: (window?.screen.bounds.width ?? 50) / 12,
-                                    height: (window?.screen.bounds.width ?? 50) / 10
-                                )
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(
-                                    width: (window?.screen.bounds.width ?? 50) / 12,
-                                    height: (window?.screen.bounds.width ?? 50) / 10
-                                )
-                                .clipShape(Circle())
-                        }
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(
+                                width: (window?.screen.bounds.width ?? 50) / 12,
+                                height: (window?.screen.bounds.width ?? 50) / 10
+                            )
+                            .clipShape(Circle())
 
                         VStack(alignment: .leading) {
                             Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
@@ -305,8 +293,8 @@ struct PostDetailView: View {
                     showPostData: PostElement(
                         id: "000",
                         uid: "mmmmmmmm",
+                        postUserNickName: "ニックネーム", 
                         postImage: Data(),
-                        postImageURL: "https://firebasestorage.googleapis.com/v0/b/cockdive.appspot.com/o/postImages%2FrLVTWM5C7BiV3XbJP57G%2Fpost.jpg?alt=media&token=d4879cc3-0022-4afb-9cea-b1fe4afc19ec",
                         title: "定食",
                         memo: """
 ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入ここに説明文を挿入

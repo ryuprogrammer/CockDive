@@ -165,6 +165,7 @@ struct AddPostView: View {
                                 // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                                 cockPostVM.addPost(post: PostElement(
                                     uid: cockPostVM.fetchUid(),
+                                    postUserNickName: "",
                                     postImage: dataImage,
                                     title: title,
                                     memo: memo,

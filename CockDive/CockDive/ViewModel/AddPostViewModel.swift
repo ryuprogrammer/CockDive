@@ -23,11 +23,10 @@ class AddPostViewModel: ObservableObject {
         loadStatus = .loading
 
         var newPost = post
-        let uid = fetchUid()
 
         if let userData = userDefaultsDataModel.fetchUserData() {
             newPost.postUserNickName = userData.nickName
-            newPost.postUserIconImage = userData.iconImage
+            newPost.postUserIconImageURL = userData.iconURL
             print("データ追加かいし")
             postDataModel.addPost(post: newPost) { result in
                 DispatchQueue.main.async {

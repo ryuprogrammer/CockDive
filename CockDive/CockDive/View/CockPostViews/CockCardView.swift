@@ -48,41 +48,13 @@ struct CockCardView: View {
                     )
                 } label: {
                     // Postの写真
-                    if let postImageURL = showPostData.postImageURL {
-                        AsyncImage(url: URL(string: postImageURL)) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: cardWidth, height: cardWidth)
-                                    .background(Color.mainColor.opacity(0.3))
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: cardWidth, height: cardWidth)
-                                    .clipShape(Rectangle())
-                            case .failure:
-                                Image(systemName: "carrot")
-                                    .resizable()
-                                    .padding(50)
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: cardWidth, height: cardWidth)
-                                    .foregroundStyle(Color.white)
-                                    .background(Color.mainColor.opacity(0.3))
-                            @unknown default:
-                                EmptyView()
-                                    .frame(height: 250)
-                                    .background(Color.gray)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                            }
-                        }
-                    } else {
-                        Image(systemName: "birthday.cake")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 250)
-                            .background(Color.gray)
-                    }
+                    Image(systemName: "carrot")
+                        .resizable()
+                        .padding(50)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: cardWidth, height: cardWidth)
+                        .foregroundStyle(Color.white)
+                        .background(Color.mainColor.opacity(0.3))
                 }
 
                 VStack {
@@ -96,7 +68,6 @@ struct CockCardView: View {
                                         id: showPostData.uid,
                                         nickName: showPostData.postUserNickName ?? "",
                                         introduction: nil,
-                                        iconImage: showPostData.postUserIconImage,
                                         iconURL: nil
                                     ),
                                     showIsFollow: isFollow
@@ -106,26 +77,16 @@ struct CockCardView: View {
                             HStack {
                                 HStack {
                                     // アイコン画像
-                                    if let data = showPostData.postUserIconImage,
-                                       let uiImage = UIImage(data: data) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .foregroundStyle(Color.gray)
-                                            .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                            .clipShape(Circle())
-                                    } else {
-                                        Image(systemName: "person.circle.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .foregroundStyle(Color.gray)
-                                            .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                            .clipShape(Circle())
-                                    }
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .foregroundStyle(Color.gray)
+                                        .frame(width: cardWidth / 6, height: cardWidth / 6)
+                                        .clipShape(Circle())
 
                                     VStack(alignment: .leading, spacing: 0) {
                                         // ニックネーム
-                                        Text("\(showPostData.postUserNickName?.limitTextLength(maxLength: 8) ?? "ニックネーム")")
+                                        Text("\(showPostData.postUserNickName.limitTextLength(maxLength: 8))")
                                             .foregroundStyle(Color.white)
                                             .font(.headline)
                                             .fontWeight(.bold)
@@ -227,7 +188,7 @@ struct CockCardView: View {
 #Preview {
     struct PreviewView: View {
 
-        let postData: PostElement = PostElement(uid: "dummy_uid", postImageURL: "https://example.com/image.jpg", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
+        let postData: PostElement = PostElement(uid: "dummy_uid", postUserNickName: "ニックネーム", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
 
         @State var path: [CockCardNavigationPath] = []
         let columns = [

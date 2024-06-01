@@ -47,22 +47,26 @@ struct PostDataModel {
     // MARK: - データ追加
     /// Post追加
     func addPost(post: PostElement, completion: @escaping (Result<String, Error>) -> Void) {
-        // 新しいドキュメントIDを生成
-        let docRef = db.collection(postDataCollection).document()
-        let docId = post.id ?? docRef.documentID
+        var docId: String {
+            // 元々postIDが存在するか確認
+            if let postId = post.id {
+                return postId
+            } else {
+                // 新しいドキュメントIDを生成
+                let docRef = db.collection(postDataCollection).document()
+                return docRef.documentID
+            }
+        }
 
         // リファレンスを作成
         let finalDocRef = db.collection(postDataCollection).document(docId)
 
         var postWithId = post
-        // 画像データを削除：firestoreには画像あげない。
-        var postNotImageData = post
-        postNotImageData.postImage = nil
         postWithId.id = finalDocRef.documentID
 
         do {
             // Firestoreにデータを保存
-            try finalDocRef.setData(from: postNotImageData) { error in
+            try finalDocRef.setData(from: postWithId) { error in
                 if let error = error {
                     completion(.failure(error))
                     return
