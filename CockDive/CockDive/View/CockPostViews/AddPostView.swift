@@ -48,7 +48,7 @@ struct AddPostView: View {
                         .sheet(isPresented: $showImagePicker) {
                             ImagePicker() { selectedImage in
                                 if let selectedImage = selectedImage {
-                                    image = cropToRectangle(image: selectedImage)
+                                    image = cropToSquare(image: selectedImage)
                                 }
                             }
                             .ignoresSafeArea(.all)
@@ -224,8 +224,9 @@ struct AddPostView: View {
         }
     }
 
-    private func cropToRectangle(image: UIImage) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width * 2 / 3) // 横長の長方形にトリミング
+    private func cropToSquare(image: UIImage) -> UIImage {
+        let size = min(image.size.width, image.size.height)
+        let rect = CGRect(x: (image.size.width - size) / 2, y: (image.size.height - size) / 2, width: size, height: size)
         guard let cgImage = image.cgImage?.cropping(to: rect) else {
             return image
         }
@@ -258,7 +259,6 @@ struct ImagePicker: UIViewControllerRepresentable {
             } else {
                 parent.onImagePicked(nil)
             }
-//            picker.dismiss(animated: true)
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
