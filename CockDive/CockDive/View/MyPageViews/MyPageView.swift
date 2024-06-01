@@ -144,7 +144,7 @@ struct MyPageView: View {
                         CockCardView(
                             showPostData: postData,
                             path: $cockCardNavigationPath,
-                            isShowUserNameAndFollowButton: true
+                            isShowUserNameAndFollowButton: false
                         )
                         .id(postData.id)
                         .onAppear {
@@ -201,30 +201,32 @@ struct MyPageView: View {
     @ViewBuilder
     func likePostListView() -> some View {
         ScrollViewReader { proxy in
-            List {
-                ForEach(showLikePostListData, id: \.id) { postData in
-                    CockCardView(
-                        showPostData: postData,
-                        path: $cockCardNavigationPath,
-                        isShowUserNameAndFollowButton: true
-                    )
-                    .id(postData.id)
-                    .onAppear {
-                        if myPageVM.checkIsLastLikePost(postData: postData) {
-                            Task {
-                                await myPageVM.fetchLikePostsDataByStatus()
+            ScrollView {
+                Spacer().frame(height: 3)
+
+                LazyVGrid(columns: columns, spacing: 3) {
+                    ForEach(showLikePostListData, id: \.id) { postData in
+                        CockCardView(
+                            showPostData: postData,
+                            path: $cockCardNavigationPath,
+                            isShowUserNameAndFollowButton: true
+                        )
+                        .id(postData.id)
+                        .onAppear {
+                            if myPageVM.checkIsLastLikePost(postData: postData) {
+                                Task {
+                                    await myPageVM.fetchLikePostsDataByStatus()
+                                }
                             }
                         }
                     }
                 }
-                .listRowSeparator(.hidden)
-                .onChange(of: showLikePostListData) { _ in
-                    if let lastPost = lastPost {
-                        proxy.scrollTo(lastPost.id, anchor: .bottom)
-                    }
+            }
+            .onChange(of: showLikePostListData) { _ in
+                if let lastPost = lastPost {
+                    proxy.scrollTo(lastPost.id, anchor: .bottom)
                 }
             }
-            .listStyle(.plain)
             .onAppear {
                 Task {
                     if myPageVM.loadStatusLikePost == .initial {
