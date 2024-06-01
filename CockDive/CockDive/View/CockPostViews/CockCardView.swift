@@ -66,7 +66,7 @@ struct CockCardView: View {
                                 .profileView(
                                     userData: UserElement(
                                         id: showPostData.uid,
-                                        nickName: showPostData.postUserNickName ?? "",
+                                        nickName: showPostData.postUserNickName,
                                         introduction: nil,
                                         iconURL: nil
                                     ),
