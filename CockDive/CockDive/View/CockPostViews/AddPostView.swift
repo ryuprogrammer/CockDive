@@ -26,10 +26,9 @@ struct AddPostView: View {
                     if let image {
                         Image(uiImage: image)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity)
-                            .frame(height: 200)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .frame(height: 400)
 
                         HStack {
                             Spacer()
@@ -176,7 +175,7 @@ struct AddPostView: View {
                                     comment: []
                                 ))
 
-                                if case .error(let errorMessage) = cockPostVM.loadStatus {
+                                if case .error(_) = cockPostVM.loadStatus {
                                     showErrorDialog = true
                                 } else if case .success = cockPostVM.loadStatus {
                                     dismiss()

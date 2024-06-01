@@ -38,6 +38,7 @@ struct CockCardView: View {
         VStack(spacing: 0) {
             // 写真、タイトル、メモ、コメント、ハート
             ZStack {
+                // Postの写真
                 Button {
                     path.append(
                         .detailView(
@@ -48,13 +49,24 @@ struct CockCardView: View {
                     )
                 } label: {
                     // Postの写真
-                    Image(systemName: "carrot")
-                        .resizable()
-                        .padding(50)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: cardWidth, height: cardWidth)
-                        .foregroundStyle(Color.white)
-                        .background(Color.mainColor.opacity(0.3))
+                    if let data = showPostData.postImage,
+                       let uiImage = UIImage(data: data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .padding(50)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: cardWidth, height: cardWidth)
+                            .foregroundStyle(Color.white)
+                            .background(Color.mainColor.opacity(0.3))
+                    } else {
+                        Image(systemName: "carrot")
+                            .resizable()
+                            .padding(50)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: cardWidth, height: cardWidth)
+                            .foregroundStyle(Color.white)
+                            .background(Color.mainColor.opacity(0.3))
+                    }
                 }
 
                 VStack {
@@ -77,12 +89,23 @@ struct CockCardView: View {
                             HStack {
                                 HStack {
                                     // アイコン画像
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .foregroundStyle(Color.gray)
-                                        .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                        .clipShape(Circle())
+                                    if let imageURL = URL(string: showPostData.postUserIconImageURL ?? "") {
+                                        AsyncImage(url: imageURL) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .foregroundStyle(Color.gray)
+                                                .frame(width: cardWidth / 6, height: cardWidth / 6)
+                                                .clipShape(Circle())
+                                        } placeholder: {
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .foregroundStyle(Color.gray)
+                                                .frame(width: cardWidth / 6, height: cardWidth / 6)
+                                                .clipShape(Circle())
+                                        }
+                                    }
 
                                     VStack(alignment: .leading, spacing: 0) {
                                         // ニックネーム
