@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct AddPostView: View {
-    @StateObject private var cockPostVM = AddPostViewModel()
+    @StateObject private var addPostVM = AddPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var isPrivate: Bool = false
@@ -123,7 +123,7 @@ struct AddPostView: View {
                 }
                 .padding(.horizontal)
                 .overlay {
-                    if cockPostVM.loadStatus == .loading {
+                    if addPostVM.loadStatus == .loading {
                         ProgressView("投稿中...")
                             .font(.title)
                             .foregroundStyle(Color.white)
@@ -162,8 +162,8 @@ struct AddPostView: View {
                                 guard let dataImage = image?.castToData() else { return }
 
                                 // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
-                                cockPostVM.addPost(post: PostElement(
-                                    uid: cockPostVM.fetchUid(),
+                                addPostVM.addPost(post: PostElement(
+                                    uid: addPostVM.fetchUid(),
                                     postUserNickName: "",
                                     postImage: dataImage,
                                     title: title,
@@ -192,14 +192,14 @@ struct AddPostView: View {
         .alert(isPresented: $showErrorDialog) {
             Alert(
                 title: Text("エラー"),
-                message: Text(cockPostVM.loadStatus?.errorDescription ?? "不明なエラーが発生しました"),
+                message: Text(addPostVM.loadStatus?.errorDescription ?? "不明なエラーが発生しました"),
                 dismissButton: .default(Text("OK"))
             )
         }
-        .onChange(of: cockPostVM.loadStatus) { newStatus in
-            if case .error(_) = cockPostVM.loadStatus {
+        .onChange(of: addPostVM.loadStatus) { newStatus in
+            if case .error(_) = addPostVM.loadStatus {
                 showErrorDialog = true
-            } else if case .success = cockPostVM.loadStatus {
+            } else if case .success = addPostVM.loadStatus {
                 dismiss()
             }
         }
