@@ -18,21 +18,13 @@ struct ProfileHeaderView: View {
     var body: some View {
         VStack {
             HStack {
-                if let imageURL = URL(string: showUser.iconURL ?? "") {
-                    AsyncImage(url: imageURL) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: screenWidth / 4, height: screenWidth / 4)
-                            .clipShape(Circle())
-                    } placeholder: {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: screenWidth / 4, height: screenWidth / 4)
-                            .clipShape(Circle())
-                    }
-                }
+                ImageView(
+                    data: showUser.iconImage,
+                    urlString: showUser.iconURL,
+                    imageType: .icon
+                )
+                .frame(width: screenWidth / 4, height: screenWidth / 4)
+                .clipShape(Circle())
 
                 Spacer()
                 HStack(spacing: 5) {
