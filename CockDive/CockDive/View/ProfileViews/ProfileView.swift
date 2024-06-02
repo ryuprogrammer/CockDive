@@ -97,10 +97,12 @@ struct ProfileView: View {
                     }
                 }
             }
+            .padding(3)
             .refreshable {
                 profileVM.loadStatus = .initial
                 showPostsData.removeAll()
                 profileVM.newPostsData.removeAll()
+                lastPost = nil
                 Task {
                     guard let uid = showUser.id else { return }
                     await profileVM.fetchPostFromUid(uid: uid)
@@ -116,6 +118,7 @@ struct ProfileView: View {
                 }
             }
         }
+        .ignoresSafeArea(edges: .bottom)
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .listStyle(.plain)
