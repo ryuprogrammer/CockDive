@@ -53,22 +53,29 @@ struct ImageView: View {
         VStack {
             switch imageType {
             case .icon:
-                Text("Icon not available")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.red.opacity(0.1))
-                    .foregroundColor(.red)
-                    .font(.headline)
+                Image(systemName: "person.circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .foregroundStyle(Color.mainColor)
             case .post:
-                Text("Post not available")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .font(.headline)
+                Image(systemName: "carrot")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(50)
+                    .background(Color.mainColor)
+                    .foregroundStyle(Color.white)
             }
         }
     }
 }
 
 #Preview {
-    ImageView(imageType: .icon)
+    VStack {
+        ImageView(imageType: .icon)
+            .frame(width: 100, height: 100)
+            .foregroundStyle(Color.mainColor)
+        ImageView(imageType: .post)
+            .frame(width: 300, height: 300)
+            .foregroundStyle(Color.white)
+    }
 }
