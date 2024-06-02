@@ -7,10 +7,8 @@ struct SettingView: View {
     @State var flag: Visibility = .hidden
     @State var isShowProfileEditView: Bool = false
     @ObservedObject var settingVM = SettingViewModel()
-    // ニックネーム
-    @State private var nickName: String = ""
-    // アイコン写真
-    @State private var uiImage: UIImage? = nil
+    // ユーザーデータ
+    @State var showUserData: UserElementForUserDefaults? = nil
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -28,22 +26,17 @@ struct SettingView: View {
                 isShowProfileEditView = true
             } label: {
                 HStack {
-                    if let uiImage {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: screenWidth / 7, height: screenWidth / 7)
-                            .clipShape(Circle())
-                    } else {
-                        Image("iconSample4")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: screenWidth / 7, height: screenWidth / 7)
-                            .clipShape(Circle())
-                    }
+                    // アイコン写真
+                    ImageView(
+                        data: showUserData?.iconImage,
+                        urlString: showUserData?.iconURL,
+                        imageType: .icon
+                    )
+                    .frame(width: screenWidth / 7, height: screenWidth / 7)
+                    .clipShape(Circle())
 
                     VStack(alignment: .leading) {
-                        Text(nickName)
+                        Text(showUserData?.nickName ?? "ニックネーム")
                             .font(.title)
                             .foregroundStyle(Color.black)
                         Text("プロフィールを編集")
@@ -132,10 +125,7 @@ struct SettingView: View {
         }
         .onChange(of: settingVM.userData) { userData in
             guard let userData else { return }
-            nickName = userData.nickName
-            if let data = userData.iconImage {
-                uiImage = UIImage(data: data)
-            }
+            showUserData = userData
         }
         .sheet(isPresented: $isShowProfileEditView) {
             MyProfileEditView()

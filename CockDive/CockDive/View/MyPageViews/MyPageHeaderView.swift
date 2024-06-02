@@ -21,20 +21,15 @@ struct MyPageHeaderView: View {
     var body: some View {
         VStack {
             HStack {
-                if let data = showUserData.iconImage,
-                   let uiImage = UIImage(data: data) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth / 4, height: screenWidth / 4)
-                        .clipShape(Circle())
-                } else {
-                    Image("iconSample4")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth / 4, height: screenWidth / 4)
-                        .clipShape(Circle())
-                }
+                // アイコン写真
+                ImageView(
+                    data: showUserData.iconImage,
+                    urlString: showUserData.iconURL,
+                    imageType: .icon
+                )
+                .frame(width: screenWidth / 4, height: screenWidth / 4)
+                .clipShape(Circle())
+                
                 Spacer()
                 HStack(spacing: 5) {
                     VStack(alignment: .center) {
