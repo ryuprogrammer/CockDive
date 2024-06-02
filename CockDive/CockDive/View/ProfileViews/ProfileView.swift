@@ -45,8 +45,7 @@ struct ProfileView: View {
                 ProfileHeaderView(
                     showUser: showUser,
                     showUserFriends: showUserFriends,
-                    showUserPosts: showUserPosts,
-                    screenWidth: screenWidth
+                    showUserPosts: showUserPosts
                 )
 
                 if let introduction = showUser.introduction {

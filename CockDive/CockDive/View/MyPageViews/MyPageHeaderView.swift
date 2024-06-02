@@ -7,10 +7,15 @@ struct MyPageHeaderView: View {
     @Binding var postCount: Int
     // UserFriendElement（フォロー、フォロワー）
     @Binding var showFriendData: UserFriendElement
+
     // 画面サイズ取得
-    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     var screenWidth: CGFloat {
-        windowScene?.screen.bounds.width ?? 0
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
     }
 
     var body: some View {
