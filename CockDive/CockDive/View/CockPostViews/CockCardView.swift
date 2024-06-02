@@ -79,7 +79,7 @@ struct CockCardView: View {
                                         id: showPostData.uid,
                                         nickName: showPostData.postUserNickName,
                                         introduction: nil,
-                                        iconURL: nil
+                                        iconURL: showPostData.postUserIconImageURL
                                     ),
                                     showIsFollow: isFollow
                                 )

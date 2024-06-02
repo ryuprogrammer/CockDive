@@ -43,9 +43,9 @@ struct ProfileView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 ProfileHeaderView(
-                    showUser: showUser,
-                    showUserFriends: showUserFriends,
-                    showUserPosts: showUserPosts
+                    showUser: $showUser,
+                    showUserFriends: $showUserFriends,
+                    showUserPosts: $showUserPosts
                 )
 
                 if let introduction = showUser.introduction {

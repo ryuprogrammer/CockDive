@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    var showUser: UserElement
-    var showUserFriends: UserFriendElement
-    var showUserPosts: UserPostElement
+    @Binding var showUser: UserElement
+    @Binding var showUserFriends: UserFriendElement
+    @Binding var showUserPosts: UserPostElement
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -18,20 +18,22 @@ struct ProfileHeaderView: View {
     var body: some View {
         VStack {
             HStack {
-                if let data = showUser.iconImage,
-                   let uiImage = UIImage(data: data) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth / 4, height: screenWidth / 4)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth / 4, height: screenWidth / 4)
-                        .clipShape(Circle())
+                if let imageURL = URL(string: showUser.iconURL ?? "") {
+                    AsyncImage(url: imageURL) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: screenWidth / 4, height: screenWidth / 4)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: screenWidth / 4, height: screenWidth / 4)
+                            .clipShape(Circle())
+                    }
                 }
+
                 Spacer()
                 HStack(spacing: 5) {
                     VStack(alignment: .center) {
@@ -79,9 +81,9 @@ struct HeaderView_Previews: PreviewProvider {
     @State static var userPost = UserPostElement(postCount: 5, posts: [], likePostCount: 10, likePost: [])
     static var previews: some View {
         ProfileHeaderView(
-            showUser: user,
-            showUserFriends: friendData,
-            showUserPosts: userPost
+            showUser: $user,
+            showUserFriends: $friendData,
+            showUserPosts: $userPost
         )
             .previewLayout(.sizeThatFits)
     }
