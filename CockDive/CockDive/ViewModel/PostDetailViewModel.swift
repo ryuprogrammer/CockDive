@@ -3,6 +3,9 @@ import FirebaseFirestore
 
 class PostDetailViewModel: ObservableObject {
     @Published var postData: PostElement?
+
+    @Published var userData: UserElement?
+
     @Published var isLike: Bool = false
     @Published var isFollow: Bool = false
 
@@ -77,17 +80,14 @@ class PostDetailViewModel: ObservableObject {
     func fetchUid() -> String {
         return userDataModel.fetchUid() ?? ""
     }
-    /// userDate取得
-    func fetchUserData() -> UserElementForUserDefaults? {
-        if let userData = userDefaultsDataModel.fetchUserData() {
-            return userData
-        }
-        return nil
-    }
 
-    /// postIdからPostDataを取得
-    func fetchPostFromPostId(postId: String) async -> PostElement? {
-        return await postDataModel.fetchPostFromPostId(postId: postId)
+    /// userData取得
+    func fetchUserData(uid: String) async {
+        let user = await userDataModel.fetchUserData(uid: uid)
+        DispatchQueue.main.async {
+            guard let userData = user else { return }
+            self.userData = userData
+        }
     }
 
     // MARK: - CoreData

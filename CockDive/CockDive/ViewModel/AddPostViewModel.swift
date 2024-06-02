@@ -25,10 +25,6 @@ class AddPostViewModel: ObservableObject {
         var newPost = post
 
         if let userData = userDefaultsDataModel.fetchUserData() {
-            newPost.postUserNickName = userData.nickName
-            newPost.postUserIconImageURL = userData.iconURL
-            print("アイコンURL: \(userData.iconURL ?? "ない。、、、")")
-            print("データ追加かいし")
             postDataModel.addPost(post: newPost) { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -48,7 +44,7 @@ class AddPostViewModel: ObservableObject {
                         self.loadStatus = .success
                         print("成功")
                     case .failure(let error):
-                        print("エラーーーー: \(error.localizedDescription)")
+                        print("エラー: \(error.localizedDescription)")
                         self.loadStatus = .error(error.localizedDescription)
                     }
                 }

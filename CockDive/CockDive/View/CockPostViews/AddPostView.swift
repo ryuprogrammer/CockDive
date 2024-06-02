@@ -16,6 +16,16 @@ struct AddPostView: View {
     @FocusState private var keybordFocuse: Bool
     @Environment(\.dismiss) private var dismiss
 
+    // 画面サイズ取得
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    var screenWidth: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
+    }
+
     var body: some View {
         NavigationStack {
             ScrollViewReader { reader in
@@ -27,7 +37,7 @@ struct AddPostView: View {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 300, height: 300)
+                            .frame(width: screenWidth*3/5, height: screenWidth*3/5)
                             .clipShape(Rectangle())
 
                         HStack {
@@ -164,7 +174,6 @@ struct AddPostView: View {
                                 // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                                 addPostVM.addPost(post: PostElement(
                                     uid: addPostVM.fetchUid(),
-                                    postUserNickName: "",
                                     postImage: dataImage,
                                     title: title,
                                     memo: memo,

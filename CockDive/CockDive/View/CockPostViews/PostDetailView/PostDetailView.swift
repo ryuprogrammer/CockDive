@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PostDetailView: View {
     @State var showPostData: PostElement
+    @State var showUserData: UserElement?
     // ライクの初期値
     @State var showIsLike: Bool
     // フォローの初期値
@@ -14,13 +15,22 @@ struct PostDetailView: View {
     @State private var isCommentButtonDisabled: Bool = false
     // コメント
     @State private var comment: String = ""
-    let postDetailVM = PostDetailViewModel()
-    // 画面サイズ取得
-    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    @ObservedObject var postDetailVM = PostDetailViewModel()
+
     // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
     let maxTextCount = 40
     @StateObject private var hapticsManager = HapticsManager()
+
+    // 画面サイズ取得
+    let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    var screenWidth: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
+    }
 
     var body: some View {
         ZStack {
@@ -29,17 +39,19 @@ struct PostDetailView: View {
                 VStack {
                     HStack {
                         // アイコン写真
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(
-                                width: (window?.screen.bounds.width ?? 50) / 12,
-                                height: (window?.screen.bounds.width ?? 50) / 10
-                            )
-                            .clipShape(Circle())
+                        ImageView(
+                            data: showUserData?.iconImage,
+                            urlString: showUserData?.iconURL,
+                            imageType: .icon
+                        )
+                        .frame(
+                            width: screenWidth / 12,
+                            height: screenWidth / 12
+                        )
+                        .clipShape(Circle())
 
                         VStack(alignment: .leading) {
-                            Text("\(showPostData.postUserNickName ?? "ニックネーム")さん")
+                            Text("\(showUserData?.nickName ?? "ニックネーム")")
 
                             Text(showPostData.createAt.dateString())
                                 .font(.footnote)
@@ -77,22 +89,14 @@ struct PostDetailView: View {
                     }
 
                     // Postの写真
-                    if let data = showPostData.postImage,
-                       let uiImage = UIImage(data: data) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 250)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                            .listRowSeparator(.hidden)
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 250)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                            .listRowSeparator(.hidden)
-                    }
+                    ImageView(
+                        data: showPostData.postImage,
+                        urlString: showPostData.postImageURL,
+                        imageType: .post
+                    )
+                    .frame(width: screenWidth, height: screenWidth)
+                    .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
                 }
                 .listRowSeparator(.hidden)
 
@@ -190,14 +194,10 @@ struct PostDetailView: View {
                     Button {
                         print("こめ")
                         isCommentButtonDisabled = true
-                        // userData取得
-                        guard let userData = postDetailVM.fetchUserData() else { return }
                         let uid = postDetailVM.fetchUid()
                         // 新しいコメント
                         let newComment: CommentElement = CommentElement(
                             uid: uid,
-                            commentUserNickName: userData.nickName,
-                            commentUserIcon: userData.iconImage,
                             comment: comment,
                             createAt: Date()
                         )
@@ -264,7 +264,12 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
-            print("コメント: \(showPostData.comment)")
+            Task {
+                await postDetailVM.fetchUserData(uid: showPostData.uid)
+                if let data = postDetailVM.userData {
+                    showUserData = data
+                }
+            }
             // Postデータをリッスン
             postDetailVM.listenToPost(postId: showPostData.id)
         }
@@ -293,7 +298,6 @@ struct PostDetailView: View {
                     showPostData: PostElement(
                         id: "000",
                         uid: "mmmmmmmm",
-                        postUserNickName: "ニックネーム", 
                         postImage: Data(),
                         title: "定食",
                         memo: """
@@ -309,6 +313,7 @@ struct PostDetailView: View {
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date())
                         ]
                     ),
+                    showUserData: UserElement(nickName: "ニックネーム"),
                     showIsLike: false,
                     showIsFollow: false
                 )

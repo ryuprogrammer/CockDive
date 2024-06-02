@@ -6,7 +6,7 @@ import FirebaseStorage
 class UserDataModel {
     /// コレクション名
     private let userCollection: String = "userData"
-
+    private let maxDocSize = 1000000
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
 
@@ -53,10 +53,17 @@ class UserDataModel {
 
     /// ユーザーデータを保存
     private func saveUserData(user: UserElement, uid: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        var userDataNotImage = user
-        userDataNotImage.iconImage = nil
+        var userData = user
+        // MARK: 画像サイズが大きい場合はnilにする
+        if let imageDataSize = user.iconImage?.count {
+            if imageDataSize > maxDocSize {
+                // 画像サイズが大きいのでnilにする
+                userData.iconImage = nil
+            }
+        }
+
         do {
-            try db.collection(userCollection).document(uid).setData(from: userDataNotImage) { error in
+            try db.collection(userCollection).document(uid).setData(from: userData) { error in
                 if let error = error {
                     completion(.failure(error))
                 } else {

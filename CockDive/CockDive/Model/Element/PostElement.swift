@@ -5,12 +5,10 @@ struct PostElement: Codable, Hashable, Equatable {
     @DocumentID var id: String?
     /// uid
     var uid: String
-    /// アイコン写真
-    var postUserIconImageURL: String?
-    /// ニックネーム
-    var postUserNickName: String
-    /// 写真: 入力で必要
+    /// 写真Data
     var postImage: Data?
+    /// 写真URL
+    var postImageURL: String?
     /// ご飯のタイトル
     var title: String
     /// ご飯のメモ

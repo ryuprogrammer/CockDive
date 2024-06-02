@@ -3,43 +3,39 @@ import SwiftUI
 struct PostCommentView: View {
     let maxTextCount: Int = 50
     let comment: CommentElement
-    
+    @State private var showUserData: UserElement? = nil
+    @ObservedObject var postCommentVM = PostCommentViewModel()
+
     // ブロック
     let blockAction: () -> Void
     // 通報処理
     let reportAction: () -> Void
-    
+
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
-    
+    var screenWidth: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width
+        }
+        return 400
+    }
+
     var body: some View {
         HStack(alignment: .top) {
             // アイコン写真
-            if let data = comment.commentUserIcon,
-               let uiImage = UIImage(data: data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 50) / 10,
-                        height: (window?.screen.bounds.width ?? 50) / 10
-                    )
-                    .clipShape(Circle())
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(
-                        width: (window?.screen.bounds.width ?? 50) / 10,
-                        height: (window?.screen.bounds.width ?? 50) / 10
-                    )
-                    .clipShape(Circle())
-            }
-            
+            ImageView(
+                data: showUserData?.iconImage,
+                urlString: showUserData?.iconURL,
+                imageType: .icon
+            )
+            .frame(width: screenWidth / 10, height: screenWidth / 10)
+            .clipShape(Circle())
+
             VStack(alignment: .leading) {
                 HStack {
-                    Text(comment.commentUserNickName ?? "ユーザー")
-                    
+                    Text(showUserData?.nickName ?? "ニックネーム")
+
                     Text(comment.createAt.dateString())
                         .font(.caption)
                     
@@ -76,6 +72,12 @@ struct PostCommentView: View {
             }
             
             Spacer()
+        }
+        .onAppear {
+            Task {
+                await postCommentVM.fetchUserData(uid: comment.uid)
+                showUserData = postCommentVM.userData
+            }
         }
     }
 }

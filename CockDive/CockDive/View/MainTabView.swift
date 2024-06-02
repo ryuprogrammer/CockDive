@@ -42,7 +42,7 @@ enum ViewType {
 
 enum CockCardNavigationPath: Hashable {
     /// コメント欄
-    case detailView(postData: PostElement, firstLike: Bool, firstFollow: Bool)
+    case detailView(postData: PostElement, userData: UserElement?, firstLike: Bool, firstFollow: Bool)
     /// プロフィール
     case profileView(userData: UserElement, showIsFollow: Bool)
 

@@ -40,8 +40,8 @@ struct CockPostView: View {
             }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
-                case .detailView(let postData, let firstLike, let firstFollow):
-                    PostDetailView(showPostData: postData, showIsLike: firstLike, showIsFollow: firstFollow)
+                case .detailView(let postData, let userData, let firstLike, let firstFollow):
+                    PostDetailView(showPostData: postData, showUserData: userData, showIsLike: firstLike, showIsFollow: firstFollow)
                 case .profileView(let userData, let isFollow):
                     ProfileView(showUser: userData, showIsFollow: isFollow, navigationPath: $cockCardNavigationPath)
                 default:

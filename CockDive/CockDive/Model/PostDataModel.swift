@@ -27,6 +27,7 @@ struct PostDataModel {
     private let postDataCollection: String = "posts"
     /// Postを取得するリミット
     private let fetchPostLimit: Int = 10
+    private let maxDocSize = 1000000
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
 
@@ -48,39 +49,31 @@ struct PostDataModel {
     /// Post追加
     func addPost(post: PostElement, completion: @escaping (Result<String, Error>) -> Void) {
         var docId: String {
-            // 元々postIDが存在するか確認
             if let postId = post.id {
                 return postId
             } else {
-                // 新しいドキュメントIDを生成
                 let docRef = db.collection(postDataCollection).document()
                 return docRef.documentID
             }
         }
 
-        // リファレンスを作成
         let finalDocRef = db.collection(postDataCollection).document(docId)
-
         var postWithId = post
         postWithId.id = finalDocRef.documentID
 
-        do {
-            // Firestoreにデータを保存
-            try finalDocRef.setData(from: postWithId) { error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
+        savePostData(post: postWithId, docRef: finalDocRef) { result in
+            switch result {
+            case .success:
                 if let postImage = postWithId.postImage {
                     self.uploadPostImage(postImage: postImage, postId: finalDocRef.documentID) { result in
                         switch result {
                         case .success(let postImageURL):
-                            finalDocRef.updateData(["postImageURL": postImageURL]) { error in
-                                if let error = error {
-                                    completion(.failure(error))
-                                } else {
+                            self.updatePostImageURL(docRef: finalDocRef, postImageURL: postImageURL) { result in
+                                switch result {
+                                case .success:
                                     completion(.success(finalDocRef.documentID))
+                                case .failure(let error):
+                                    completion(.failure(error))
                                 }
                             }
                         case .failure(let error):
@@ -90,9 +83,44 @@ struct PostDataModel {
                 } else {
                     completion(.success(finalDocRef.documentID))
                 }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// Postデータを保存
+    private func savePostData(post: PostElement, docRef: DocumentReference, completion: @escaping (Result<Void, Error>) -> Void) {
+        var postData = post
+        // MARK: 画像サイズが大きい場合はnilにする
+        if let imageDataSize = post.postImage?.count {
+            if imageDataSize > maxDocSize {
+                // 画像サイズが大きいのでnilにする
+                postData.postImage = nil
+            }
+        }
+
+        do {
+            try docRef.setData(from: postData) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
             }
         } catch {
             completion(.failure(error))
+        }
+    }
+
+    /// PostImageURLを更新
+    private func updatePostImageURL(docRef: DocumentReference, postImageURL: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        docRef.updateData(["postImageURL": postImageURL]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
         }
     }
 

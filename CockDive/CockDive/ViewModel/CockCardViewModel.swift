@@ -4,6 +4,9 @@ import CoreData
 
 class CockCardViewModel: ObservableObject {
     @Published var postData: PostElement? = nil
+
+    @Published var userData: UserElement? = nil
+
     @Published var showIsLikePost: Bool = false
     @Published var showIsFollow: Bool = false
 
@@ -40,6 +43,16 @@ class CockCardViewModel: ObservableObject {
     /// リスナーを停止
     func stopListeningToPosts() {
         postListener = nil
+    }
+
+    // MARK: - データの取得
+    /// UserData取得
+    func fetchUserData(uid: String) async {
+        let user = await userDataModel.fetchUserData(uid: uid)
+        DispatchQueue.main.async {
+            guard let userData = user else { return }
+            self.userData = userData
+        }
     }
 
     // MARK: - データ追加

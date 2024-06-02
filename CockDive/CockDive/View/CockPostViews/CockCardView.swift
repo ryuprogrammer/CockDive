@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CockCardView: View {
     @State var showPostData: PostElement
+    @State var showUserData: UserElement?
     @Binding var path: [CockCardNavigationPath]
     /// ニックネームとフォローボタンを表示するかどうか
     /// CockPostでは表示、Profileでは非表示
@@ -43,29 +44,20 @@ struct CockCardView: View {
                     path.append(
                         .detailView(
                             postData: showPostData,
+                            userData: showUserData,
                             firstLike: cockCardVM.showIsLikePost,
                             firstFollow: cockCardVM.showIsFollow
                         )
                     )
                 } label: {
                     // Postの写真
-                    if let data = showPostData.postImage,
-                       let uiImage = UIImage(data: data) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: cardWidth, height: cardWidth)
-                            .clipShape(Rectangle())
-                    } else {
-                        Image(systemName: "carrot")
-                            .resizable()
-                            .padding(50)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: cardWidth, height: cardWidth)
-                            .clipShape(Rectangle())
-                            .foregroundStyle(Color.white)
-                            .background(Color.mainColor.opacity(0.3))
-                    }
+                    ImageView(
+                        data: showPostData.postImage,
+                        urlString: showPostData.postImageURL,
+                        imageType: .post
+                    )
+                    .frame(width: cardWidth, height: cardWidth)
+                    .clipShape(Rectangle())
                 }
 
                 VStack {
@@ -77,9 +69,9 @@ struct CockCardView: View {
                                 .profileView(
                                     userData: UserElement(
                                         id: showPostData.uid,
-                                        nickName: showPostData.postUserNickName,
+                                        nickName: showUserData?.nickName ?? "",
                                         introduction: nil,
-                                        iconURL: showPostData.postUserIconImageURL
+                                        iconURL: showUserData?.iconURL
                                     ),
                                     showIsFollow: isFollow
                                 )
@@ -87,30 +79,18 @@ struct CockCardView: View {
                         } label: {
                             HStack {
                                 HStack {
-                                    // アイコン画像
-                                    if let imageURL = URL(string: showPostData.postUserIconImageURL ?? "") {
-                                        AsyncImage(url: imageURL) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .foregroundStyle(Color.gray)
-                                                .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                                .clipShape(Circle())
-                                        } placeholder: {
-                                            Image(systemName: "person.circle.fill")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .foregroundStyle(Color.gray)
-                                                .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                                .clipShape(Circle())
-                                        }
-                                    } else {
-                                        Text("あれれ")
-                                    }
+                                    // アイコン写真
+                                    ImageView(
+                                        data: showUserData?.iconImage,
+                                        urlString: showUserData?.iconURL,
+                                        imageType: .icon
+                                    )
+                                    .frame(width: cardWidth / 6, height: cardWidth / 6)
+                                    .clipShape(Circle())
 
                                     VStack(alignment: .leading, spacing: 0) {
                                         // ニックネーム
-                                        Text("\(showPostData.postUserNickName.limitTextLength(maxLength: 8))")
+                                        Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
                                             .foregroundStyle(Color.white)
                                             .font(.headline)
                                             .fontWeight(.bold)
@@ -190,12 +170,12 @@ struct CockCardView: View {
         }
         .frame(width: cardWidth)
         .onAppear {
+            Task {
+                await cockCardVM.fetchUserData(uid: showPostData.uid)
+                showUserData = cockCardVM.userData
+            }
             // データの初期化
             cockCardVM.postData = showPostData
-            if let id = showPostData.id {
-                // Postデータをリッスン開始
-                cockCardVM.listenToPost(postId: id)
-            }
             // フォローとライクを初期化
             cockCardVM.checkIsLike(postId: showPostData.id)
             cockCardVM.checkIsFollow(friendUid: showPostData.uid)
@@ -212,7 +192,7 @@ struct CockCardView: View {
 #Preview {
     struct PreviewView: View {
 
-        let postData: PostElement = PostElement(uid: "dummy_uid", postUserNickName: "ニックネーム", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
+        let postData: PostElement = PostElement(uid: "dummy_uid", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
 
         @State var path: [CockCardNavigationPath] = []
         let columns = [
