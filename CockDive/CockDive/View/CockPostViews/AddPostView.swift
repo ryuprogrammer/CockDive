@@ -124,7 +124,7 @@ struct AddPostView: View {
                 .padding(.horizontal)
                 .overlay {
                     if cockPostVM.loadStatus == .loading {
-                        ProgressView("投稿中🥕🥕🥕")
+                        ProgressView("投稿中...")
                             .font(.title)
                             .foregroundStyle(Color.white)
                             .progressViewStyle(CircularProgressViewStyle())
@@ -174,12 +174,6 @@ struct AddPostView: View {
                                     likedUser: [],
                                     comment: []
                                 ))
-
-                                if case .error(_) = cockPostVM.loadStatus {
-                                    showErrorDialog = true
-                                } else if case .success = cockPostVM.loadStatus {
-                                    dismiss()
-                                }
                             }
                         }
                     }
@@ -201,6 +195,13 @@ struct AddPostView: View {
                 message: Text(cockPostVM.loadStatus?.errorDescription ?? "不明なエラーが発生しました"),
                 dismissButton: .default(Text("OK"))
             )
+        }
+        .onChange(of: cockPostVM.loadStatus) { newStatus in
+            if case .error(_) = cockPostVM.loadStatus {
+                showErrorDialog = true
+            } else if case .success = cockPostVM.loadStatus {
+                dismiss()
+            }
         }
     }
 
