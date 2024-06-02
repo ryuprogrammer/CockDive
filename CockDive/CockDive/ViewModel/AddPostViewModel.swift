@@ -27,6 +27,7 @@ class AddPostViewModel: ObservableObject {
         if let userData = userDefaultsDataModel.fetchUserData() {
             newPost.postUserNickName = userData.nickName
             newPost.postUserIconImageURL = userData.iconURL
+            print("アイコンURL: \(userData.iconURL ?? "ない。、、、")")
             print("データ追加かいし")
             postDataModel.addPost(post: newPost) { result in
                 DispatchQueue.main.async {

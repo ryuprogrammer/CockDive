@@ -6,62 +6,112 @@ import FirebaseStorage
 class UserDataModel {
     /// コレクション名
     private let userCollection: String = "userData"
-    
+
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
-    
+
     // MARK: - データ追加
     /// User追加/ 更新
-    func addUser(user: UserElement) async {
+    func addUser(user: UserElement, completion: @escaping (Result<String, Error>) -> Void) {
         // uid取得
-        guard let uid = fetchUid() else { return }
-        
+        guard let uid = fetchUid() else {
+            completion(.failure(NSError(domain: "Auth", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated."])))
+            return
+        }
+
+        // ユーザーデータをFirestoreに保存
+        saveUserData(user: user, uid: uid) { result in
+            switch result {
+            case .success:
+                // アイコン画像がある場合はアップロード
+                if let iconImage = user.iconImage {
+                    self.addUserIconImage(iconImage: iconImage, uid: uid) { result in
+                        switch result {
+                        case .success(let iconURL):
+                            var updatedUser = user
+                            updatedUser.iconURL = iconURL
+                            self.saveUserData(user: updatedUser, uid: uid) { result in
+                                switch result {
+                                case .success:
+                                    completion(.success(iconURL))
+                                case .failure(let error):
+                                    completion(.failure(error))
+                                }
+                            }
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                } else {
+                    completion(.success(""))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// ユーザーデータを保存
+    private func saveUserData(user: UserElement, uid: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        var userDataNotImage = user
+        userDataNotImage.iconImage = nil
         do {
-            // 指定したUIDを持つドキュメントデータに追加（または更新）
-            try db.collection(userCollection).document(uid).setData(from: user)
-            
-            if let iconImage = user.iconImage {
-                // storageに画像をアップロード
-                await addUserIconImage(iconImage: iconImage, uid: uid)
+            try db.collection(userCollection).document(uid).setData(from: userDataNotImage) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
             }
         } catch {
-            print("Error adding/updating user: \(error)")
+            completion(.failure(error))
         }
     }
-    
+
     /// iconImageを追加/ 更新
-    func addUserIconImage(iconImage: Data, uid: String) async {
+    func addUserIconImage(iconImage: Data, uid: String, completion: @escaping (Result<String, Error>) -> Void) {
         // storageに画像をアップロード
         let storageRef = self.storage.reference()
-        
+
         // iconImageのアップロード
         let iconImageRef = storageRef.child("iconImage/\(uid)/icon.jpg")
-        
-        do {
-            _ = try await iconImageRef.putDataAsync(iconImage, metadata: nil)
-        } catch {
-            print("Error uploading icon image: \(error)")
+
+        iconImageRef.putData(iconImage, metadata: nil) { metadata, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            iconImageRef.downloadURL { url, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else if let url = url {
+                    completion(.success(url.absoluteString))
+                } else {
+                    completion(.failure(NSError(domain: "DownloadURL", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get download URL."])))
+                }
+            }
         }
     }
-    
+
     // MARK: - データ取得
     /// uid取得
     func fetchUid() -> String? {
         return Auth.auth().currentUser?.uid
     }
-    
+
     /// uidを指定してuserDataを取得: IconImage以外取得
     func fetchUserData(uid: String) async -> UserElement? {
         do {
             let document = try await db.collection(userCollection).document(uid).getDocument()
-            
+
             guard document.data() != nil else {
                 print("Document does not exist")
                 return nil
             }
-            
+
             let decodedUserData = try document.data(as: UserElement.self)
-            
+
             // 使用するデータに応じて処理を追加
             print(decodedUserData)
             return decodedUserData
@@ -70,7 +120,7 @@ class UserDataModel {
         }
         return nil
     }
-    
+
     /// uidを指定してiconImageを取得
     func fetchIconImage(uid: String) async -> Data? {
         let storageRef = self.storage.reference()
@@ -83,22 +133,7 @@ class UserDataModel {
             }
             iconData = iconImageData
         }
-        
-        return iconData
-    }
-}
 
-// FirebaseStorageのputDataをasync/awaitで使えるように拡張
-extension StorageReference {
-    func putDataAsync(_ uploadData: Data, metadata: StorageMetadata?) async throws -> StorageMetadata {
-        return try await withCheckedThrowingContinuation { continuation in
-            putData(uploadData, metadata: metadata) { metadata, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let metadata = metadata {
-                    continuation.resume(returning: metadata)
-                }
-            }
-        }
+        return iconData
     }
 }

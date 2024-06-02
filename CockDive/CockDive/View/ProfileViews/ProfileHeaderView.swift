@@ -13,7 +13,6 @@ struct ProfileHeaderView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(Color.gray)
                     .frame(width: screenWidth / 6, height: screenWidth / 6)
             } else {
                 Image(systemName: "person.circle.fill")

@@ -53,17 +53,16 @@ struct CockCardView: View {
                        let uiImage = UIImage(data: data) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .padding(50)
-                            .aspectRatio(contentMode: .fill)
                             .frame(width: cardWidth, height: cardWidth)
-                            .foregroundStyle(Color.white)
-                            .background(Color.mainColor.opacity(0.3))
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(Rectangle())
                     } else {
                         Image(systemName: "carrot")
                             .resizable()
                             .padding(50)
                             .aspectRatio(contentMode: .fill)
                             .frame(width: cardWidth, height: cardWidth)
+                            .clipShape(Rectangle())
                             .foregroundStyle(Color.white)
                             .background(Color.mainColor.opacity(0.3))
                     }
@@ -105,6 +104,8 @@ struct CockCardView: View {
                                                 .frame(width: cardWidth / 6, height: cardWidth / 6)
                                                 .clipShape(Circle())
                                         }
+                                    } else {
+                                        Text("あれれ")
                                     }
 
                                     VStack(alignment: .leading, spacing: 0) {

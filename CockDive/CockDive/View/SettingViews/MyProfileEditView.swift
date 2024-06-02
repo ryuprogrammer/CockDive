@@ -25,103 +25,108 @@ struct MyProfileEditView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
+                if myProfileEditVM.status == .loading {
+                    ProgressView("Loading...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    PhotosPicker(
+                        selection: $selectedImage,
+                        maxSelectionCount: 1,
+                        matching: .images,
+                        preferredItemEncoding: .current,
+                        photoLibrary: .shared()
+                    ) {
+                        ZStack {
+                            if let uiImage {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
+                                    .clipShape(Circle())
+                                    .padding(.bottom)
+                            } else {
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .foregroundStyle(Color.gray.opacity(0.5))
+                                    .frame(width: screenWidth / 3, height: screenWidth / 3)
+                                    .clipShape(Circle())
+                                    .padding(.bottom)
+                            }
 
-                PhotosPicker(
-                    selection: $selectedImage,
-                    maxSelectionCount: 1,
-                    matching: .images,
-                    preferredItemEncoding: .current,
-                    photoLibrary: .shared()
-                ) {
-                    ZStack {
-                        if let uiImage {
-                            Image(uiImage: uiImage)
+                            Image(systemName: "plus")
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: screenWidth / 3, height: screenWidth / 3)
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.white)
+                                .padding(8)
+                                .frame(width: screenWidth/9, height: screenWidth/9)
+                                .background(Color.mainColor)
                                 .clipShape(Circle())
-                                .padding(.bottom)
-                        } else {
-                            Image(systemName: "person.circle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .foregroundStyle(Color.gray.opacity(0.5))
-                                .frame(width: screenWidth / 3, height: screenWidth / 3)
-                                .clipShape(Circle())
-                                .padding(.bottom)
+                                .offset(x: screenWidth / 9, y: screenWidth / 9)
                         }
-
-                        Image(systemName: "plus")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundStyle(Color.white)
-                            .padding(8)
-                            .frame(width: screenWidth/9, height: screenWidth/9)
-                            .background(Color.mainColor)
-                            .clipShape(Circle())
-                            .offset(x: screenWidth / 9, y: screenWidth / 9)
                     }
-                }
 
-                SectioinTitleView(text: "名前", isRequired: false)
+                    SectioinTitleView(text: "名前", isRequired: false)
 
-                TextField(text: $nickName) {
-                    Text("ニックネーム")
-                }
-                .padding(8)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.gray, lineWidth: 0.6)
-                )
-                .onChange(of: nickName) { newValue in
-                    validateNickName()
-                }
-
-                if !nickNameErrorMessage.isEmpty {
-                    HStack {
-                        Text(nickNameErrorMessage)
-                            .foregroundColor(.red)
-                        Spacer()
+                    TextField(text: $nickName) {
+                        Text("ニックネーム")
                     }
-                    .padding(.horizontal)
-                }
-
-                SectioinTitleView(text: "自己紹介文", isRequired: false)
-                    .padding(.top)
-
-                TextEditor(text: $introduction)
-                    .padding(5)
-                    .focused($keybordFocuse)
-                    .frame(height: 100)
+                    .padding(8)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.gray, lineWidth: 0.6)
                     )
-                    .overlay(alignment: .topLeading) {
-                        Text(introduction == "" ? "毎日自炊してます！" : "")
-                            .foregroundStyle(Color.gray.opacity(0.5))
-                            .padding(12)
-                    }
-                    .onChange(of: introduction) { newValue in
-                        validateIntroduction()
-                    }
-                    .onTapGesture {
-                        keybordFocuse.toggle()
+                    .onChange(of: nickName) { newValue in
+                        validateNickName()
                     }
 
-                if !introductionErrorMessage.isEmpty {
-                    HStack {
-                        Text(introductionErrorMessage)
-                            .foregroundColor(.red)
-                            .font(.caption)
-                        Spacer()
+                    if !nickNameErrorMessage.isEmpty {
+                        HStack {
+                            Text(nickNameErrorMessage)
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+
+                    SectioinTitleView(text: "自己紹介文", isRequired: false)
+                        .padding(.top)
+
+                    TextEditor(text: $introduction)
+                        .padding(5)
+                        .focused($keybordFocuse)
+                        .frame(height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.gray, lineWidth: 0.6)
+                        )
+                        .overlay(alignment: .topLeading) {
+                            Text(introduction == "" ? "毎日自炊してます！" : "")
+                                .foregroundStyle(Color.gray.opacity(0.5))
+                                .padding(12)
+                        }
+                        .onChange(of: introduction) { newValue in
+                            validateIntroduction()
+                        }
+                        .onTapGesture {
+                            keybordFocuse.toggle()
+                        }
+
+                    if !introductionErrorMessage.isEmpty {
+                        HStack {
+                            Text(introductionErrorMessage)
+                                .foregroundColor(.red)
+                                .font(.caption)
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                    }
+
+                    Spacer()
                 }
-
-                Spacer()
             }
             .padding(20)
             .navigationBarTitleDisplayMode(.inline)
@@ -145,16 +150,15 @@ struct MyProfileEditView: View {
                     ToolBarAddButtonView(text: "保存") {
                         validateNickName()
                         validateIntroduction()
-                        if nickNameErrorMessage.isEmpty && introductionErrorMessage.isEmpty {
-                            Task {
-                                let imageData = uiImage?.castToData()
-                                await myProfileEditVM.upDateUserData(
-                                    nickName: nickName,
-                                    introduction: introduction,
-                                    iconImage: imageData
-                                )
-                                dismiss()
-                            }
+                        if nickNameErrorMessage.isEmpty && introductionErrorMessage.isEmpty &&
+                            uiImage != nil {
+
+                            let imageData = uiImage?.castToData()
+                            myProfileEditVM.upDateUserData(
+                                nickName: nickName,
+                                introduction: introduction,
+                                iconImage: imageData
+                            )
                         }
                     }
                 }
@@ -185,6 +189,14 @@ struct MyProfileEditView: View {
                       }
                 self.uiImage = uiImage
                 selectedImage.removeAll()
+            }
+        }
+        .onChange(of: myProfileEditVM.status) { newStatus in
+            if case .success(let iconURL) = newStatus {
+                dismiss()
+                print("Icon URL: \(iconURL)")
+            } else if case .error(let error) = newStatus {
+                print("エラーーーーー: \(error)")
             }
         }
     }

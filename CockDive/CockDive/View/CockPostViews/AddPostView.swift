@@ -5,7 +5,7 @@ struct AddPostView: View {
     @StateObject private var cockPostVM = AddPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
-    @State private var isPrivate: Bool = true
+    @State private var isPrivate: Bool = false
     @State private var titleErrorMessage = ""
     @State private var memoErrorMessage = ""
     @State private var showErrorDialog = false
@@ -19,16 +19,16 @@ struct AddPostView: View {
     var body: some View {
         NavigationStack {
             ScrollViewReader { reader in
-                VStack(spacing: 15) {
+                ScrollView {
                     SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
                         .padding(.top)
 
                     if let image {
                         Image(uiImage: image)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 400)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 300, height: 300)
+                            .clipShape(Rectangle())
 
                         HStack {
                             Spacer()
@@ -48,7 +48,7 @@ struct AddPostView: View {
                         .sheet(isPresented: $showImagePicker) {
                             ImagePicker() { selectedImage in
                                 if let selectedImage = selectedImage {
-                                    image = cropToSquare(image: selectedImage)
+                                    image = selectedImage
                                 }
                             }
                             .ignoresSafeArea(.all)
@@ -222,15 +222,6 @@ struct AddPostView: View {
         } else if memo.count > 150 {
             memoErrorMessage = "メモは150文字以下で入力してください。"
         }
-    }
-
-    private func cropToSquare(image: UIImage) -> UIImage {
-        let size = min(image.size.width, image.size.height)
-        let rect = CGRect(x: (image.size.width - size) / 2, y: (image.size.height - size) / 2, width: size, height: size)
-        guard let cgImage = image.cgImage?.cropping(to: rect) else {
-            return image
-        }
-        return UIImage(cgImage: cgImage, scale: image.scale, orientation: image.imageOrientation)
     }
 }
 

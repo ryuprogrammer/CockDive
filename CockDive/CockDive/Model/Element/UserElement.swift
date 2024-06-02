@@ -40,3 +40,10 @@ enum UserStatus {
     /// Loading中
     case loading
 }
+
+enum UserUpdateStatus: Equatable {
+    case idle
+    case loading
+    case success(String)
+    case error(String)
+}

@@ -4,24 +4,25 @@ import FirebaseAuth
 class StartViewModel: ObservableObject {
     // iOS16でも使うので、Publuish
     @Published var userStatus: UserStatus = .loading
+    @Published var userUpdateStatus: UserUpdateStatus = .idle
     private var handle: AuthStateDidChangeListenerHandle!
-    
+
     private let userDataModel = UserDataModel()
     private let userDefaultsDataModel = UserDefaultsDataModel()
-    
+
     init() {
         // 認証状態の変化を監視するリスナー
         handle = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             guard let self = self else { return }
             if let _ = user {
                 print("Sign-in")
-                print("userStatus: \(userStatus)")
-                if userDefaultsDataModel.userDataExists() {
-                    userStatus = .normalUser
-                    print("userStatus: \(userStatus)")
+                print("userStatus: \(self.userStatus)")
+                if self.userDefaultsDataModel.userDataExists() {
+                    self.userStatus = .normalUser
+                    print("userStatus: \(self.userStatus)")
                 } else {
-                    userStatus = .nameRegistrationRequired
-                    print("userStatus: \(userStatus)")
+                    self.userStatus = .nameRegistrationRequired
+                    print("userStatus: \(self.userStatus)")
                 }
             } else {
                 print("Sign-out")
@@ -29,12 +30,12 @@ class StartViewModel: ObservableObject {
             }
         }
     }
-    
+
     deinit {
         // 認証状態の変化の監視を解除する
         Auth.auth().removeStateDidChangeListener(handle)
     }
-    
+
     func signOut() {
         do {
             try Auth.auth().signOut()
@@ -42,23 +43,32 @@ class StartViewModel: ObservableObject {
             print("Error signing out: \(error.localizedDescription)")
         }
     }
-    
+
     /// Userの登録
-    func addUser(nickName: String, iconImageData: Data?) async {
+    func addUser(nickName: String, iconImageData: Data?) {
+        userUpdateStatus = .loading
+
         // Firebaseに追加
-        await userDataModel.addUser(user: UserElement(
+        userDataModel.addUser(user: UserElement(
             nickName: nickName,
             iconImage: iconImageData
-        ))
-        // uidを取得して、UserDefaultsに追加
-        if let uid = userDataModel.fetchUid() {
-            userDefaultsDataModel.addUserData(user: UserElement(
-                id: uid,
-                nickName: nickName,
-                iconImage: iconImageData
-            ))
-            DispatchQueue.main.async {
-                self.userStatus = .normalUser
+        )) { result in
+            switch result {
+            case .success(let iconURL):
+                // uidを取得して、UserDefaultsに追加
+                if let uid = self.userDataModel.fetchUid() {
+                    self.userDefaultsDataModel.addUserData(user: UserElement(
+                        id: uid,
+                        nickName: nickName,
+                        iconImage: iconImageData,
+                        iconURL: iconURL
+                    ))
+                    self.userUpdateStatus = .success(iconURL)
+                } else {
+                    self.userUpdateStatus = .error("Failed to fetch user UID.")
+                }
+            case .failure(let error):
+                self.userUpdateStatus = .error(error.localizedDescription)
             }
         }
     }

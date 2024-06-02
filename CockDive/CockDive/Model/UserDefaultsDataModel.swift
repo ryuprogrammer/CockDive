@@ -8,7 +8,8 @@ struct UserDefaultsDataModel {
         let saveData: UserElementForUserDefaults = UserElementForUserDefaults(
             nickName: user.nickName,
             introduction: user.introduction,
-            iconImage: user.iconImage
+            iconImage: user.iconImage,
+            iconURL: user.iconURL
         )
         
         do {
