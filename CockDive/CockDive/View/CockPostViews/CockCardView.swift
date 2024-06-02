@@ -53,8 +53,8 @@ struct CockCardView: View {
                        let uiImage = UIImage(data: data) {
                         Image(uiImage: uiImage)
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: cardWidth, height: cardWidth)
-                            .aspectRatio(contentMode: .fit)
                             .clipShape(Rectangle())
                     } else {
                         Image(systemName: "carrot")
