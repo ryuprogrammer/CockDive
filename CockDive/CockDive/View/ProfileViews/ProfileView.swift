@@ -34,20 +34,23 @@ struct ProfileView: View {
 
     @Binding var navigationPath: [CockCardNavigationPath]
 
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
         ScrollViewReader { proxy in
-            List {
+            ScrollView {
                 ProfileHeaderView(
                     showUser: showUser,
                     showUserFriends: showUserFriends,
                     showUserPosts: showUserPosts,
                     screenWidth: screenWidth
                 )
-                .listRowSeparator(.hidden)
 
                 if let introduction = showUser.introduction {
                     DynamicHeightCommentView(message: introduction, maxTextCount: 30)
-                        .listRowSeparator(.hidden)
                 }
 
                 FollowButtonView(
@@ -57,38 +60,59 @@ struct ProfileView: View {
                     profileVM: profileVM,
                     showUser: showUser
                 )
-                .listRowSeparator(.hidden)
 
                 Divider()
                     .frame(height: 1)
                     .padding(0)
                     .listRowSeparator(.hidden)
 
-                ForEach(showPostsData, id: \.id) { postData in
-                    CockCardView(
-                        showPostData: postData,
-                        path: $navigationPath,
-                        isShowUserNameAndFollowButton: false
-                    )
-                    .id(postData.id)
-                    .onAppear {
-                        if profileVM.checkIsLastPost(postData: postData) {
-                            Task {
-                                guard let last = showPostsData.last,
-                                      let lastId = last.id else { return }
-                                await profileVM.fetchPostsDataByStatus(
-                                    uid: postData.uid,
-                                    lastId: lastId
-                                )
+                LazyVGrid(columns: columns, spacing: 3) {
+                    ForEach(showPostsData, id: \.id) { postData in
+                        CockCardView(
+                            showPostData: postData,
+                            path: $navigationPath,
+                            isShowUserNameAndFollowButton: false
+                        )
+                        .id(postData.id)
+                        .onAppear {
+                            if profileVM.checkIsLastPost(postData: postData) {
+                                Task {
+                                    guard let last = showPostsData.last,
+                                          let lastId = last.id else { return }
+                                    await profileVM.fetchPostsDataByStatus(
+                                        uid: postData.uid,
+                                        lastId: lastId
+                                    )
+                                }
                             }
                         }
                     }
                 }
-                .listRowSeparator(.hidden)
-                .onChange(of: showPostsData) { _ in
-                    if let lastPost = lastPost {
-                        proxy.scrollTo(lastPost.id, anchor: .bottom)
+
+                if profileVM.loadStatus == .loading || profileVM.loadStatus == .initial {
+                    HStack {
+                        Spacer()
+                        LoadingAnimationView()
+                        Spacer()
                     }
+                }
+            }
+            .refreshable {
+                profileVM.loadStatus = .initial
+                showPostsData.removeAll()
+                profileVM.newPostsData.removeAll()
+                Task {
+                    guard let uid = showUser.id else { return }
+                    await profileVM.fetchPostFromUid(uid: uid)
+                    await profileVM.fetchUserFriendData(uid: uid)
+                    await profileVM.fetchUserPostElement(uid: uid)
+                }
+            }
+            .onChange(of: showPostsData) { newShowPostsData in
+                if let lastPost = lastPost {
+                    proxy.scrollTo(lastPost.id, anchor: .bottom)
+                } else {
+                    lastPost = newShowPostsData.last
                 }
             }
         }
@@ -140,7 +164,6 @@ struct ProfileView: View {
             }
         }
         .onChange(of: profileVM.newPostsData) { newPostData in
-            lastPost = showPostsData.last
             showPostsData.append(contentsOf: newPostData)
         }
         .onChange(of: profileVM.userFriends) { userFriends in

@@ -223,8 +223,8 @@ struct MyPageView: View {
                 }
             }
             .onChange(of: showLikePostListData) { _ in
-                if let lastPost = lastPost {
-                    proxy.scrollTo(lastPost.id, anchor: .bottom)
+                if let lastLikePost = lastLikePost {
+                    proxy.scrollTo(lastLikePost.id, anchor: .bottom)
                 }
             }
             .onAppear {
