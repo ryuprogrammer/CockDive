@@ -24,10 +24,8 @@ struct StartView: View {
             // アイコン写真登録画面
             IconRegistrationView(uiImage: $iconImage) {
                 let iconImageData = iconImage?.castToData()
-                Task {
-                    // ユーザー登録
-                    await startViewModel.addUser(nickName: nickName, iconImageData: iconImageData)
-                }
+                // ユーザー登録
+                startViewModel.addUser(nickName: nickName, iconImageData: iconImageData)
             }
         case .normalUser:
             // メイン画面

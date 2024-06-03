@@ -1,6 +1,9 @@
 import SwiftUI
+import AuthenticationServices
 
 struct SignInView: View {
+    @State private var signInWithAppleObject = SignInWithAppleObject()
+
     @State private var isShowSheet = false
     @State private var showViewType: ShowViewType? = nil
     @State private var isLoading = true
@@ -17,17 +20,28 @@ struct SignInView: View {
             Color.mainColor
             VStack {
                 Spacer()
-                
+
                 Text("みんなのごはん")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.white)
-                
+
                 Spacer()
-                
-                // Sign-Out状態なのでSign-Inボタンを表示する
+
                 LongBarButton(text: "サインイン", isStroke: true) {
                     self.isShowSheet.toggle()
+                }
+
+                LongBarButton(text: "Appleでサインイン", isStroke: true) {
+                    performSignInWithApple()
+                }
+
+                Button {
+                    performSignInWithApple()
+                } label: {
+                    SignInWithAppleButton()
+                        .frame(height: 50)
+                        .cornerRadius(16)
                 }
 
                 HStack {
@@ -65,6 +79,24 @@ struct SignInView: View {
             }
         }
     }
+
+    private func performSignInWithApple() {
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else {
+            print("No key window available for presentation anchor.")
+            return
+        }
+        signInWithAppleObject.signInWithApple(presentationAnchor: window)
+    }
+}
+
+struct SignInWithAppleButton: UIViewRepresentable {
+    typealias UIViewType = ASAuthorizationAppleIDButton
+
+    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+        return ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+    }
+
+    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
 }
 
 #Preview {
