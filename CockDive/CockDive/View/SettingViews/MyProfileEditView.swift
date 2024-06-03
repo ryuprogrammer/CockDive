@@ -9,6 +9,11 @@ struct MyProfileEditView: View {
     @State private var selectedImage: [PhotosPickerItem] = []
     @State private var nickNameErrorMessage = ""
     @State private var introductionErrorMessage = ""
+    @State private var originalNickName: String = ""
+    @State private var originalIntroduction: String = ""
+    @State private var originalUIImage: UIImage? = nil
+    @State private var showAlert = false
+    @State private var isLoading: Bool = false
 
     @Environment(\.dismiss) private var dismiss
 
@@ -26,7 +31,7 @@ struct MyProfileEditView: View {
         NavigationStack {
             VStack(alignment: .center) {
                 if myProfileEditVM.status == .loading {
-                    ProgressView("Loading...")
+                    ProgressView("保存中...")
                         .progressViewStyle(CircularProgressViewStyle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -67,7 +72,7 @@ struct MyProfileEditView: View {
                         }
                     }
 
-                    SectioinTitleView(text: "名前", isRequired: false)
+                    SectioinTitleView(text: "ニックネーム", isRequired: false)
 
                     TextField(text: $nickName) {
                         Text("ニックネーム")
@@ -135,7 +140,13 @@ struct MyProfileEditView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-                        dismiss()
+                        if myProfileEditVM.status != .loading {
+                            if nickName != originalNickName || introduction != originalIntroduction || uiImage != originalUIImage {
+                                showAlert = true
+                            } else {
+                                dismiss()
+                            }
+                        }
                     }
                 }
 
@@ -151,7 +162,8 @@ struct MyProfileEditView: View {
                         validateNickName()
                         validateIntroduction()
                         if nickNameErrorMessage.isEmpty && introductionErrorMessage.isEmpty &&
-                            uiImage != nil {
+                            uiImage != nil &&
+                            myProfileEditVM.status != .loading {
 
                             let imageData = uiImage?.castToData()
                             myProfileEditVM.upDateUserData(
@@ -173,12 +185,16 @@ struct MyProfileEditView: View {
                 }
             }
         }
+        .interactiveDismissDisabled(isLoading)
         .onAppear {
             if let userData = myProfileEditVM.fetchUserData() {
                 nickName = userData.nickName
+                originalNickName = userData.nickName
                 introduction = userData.introduction ?? ""
+                originalIntroduction = userData.introduction ?? ""
                 guard let iconData = userData.iconImage else { return }
                 uiImage = UIImage(data: iconData)
+                originalUIImage = UIImage(data: iconData)
             }
         }
         .onChange(of: selectedImage) { newPhotoPickerItems in
@@ -196,8 +212,33 @@ struct MyProfileEditView: View {
                 dismiss()
                 print("Icon URL: \(iconURL)")
             } else if case .error(let error) = newStatus {
-                print("エラーーーーー: \(error)")
+                print("エラー: \(error)")
+            } else if case .loading = newStatus {
+                isLoading = true
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("編集を保存しますか？"),
+                primaryButton: .default(Text("保存")) {
+                    validateNickName()
+                    validateIntroduction()
+                    if nickNameErrorMessage.isEmpty && introductionErrorMessage.isEmpty &&
+                        uiImage != nil &&
+                        myProfileEditVM.status != .loading {
+
+                        let imageData = uiImage?.castToData()
+                        myProfileEditVM.upDateUserData(
+                            nickName: nickName,
+                            introduction: introduction,
+                            iconImage: imageData
+                        )
+                    }
+                },
+                secondaryButton: .cancel(Text("いいえ")) {
+                    dismiss()
+                }
+            )
         }
     }
 
