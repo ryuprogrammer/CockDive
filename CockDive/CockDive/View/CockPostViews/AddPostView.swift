@@ -9,6 +9,7 @@ struct AddPostView: View {
     @State private var titleErrorMessage = ""
     @State private var memoErrorMessage = ""
     @State private var showErrorDialog = false
+    @State private var showAlertDialog = false
     @State private var isPresentedCameraView: Bool = false
     @State private var image: UIImage?
     @State private var showImagePicker: Bool = false
@@ -150,7 +151,11 @@ struct AddPostView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-                        dismiss()
+                        if image != nil || !title.isEmpty || !memo.isEmpty {
+                            showAlertDialog = true
+                        } else {
+                            dismiss()
+                        }
                     }
                 }
 
@@ -205,6 +210,15 @@ struct AddPostView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .alert(isPresented: $showAlertDialog) {
+            Alert(
+                title: Text("投稿が消えてしまいます！"),
+                primaryButton: .cancel(Text("キャンセル")),
+                secondaryButton: .destructive(Text("OK")) {
+                    dismiss()
+                }
+            )
+        }
         .onChange(of: addPostVM.loadStatus) { newStatus in
             if case .error(_) = addPostVM.loadStatus {
                 showErrorDialog = true
@@ -212,6 +226,7 @@ struct AddPostView: View {
                 dismiss()
             }
         }
+        .interactiveDismissDisabled(true)
     }
 
     private func validateTitle() {
