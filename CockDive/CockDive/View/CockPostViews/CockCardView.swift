@@ -3,6 +3,8 @@ import SwiftUI
 struct CockCardView: View {
     @State var showPostData: PostElement
     @State var showUserData: UserElement?
+    @State var showIsLikePost: Bool = false
+
     @Binding var path: [CockCardNavigationPath]
     /// ニックネームとフォローボタンを表示するかどうか
     /// CockPostでは表示、Profileでは非表示
@@ -20,7 +22,7 @@ struct CockCardView: View {
     var cardWidth: CGFloat {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let screen = windowScene.windows.first?.screen {
-            return screen.bounds.width / 2 - 3
+            return (screen.bounds.width) / 2 - 2
         }
         return 400
     }
@@ -28,7 +30,7 @@ struct CockCardView: View {
     var cardHeight: CGFloat {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let screen = windowScene.windows.first?.screen {
-            return screen.bounds.height / 4
+            return (screen.bounds.width) / 2 - 2
         }
         return 800
     }
@@ -36,35 +38,36 @@ struct CockCardView: View {
     @StateObject private var hapticsManager = HapticsManager()
 
     var body: some View {
-        VStack(spacing: 0) {
-            // 写真、タイトル、メモ、コメント、ハート
-            ZStack {
+        // 写真、タイトル、メモ、コメント、ハート
+        ZStack {
+            // Postの写真
+            Button {
+                let isFollow = cockCardVM.checkIsFollow(friendUid: showUserData?.id)
+                path.append(
+                    .detailView(
+                        postData: showPostData,
+                        userData: showUserData,
+                        firstLike: showIsLikePost,
+                        firstFollow: isFollow
+                    )
+                )
+            } label: {
                 // Postの写真
-                Button {
-                    path.append(
-                        .detailView(
-                            postData: showPostData,
-                            userData: showUserData,
-                            firstLike: cockCardVM.showIsLikePost,
-                            firstFollow: cockCardVM.showIsFollow
-                        )
-                    )
-                } label: {
-                    // Postの写真
-                    ImageView(
-                        data: showPostData.postImage,
-                        urlString: showPostData.postImageURL,
-                        imageType: .post
-                    )
-                    .frame(width: cardWidth, height: cardWidth)
-                    .clipShape(Rectangle())
-                }
+                ImageView(
+                    data: showPostData.postImage,
+                    urlString: showPostData.postImageURL,
+                    imageType: .post
+                )
+                .frame(width: cardWidth, height: cardWidth)
+                .clipShape(Rectangle())
+            }
 
-                VStack {
-                    // アイコン、ニックネーム
-                    if isShowUserNameAndFollowButton {
+            VStack {
+                // アイコン、ニックネーム
+                if isShowUserNameAndFollowButton {
+                    HStack {
                         Button {
-                            let isFollow = cockCardVM.showIsFollow
+                            let isFollow = cockCardVM.checkIsFollow(friendUid: showUserData?.id)
                             path.append(
                                 .profileView(
                                     userData: UserElement(
@@ -77,98 +80,89 @@ struct CockCardView: View {
                                 )
                             )
                         } label: {
-                            HStack {
-                                HStack {
-                                    // アイコン写真
-                                    ImageView(
-                                        data: showUserData?.iconImage,
-                                        urlString: showUserData?.iconURL,
-                                        imageType: .icon
-                                    )
-                                    .frame(width: cardWidth / 6, height: cardWidth / 6)
-                                    .clipShape(Circle())
+                            // アイコン写真
+                            ImageView(
+                                data: showUserData?.iconImage,
+                                urlString: showUserData?.iconURL,
+                                imageType: .icon
+                            )
+                            .frame(width: cardWidth / 6, height: cardWidth / 6)
+                            .clipShape(Circle())
 
-                                    VStack(alignment: .leading, spacing: 0) {
-                                        // ニックネーム
-                                        Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
-                                            .foregroundStyle(Color.white)
-                                            .font(.headline)
-                                            .fontWeight(.bold)
+                            VStack(alignment: .leading, spacing: 3) { // 隙間を3に設定
+                                // ニックネーム
+                                Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
+                                    .foregroundStyle(Color.white)
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
 
-                                        Text("\(showPostData.createAt.dateString())")
-                                            .foregroundStyle(Color.white)
-                                            .font(.caption)
-                                    }
-                                }
-                                .background(
-                                    Color.black
-                                        .opacity(0.3)
-                                        .blur(radius: 10)
-                                )
-
-
-                                Spacer()
+                                Text("\(showPostData.createAt.dateString())")
+                                    .foregroundStyle(Color.white)
+                                    .font(.caption)
+                                    .fontWeight(.bold)
                             }
-                            .padding(3)
-                            .frame(width: cardWidth)
                         }
+                        .background(
+                            Color.black
+                                .opacity(0.3)
+                                .blur(radius: 15)
+                        )
+
+                        Spacer()
                     }
+                    .padding(.horizontal, 3) // 隙間を3に設定
+                    .frame(width: cardWidth)
+                }
+
+                Spacer()
+
+                HStack(alignment: .bottom) {
+                    // タイトル
+                    Text(showPostData.title.limitTextLength(maxLength: 9))
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.white)
+                        .background(
+                            Color.black
+                                .opacity(0.3)
+                                .blur(radius: 15)
+                        )
 
                     Spacer()
 
-                    HStack(alignment: .bottom) {
-                        Text(showPostData.title.limitTextLength(maxLength: 8))
-                            .fontWeight(.bold)
-                            .foregroundStyle(Color.white)
-                            .padding(3)
-                            .background(
-                                Color.black
-                                    .opacity(0.35)
-                                    .blur(radius: 10)
-                            )
+                    // ライクボタン
+                    LikeButtonView(
+                        isLiked: $showIsLikePost,
+                        isButtonDisabled: $isLikeButtonDisabled,
+                        buttonSize: CGSize(width: cardWidth/8, height: cardWidth/8)
+                    ) {
+                        // ボタンの無効化
+                        isLikeButtonDisabled = true
+                        // haptics
+                        hapticsManager.playHapticPattern()
 
-                        Spacer()
-
-                        // ライクボタン
-                        Button {
-                            // ボタンの無効化
-                            isLikeButtonDisabled = true
-                            // haptics
-                            hapticsManager.playHapticPattern()
-
-                            if cockCardVM.showIsLikePost {
-                                showPostData.likeCount -= 1
-                            } else {
-                                showPostData.likeCount += 1
-                            }
-                            Task {
-                                // ライクデータ変更（FirebaseとCoreData）
-                                await cockCardVM.likePost(post: showPostData)
-                                // CoreDataからライクデータ取得
-                                cockCardVM.checkIsLike(postId: showPostData.id)
-                            }
-
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                isLikeButtonDisabled = false
-                            }
-                        } label: {
-                            Image(systemName: cockCardVM.showIsLikePost ? "heart.fill" : "heart")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: cardWidth/8)
-                                .padding([.top, .leading], 5)
-                                .foregroundStyle(cockCardVM.showIsLikePost ? Color.pink : Color.white)
+                        if showIsLikePost {
+                            showPostData.likeCount -= 1
+                        } else {
+                            showPostData.likeCount += 1
                         }
-                        .disabled(isLikeButtonDisabled)
-                        .padding(5)
-                        .background(Color.black.opacity(0.5).blur(radius: 10))
+                        showIsLikePost.toggle()
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            isLikeButtonDisabled = false
+                        }
                     }
+                    .background(
+                        Color.black
+                            .opacity(0.3)
+                            .blur(radius: 15)
+                    )
                 }
-                .frame(width: cardWidth, height: cardWidth)
-                .clipShape(Rectangle())
+                .padding(.horizontal, 3) // 隙間を3に設定
             }
+            .padding(3) // 隙間を3に設定
+            .frame(width: cardWidth, height: cardHeight)
         }
-        .frame(width: cardWidth)
+        .frame(width: cardWidth, height: cardHeight)
         .onAppear {
             Task {
                 await cockCardVM.fetchUserData(uid: showPostData.uid)
@@ -176,9 +170,12 @@ struct CockCardView: View {
             }
             // データの初期化
             cockCardVM.postData = showPostData
-            // フォローとライクを初期化
-            cockCardVM.checkIsLike(postId: showPostData.id)
-            cockCardVM.checkIsFollow(friendUid: showPostData.uid)
+            // ライクを初期化
+            showIsLikePost = cockCardVM.checkIsLike(postId: showPostData.id)
+            // データのリッスン開始
+            if let id = showPostData.id {
+                cockCardVM.listenToPost(postId: id)
+            }
         }
         .onChange(of: cockCardVM.postData) { newPostData in
             if let postData = newPostData {
@@ -186,12 +183,20 @@ struct CockCardView: View {
                 showPostData = postData
             }
         }
+        .onChange(of: showIsLikePost) { newLike in
+            Task {
+                // ライクデータ変更（FirebaseとCoreData）
+                await cockCardVM.likePost(post: showPostData, toLike: newLike)
+            }
+        }
+        .onDisappear {
+            cockCardVM.stopListeningToPosts()
+        }
     }
 }
 
 #Preview {
     struct PreviewView: View {
-
         let postData: PostElement = PostElement(uid: "dummy_uid", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
 
         @State var path: [CockCardNavigationPath] = []
@@ -202,7 +207,7 @@ struct CockCardView: View {
 
         var body: some View {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 3) {
+                LazyVGrid(columns: columns, spacing: 3) { // 隙間を3に設定
                     CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
                     CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
                     CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
@@ -211,7 +216,7 @@ struct CockCardView: View {
                     CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
                 }
             }
-            .padding(.horizontal, 3)
+            .padding(.horizontal, 3) // 隙間を3に設定
         }
     }
     return PreviewView()

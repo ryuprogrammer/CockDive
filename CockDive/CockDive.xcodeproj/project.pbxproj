@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4212EC042C0D851E0015EF20 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC032C0D851E0015EF20 /* LikeButtonView.swift */; };
 		421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A53992C05705C00795317 /* MyProfileEditView.swift */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
@@ -104,6 +105,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4212EC032C0D851E0015EF20 /* LikeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonView.swift; sourceTree = "<group>"; };
 		421A53992C05705C00795317 /* MyProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditView.swift; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */,
 				422EFAB32C077DD5000DE24C /* WebView.swift */,
 				422EFAC32C0C8682000DE24C /* ImageView.swift */,
+				4212EC032C0D851E0015EF20 /* LikeButtonView.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				42DB94882BF3C30100ECDD84 /* MainTabView.swift in Sources */,
 				4298D8482BEE6C35005AB08F /* AddPostView.swift in Sources */,
 				422EFAAA2C05C999000DE24C /* PhotosPickerItem+.swift in Sources */,
+				4212EC042C0D851E0015EF20 /* LikeButtonView.swift in Sources */,
 				4298D86A2BF1075B005AB08F /* ContactView.swift in Sources */,
 				423B2A8C2BF86CDB00489BCC /* CommentDataModel.swift in Sources */,
 				4298D84E2BEF4FCA005AB08F /* LongBarButton.swift in Sources */,

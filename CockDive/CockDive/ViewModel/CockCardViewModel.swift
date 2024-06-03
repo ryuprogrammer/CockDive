@@ -4,11 +4,7 @@ import CoreData
 
 class CockCardViewModel: ObservableObject {
     @Published var postData: PostElement? = nil
-
     @Published var userData: UserElement? = nil
-
-    @Published var showIsLikePost: Bool = false
-    @Published var showIsFollow: Bool = false
 
     let userDataModel = UserDataModel()
     let userFriendModel = UserFriendModel()
@@ -58,10 +54,10 @@ class CockCardViewModel: ObservableObject {
     // MARK: - データ追加
     /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(
-        post: PostElement
+        post: PostElement,
+        toLike: Bool
     ) async {
         guard let id = post.id else { return }
-        let toLike = !showIsLikePost
         // CoreDataのライク変更
         coreDataLikePostModel.toggleLikePost(id: id, toLike: toLike)
         // FirestoreのPostDataModelのライク変更
@@ -70,38 +66,20 @@ class CockCardViewModel: ObservableObject {
         await userPostDataModel.addPostId(postId: id, userPostType: .like)
     }
 
-    /// フォロー変更（CoreDataとFirestore）
-    func followUser(friendUid: String) async {
-        // CoreDataのフォロー変更
-        coreDataMyDataModel.changeFollow(uid: friendUid)
-        // Firestoreのフォロー変更
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .follow)
-    }
-
-    /// ブロック
-    func blockUser(friendUid: String) async {
-        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
-    }
-
-    /// 通報
-    func reportUser(friendUid: String) {
-        // TODO: 通報処理書く
-    }
-
     // MARK: - CoreData
     /// ライクしているか判定（CoreData）
-    func checkIsLike(postId: String?) {
+    func checkIsLike(postId: String?) -> Bool {
         if let postId {
-            showIsLikePost = coreDataLikePostModel.checkIsLike(id: postId)
-            print("ライク:\(showIsLikePost)")
+            return coreDataLikePostModel.checkIsLike(id: postId)
         }
+        return false
     }
 
     /// フォローしているか判定
-    func checkIsFollow(friendUid: String?) {
+    func checkIsFollow(friendUid: String?) -> Bool {
         if let friendUid {
-            showIsFollow = coreDataMyDataModel.checkIsFollow(uid: friendUid)
-            print("フォロー: \(showIsFollow)")
+            return coreDataMyDataModel.checkIsFollow(uid: friendUid)
         }
+        return false
     }
 }
