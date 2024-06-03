@@ -221,6 +221,14 @@ struct MyPageView: View {
                         }
                     }
                 }
+
+                if myPageVM.loadStatusLikePost == .loading {
+                    HStack {
+                        Spacer()
+                        LoadingAnimationView()
+                        Spacer()
+                    }
+                }
             }
             .onChange(of: showLikePostListData) { _ in
                 if let lastLikePost = lastLikePost {
