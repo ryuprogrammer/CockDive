@@ -22,7 +22,7 @@ class AddPostViewModel: ObservableObject {
     func addPost(post: PostElement) {
         loadStatus = .loading
 
-        var newPost = post
+        let newPost = post
 
         if let userData = userDefaultsDataModel.fetchUserData() {
             postDataModel.addPost(post: newPost) { result in

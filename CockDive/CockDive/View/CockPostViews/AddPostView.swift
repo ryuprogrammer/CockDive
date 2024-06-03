@@ -8,6 +8,7 @@ struct AddPostView: View {
     @State private var isPrivate: Bool = false
     @State private var titleErrorMessage = ""
     @State private var memoErrorMessage = ""
+    @State private var imageErrorMessage = ""
     @State private var showErrorDialog = false
     @State private var showAlertDialog = false
     @State private var isPresentedCameraView: Bool = false
@@ -16,6 +17,7 @@ struct AddPostView: View {
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @FocusState private var keybordFocuse: Bool
     @Environment(\.dismiss) private var dismiss
+    @State private var isLoading: Bool = false
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -77,6 +79,12 @@ struct AddPostView: View {
                         }
                     }
 
+                    if !imageErrorMessage.isEmpty {
+                        Text(imageErrorMessage)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.red)
+                    }
+
                     SectioinTitleView(text: "料理名を入力", isRequired: true)
 
                     TextField("料理名を入力", text: $title)
@@ -91,6 +99,7 @@ struct AddPostView: View {
 
                     if !titleErrorMessage.isEmpty {
                         Text(titleErrorMessage)
+                            .fontWeight(.bold)
                             .foregroundStyle(Color.red)
                     }
 
@@ -123,6 +132,7 @@ struct AddPostView: View {
 
                     if !memoErrorMessage.isEmpty {
                         Text(memoErrorMessage)
+                            .fontWeight(.bold)
                             .foregroundStyle(Color.red)
                     }
 
@@ -151,10 +161,12 @@ struct AddPostView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
-                        if image != nil || !title.isEmpty || !memo.isEmpty {
-                            showAlertDialog = true
-                        } else {
-                            dismiss()
+                        if addPostVM.loadStatus != .loading {
+                            if image != nil || !title.isEmpty || !memo.isEmpty {
+                                showAlertDialog = true
+                            } else {
+                                dismiss()
+                            }
                         }
                     }
                 }
@@ -168,10 +180,13 @@ struct AddPostView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: "投稿") {
-                        print("投稿ボタン押された")
                         validateTitle()
                         validateMemo()
-                        if titleErrorMessage.isEmpty && memoErrorMessage.isEmpty {
+                        validateImage()
+                        if titleErrorMessage.isEmpty &&
+                            memoErrorMessage.isEmpty &&
+                            image != nil &&
+                            addPostVM.loadStatus != .loading {
                             print("ワードチェック完了")
                             Task {
                                 guard let dataImage = image?.castToData() else { return }
@@ -224,9 +239,11 @@ struct AddPostView: View {
                 showErrorDialog = true
             } else if case .success = addPostVM.loadStatus {
                 dismiss()
+            } else if case .loading = addPostVM.loadStatus {
+                isLoading = true
             }
         }
-        .interactiveDismissDisabled(true)
+        .interactiveDismissDisabled(isLoading)
     }
 
     private func validateTitle() {
@@ -236,7 +253,7 @@ struct AddPostView: View {
         } else if title.containsNGWord() {
             titleErrorMessage = "不適切な言葉が含まれています"
         } else if title.count > 15 {
-            titleErrorMessage = "料理名は15文字以下で入力してください。"
+            titleErrorMessage = "料理名は15文字以下で入力してください"
         }
     }
 
@@ -245,7 +262,14 @@ struct AddPostView: View {
         if memo.containsNGWord() {
             memoErrorMessage = "不適切な言葉が含まれています"
         } else if memo.count > 150 {
-            memoErrorMessage = "メモは150文字以下で入力してください。"
+            memoErrorMessage = "メモは150文字以下で入力してください"
+        }
+    }
+
+    private func validateImage() {
+        imageErrorMessage = ""
+        if image == nil {
+            imageErrorMessage = "写真を追加してください"
         }
     }
 }

@@ -90,6 +90,7 @@ struct MyProfileEditView: View {
                     if !nickNameErrorMessage.isEmpty {
                         HStack {
                             Text(nickNameErrorMessage)
+                                .fontWeight(.bold)
                                 .foregroundColor(.red)
                             Spacer()
                         }
@@ -123,6 +124,7 @@ struct MyProfileEditView: View {
                     if !introductionErrorMessage.isEmpty {
                         HStack {
                             Text(introductionErrorMessage)
+                                .fontWeight(.bold)
                                 .foregroundColor(.red)
                                 .font(.caption)
                             Spacer()
