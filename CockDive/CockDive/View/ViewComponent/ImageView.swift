@@ -57,6 +57,7 @@ struct ImageView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .foregroundStyle(Color.mainColor)
+                    .background(Color.white)
             case .post:
                 Image(systemName: "carrot")
                     .resizable()

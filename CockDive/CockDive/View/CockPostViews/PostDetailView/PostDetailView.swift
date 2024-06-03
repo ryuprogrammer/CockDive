@@ -34,71 +34,81 @@ struct PostDetailView: View {
 
     var body: some View {
         ZStack {
-            List {
+            ScrollView {
                 // ボタンを有効にするために分割
                 VStack {
-                    HStack {
-                        // アイコン写真
+                    ZStack {
+                        // Postの写真
                         ImageView(
-                            data: showUserData?.iconImage,
-                            urlString: showUserData?.iconURL,
-                            imageType: .icon
+                            data: showPostData.postImage,
+                            urlString: showPostData.postImageURL,
+                            imageType: .post
                         )
-                        .frame(
-                            width: screenWidth / 12,
-                            height: screenWidth / 12
-                        )
-                        .clipShape(Circle())
 
-                        VStack(alignment: .leading) {
-                            Text("\(showUserData?.nickName ?? "ニックネーム")")
+                        VStack {
+                            HStack {
+                                // アイコン写真
+                                ImageView(
+                                    data: showUserData?.iconImage,
+                                    urlString: showUserData?.iconURL,
+                                    imageType: .icon
+                                )
+                                .frame(
+                                    width: screenWidth / 10,
+                                    height: screenWidth / 10
+                                )
+                                .clipShape(Circle())
 
-                            Text(showPostData.createAt.dateString())
-                                .font(.footnote)
-                        }
+                                VStack(alignment: .leading) {
+                                    Text("\(showUserData?.nickName ?? "ニックネーム")")
+                                        .foregroundStyle(Color.white)
+                                        .fontWeight(.bold)
+                                        .background(Color.black.opacity(0.3).blur(radius: 13))
 
-                        Spacer()
+                                    Text(showPostData.createAt.dateString())
+                                        .foregroundStyle(Color.white)
+                                        .font(.footnote)
+                                        .fontWeight(.bold)
+                                        .background(Color.black.opacity(0.3).blur(radius: 13))
+                                }
 
-                        // フォローボタン
-                        Button {
-                            // ボタンの無効化
-                            isFollowButtonDisabled = true
-                            // haptics
-                            hapticsManager.playHapticPattern()
-                            showIsFollow.toggle()
-                            Task {
-                                // フォローデータ更新
-                                await postDetailVM.followUser(friendUid: showPostData.uid)
-                                // フォローデータ取得
-                                postDetailVM.checkIsFollow(friendUid: showPostData.uid)
+                                Spacer()
+
+                                // フォローボタン
+                                Button {
+                                    // ボタンの無効化
+                                    isFollowButtonDisabled = true
+                                    // haptics
+                                    hapticsManager.playHapticPattern()
+                                    showIsFollow.toggle()
+                                    Task {
+                                        // フォローデータ更新
+                                        await postDetailVM.followUser(friendUid: showPostData.uid)
+                                        // フォローデータ取得
+                                        postDetailVM.checkIsFollow(friendUid: showPostData.uid)
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        isFollowButtonDisabled = false
+                                    }
+                                } label: {
+                                    StrokeButtonUI(
+                                        text: showIsFollow ? "フォロー中" : "フォロー",
+                                        size: .small,
+                                        isFill: showIsFollow ? true : false
+                                    )
+                                    // 押せない時は少し白くする
+                                    .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+                                }
+                                .disabled(isFollowButtonDisabled)
                             }
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                isFollowButtonDisabled = false
-                            }
-                        } label: {
-                            StrokeButtonUI(
-                                text: showIsFollow ? "フォロー中" : "フォロー",
-                                size: .small,
-                                isFill: showIsFollow ? true : false
-                            )
-                            // 押せない時は少し白くする
-                            .foregroundStyle(Color.white.opacity(isFollowButtonDisabled ? 0.7 : 0.0))
+                            Spacer()
                         }
-                        .disabled(isFollowButtonDisabled)
+                        .padding(5)
                     }
-
-                    // Postの写真
-                    ImageView(
-                        data: showPostData.postImage,
-                        urlString: showPostData.postImageURL,
-                        imageType: .post
-                    )
                     .frame(width: screenWidth, height: screenWidth)
-                    .listRowSeparator(.hidden)
-                    .listRowSeparator(.hidden)
                 }
-                .listRowSeparator(.hidden)
 
                 // ボタンを有効にするために分割
                 HStack {
@@ -145,8 +155,6 @@ struct PostDetailView: View {
                     }
                 }
                 .padding(.top, 3)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .listRowSeparator(.hidden)
                 .padding(.horizontal)
 
                 ForEach(showPostData.comment.reversed(), id: \.id) { comment in
@@ -169,15 +177,11 @@ struct PostDetailView: View {
                     }
                     .padding(.vertical, 3)
                 }
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .listRowSeparator(.hidden)
-                .padding(.horizontal)
+                .padding(.horizontal, 5)
 
                 Spacer()
                     .frame(height: 400)
-                    .listRowSeparator(.hidden)
             }
-            .listStyle(.plain)
 
             // コメント入力
             VStack {
@@ -228,7 +232,6 @@ struct PostDetailView: View {
         .toolbar(.hidden, for: .tabBar)
         // 戻るボタン非表示
         .navigationBarBackButtonHidden(true)
-        .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
