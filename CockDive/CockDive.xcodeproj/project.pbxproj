@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4212EC042C0D851E0015EF20 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC032C0D851E0015EF20 /* LikeButtonView.swift */; };
+		4212EC062C0EAD340015EF20 /* ReportElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC052C0EAD340015EF20 /* ReportElement.swift */; };
 		421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A53992C05705C00795317 /* MyProfileEditView.swift */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
@@ -106,6 +107,7 @@
 
 /* Begin PBXFileReference section */
 		4212EC032C0D851E0015EF20 /* LikeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonView.swift; sourceTree = "<group>"; };
+		4212EC052C0EAD340015EF20 /* ReportElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportElement.swift; sourceTree = "<group>"; };
 		421A53992C05705C00795317 /* MyProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditView.swift; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				42DB949B2BF4A2D100ECDD84 /* UserPostElement.swift */,
 				42DB948E2BF470E100ECDD84 /* PostElement.swift */,
 				42DB94902BF470EB00ECDD84 /* CommentElement.swift */,
+				4212EC052C0EAD340015EF20 /* ReportElement.swift */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */,
 				42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */,
 				42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */,
+				4212EC062C0EAD340015EF20 /* ReportElement.swift in Sources */,
 				422EFAB62C08013E000DE24C /* BlockListViewModel.swift in Sources */,
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4253F6342C02FAE90067BF14 /* SwipeableTabView.swift in Sources */,

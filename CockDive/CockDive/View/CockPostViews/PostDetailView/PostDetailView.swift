@@ -44,6 +44,8 @@ struct PostDetailView: View {
                             urlString: showPostData.postImageURL,
                             imageType: .post
                         )
+                        .frame(width: screenWidth, height: screenWidth)
+                        .clipShape(Rectangle())
 
                         VStack {
                             HStack {
@@ -106,6 +108,7 @@ struct PostDetailView: View {
                             Spacer()
                         }
                         .padding(5)
+                        .frame(width: screenWidth, height: screenWidth)
                     }
                     .frame(width: screenWidth, height: screenWidth)
                 }
