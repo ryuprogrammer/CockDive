@@ -62,6 +62,13 @@ class CockCardViewModel: ObservableObject {
         }
     }
 
+    /// 指定されたIDの投稿が存在するかどうかをチェックする（Firestore）
+    /// - Parameter postId: 存在をチェックする投稿のID
+    /// - Returns: 存在する場合はtrue、存在しない場合はfalse
+    func checkPostExists(postId: String) async -> Bool {
+        return await postDataModel.checkPostExists(postId: postId)
+    }
+
     // MARK: - データ追加
     /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(

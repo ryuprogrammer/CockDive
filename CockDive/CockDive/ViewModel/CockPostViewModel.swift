@@ -25,6 +25,11 @@ class CockPostViewModel: ObservableObject {
     }
 
     // MARK: - データ取得
+    /// uid取得
+    func fetchUid() -> String {
+        return postDataModel.fetchUid() ?? ""
+    }
+
     /// PostをloadStatusに応じて取得
     func fetchPostsDataByStatus() async {
         switch loadStatus {
@@ -71,11 +76,6 @@ class CockPostViewModel: ObservableObject {
         }
     }
 
-    /// uid取得
-    func fetchUid() -> String {
-        return postDataModel.fetchUid() ?? ""
-    }
-
     /// リスナーを停止
     func stopListeningToPosts() {
         postListeners.forEach { $0.remove() }
@@ -89,5 +89,20 @@ class CockPostViewModel: ObservableObject {
             return true
         }
         return false
+    }
+
+    // MARK: - データ削除
+    /// 投稿を削除: firebaseとCoreData
+    func deletePost(postId: String?) async {
+        guard let id = postId else { return }
+        do {
+            // firebaseから削除
+            try await postDataModel.deletePost(postId: id)
+            // CoreDataから削除
+            MyPostCoreDataManager.shared.delete(by: id)
+            print("Post deleted successfully.")
+        } catch {
+            print("Failed to delete post: \(error.localizedDescription)")
+        }
     }
 }

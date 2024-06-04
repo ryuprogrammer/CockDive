@@ -40,8 +40,15 @@ struct CockPostView: View {
             }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
-                case .detailView(let postData, let userData, let firstLike, let firstFollow):
-                    PostDetailView(showPostData: postData, showUserData: userData, showIsLike: firstLike, showIsFollow: firstFollow)
+                case .detailView(let postData, let userData, let firstLike, let firstFollow, let parentViewType):
+                    PostDetailView(
+                        showPostData: postData,
+                        showUserData: userData,
+                        showIsLike: firstLike,
+                        showIsFollow: firstFollow,
+                        cockCardNavigationPath: $cockCardNavigationPath,
+                        parentViewPosts: $showPostsData
+                    )
                 case .profileView(let userData, let isFollow):
                     ProfileView(showUser: userData, showIsFollow: isFollow, navigationPath: $cockCardNavigationPath)
                 default:
@@ -82,9 +89,18 @@ struct CockPostView: View {
                     ForEach(showPostsData, id: \.id) { postData in
                         CockCardView(
                             showPostData: postData,
+                            isShowUserNameAndFollowButton: true,
                             path: $cockCardNavigationPath,
-                            isShowUserNameAndFollowButton: true
-                        )
+                            parendViewType: nil,
+                            deletePostAction: {
+                                if postData.uid == cockPostVM.fetchUid() {
+                                    Task {
+                                        // 投稿削除
+                                        await cockPostVM.deletePost(postId: postData.id)
+                                        showPostsData.removeAll(where: {$0.id == postData.id})
+                                    }
+                                }
+                        })
                         .id(postData.id)
                         .onAppear {
                             if cockPostVM.checkIsLastPost(postData: postData) {

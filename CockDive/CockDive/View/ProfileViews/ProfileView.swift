@@ -22,11 +22,8 @@ struct ProfileView: View {
         likePost: []
     )
 
-    // 通報理由
     @State private var reportReason: String = ""
-    // 通報アラートの表示
     @State private var showReportAlert: Bool = false
-
     @State private var isFollowButtonDisabled: Bool = false
     @Environment(\.presentationMode) var presentation
 
@@ -68,26 +65,7 @@ struct ProfileView: View {
                     .listRowSeparator(.hidden)
 
                 LazyVGrid(columns: columns, spacing: 3) {
-                    ForEach(showPostsData, id: \.id) { postData in
-                        CockCardView(
-                            showPostData: postData,
-                            path: $navigationPath,
-                            isShowUserNameAndFollowButton: false
-                        )
-                        .id(postData.id)
-                        .onAppear {
-                            if profileVM.checkIsLastPost(postData: postData) {
-                                Task {
-                                    guard let last = showPostsData.last,
-                                          let lastId = last.id else { return }
-                                    await profileVM.fetchPostsDataByStatus(
-                                        uid: postData.uid,
-                                        lastId: lastId
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    postGridView(proxy: proxy)
                 }
 
                 if profileVM.loadStatus == .loading || profileVM.loadStatus == .initial {
@@ -100,23 +78,10 @@ struct ProfileView: View {
             }
             .padding(3)
             .refreshable {
-                profileVM.loadStatus = .initial
-                showPostsData.removeAll()
-                profileVM.newPostsData.removeAll()
-                lastPost = nil
-                Task {
-                    guard let uid = showUser.id else { return }
-                    await profileVM.fetchPostFromUid(uid: uid)
-                    await profileVM.fetchUserFriendData(uid: uid)
-                    await profileVM.fetchUserPostElement(uid: uid)
-                }
+                refreshData()
             }
             .onChange(of: showPostsData) { newShowPostsData in
-                if let lastPost = lastPost {
-                    proxy.scrollTo(lastPost.id, anchor: .bottom)
-                } else {
-                    lastPost = newShowPostsData.last
-                }
+                scrollToLastPost(proxy: proxy, newShowPostsData: newShowPostsData)
             }
         }
         .alert("通報", isPresented: $showReportAlert) {
@@ -160,13 +125,11 @@ struct ProfileView: View {
                     optionType: .post,
                     blockAction: {
                         Task {
-                            // ブロック
                             guard let uid = showUser.id else { return }
                             await profileVM.blockUser(friendUid: uid)
                         }
                     },
                     reportAction: {
-                        // 通報アラート表示
                         showReportAlert = true
                     },
                     editAction: {},
@@ -175,15 +138,7 @@ struct ProfileView: View {
             }
         }
         .onAppear {
-            if profileVM.loadStatus == .initial {
-                Task {
-                    guard let uid = showUser.id else { return }
-                    await profileVM.fetchPostFromUid(uid: uid)
-                    await profileVM.fetchUserFriendData(uid: uid)
-                    await profileVM.fetchUserPostElement(uid: uid)
-                    await profileVM.fetchUserData(uid: uid)
-                }
-            }
+            loadInitialData()
         }
         .onChange(of: profileVM.newPostsData) { newPostData in
             showPostsData.append(contentsOf: newPostData)
@@ -201,6 +156,67 @@ struct ProfileView: View {
         .onChange(of: profileVM.userData) { newUserData in
             if let newUserData {
                 showUser = newUserData
+            }
+        }
+    }
+
+    // Separate functions to break down complex expressions
+    private func postGridView(proxy: ScrollViewProxy) -> some View {
+        ForEach(showPostsData, id: \.id) { postData in
+            CockCardView(
+                showPostData: postData,
+                isShowUserNameAndFollowButton: false,
+                path: $navigationPath,
+                parendViewType: .profilePost,
+                deletePostAction: {
+                    // 他の人のプロフィールなので、投稿削除は不可
+                }
+            )
+            .id(postData.id)
+            .onAppear {
+                if profileVM.checkIsLastPost(postData: postData) {
+                    Task {
+                        guard let last = showPostsData.last,
+                              let lastId = last.id else { return }
+                        await profileVM.fetchPostsDataByStatus(
+                            uid: postData.uid,
+                            lastId: lastId
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private func refreshData() {
+        profileVM.loadStatus = .initial
+        showPostsData.removeAll()
+        profileVM.newPostsData.removeAll()
+        lastPost = nil
+        Task {
+            guard let uid = showUser.id else { return }
+            await profileVM.fetchPostFromUid(uid: uid)
+            await profileVM.fetchUserFriendData(uid: uid)
+            await profileVM.fetchUserPostElement(uid: uid)
+        }
+    }
+
+    private func scrollToLastPost(proxy: ScrollViewProxy, newShowPostsData: [PostElement]) {
+        if let lastPost = lastPost {
+            proxy.scrollTo(lastPost.id, anchor: .bottom)
+        } else {
+            lastPost = newShowPostsData.last
+        }
+    }
+
+    private func loadInitialData() {
+        if profileVM.loadStatus == .initial {
+            Task {
+                guard let uid = showUser.id else { return }
+                await profileVM.fetchPostFromUid(uid: uid)
+                await profileVM.fetchUserFriendData(uid: uid)
+                await profileVM.fetchUserPostElement(uid: uid)
+                await profileVM.fetchUserData(uid: uid)
             }
         }
     }

@@ -3,12 +3,17 @@ import SwiftUI
 struct CockCardView: View {
     @State var showPostData: PostElement
     @State var showUserData: UserElement?
-    @State var showIsLikePost: Bool = false
-
-    @Binding var path: [CockCardNavigationPath]
     /// ニックネームとフォローボタンを表示するかどうか
     /// CockPostでは表示、Profileでは非表示
     let isShowUserNameAndFollowButton: Bool
+    /// 画面遷移用
+    @Binding var path: [CockCardNavigationPath]
+    /// 親View
+    let parendViewType: ParendViewType?
+    /// 投稿を削除
+    let deletePostAction: () -> Void
+    @State var showIsLikePost: Bool = false
+
     // 自分の投稿か
     @State var isMyPost: Bool = false
     // ライクボタン無効状態
@@ -17,8 +22,13 @@ struct CockCardView: View {
     @State private var isFollowButtonDisabled: Bool = false
     // 通報理由
     @State private var reportReason: String = ""
-    // 通報アラートの表示
-    @State private var showReportAlert: Bool = false
+    // アラートの種類
+    @State private var alertType: AlertType?
+
+    // アラートを表示する関数
+    private func showAlert(_ type: AlertType) {
+        alertType = type
+    }
 
     let maxTextCount = 20
     @ObservedObject private var cockCardVM = CockCardViewModel()
@@ -43,20 +53,35 @@ struct CockCardView: View {
 
     @StateObject private var hapticsManager = HapticsManager()
 
+    enum AlertType: Identifiable {
+        case noPost
+        case report
+
+        var id: AlertType { self }
+    }
+
     var body: some View {
         // 写真、タイトル、メモ、コメント、ハート
         ZStack {
             // Postの写真
             Button {
                 let isFollow = cockCardVM.checkIsFollow(friendUid: showUserData?.id)
-                path.append(
-                    .detailView(
-                        postData: showPostData,
-                        userData: showUserData,
-                        firstLike: showIsLikePost,
-                        firstFollow: isFollow
-                    )
-                )
+                Task {
+                    // 投稿が存在する場合のみ遷移
+                    if await cockCardVM.checkPostExists(postId: showPostData.id ?? "") {
+                        path.append(
+                            .detailView(
+                                postData: showPostData,
+                                userData: showUserData,
+                                firstLike: showIsLikePost,
+                                firstFollow: isFollow,
+                                parentViewType: parendViewType
+                            )
+                        )
+                    } else {
+                        showAlert(.noPost)
+                    }
+                }
             } label: {
                 // Postの写真
                 ImageView(
@@ -119,6 +144,7 @@ struct CockCardView: View {
 
                         Spacer()
 
+                        // 投稿オプション
                         OptionsView(
                             isMyData: isMyPost,
                             isAlwaysWhite: true,
@@ -133,13 +159,13 @@ struct CockCardView: View {
                                 }
                             },
                             reportAction: {
-                                showReportAlert = true
+                                showAlert(.report)
                             },
                             editAction: {
 
                             },
                             deleteAction: {
-
+                                deletePostAction()
                             }
                         )
                         .padding(.horizontal, 3)
@@ -197,19 +223,25 @@ struct CockCardView: View {
             .frame(width: cardWidth, height: cardHeight)
         }
         .frame(width: cardWidth, height: cardHeight)
-        .alert("通報", isPresented: $showReportAlert) {
-            TextField("通報理由を入力してください", text: $reportReason)
-            Button("キャンセル", role: .cancel) {}
-            Button("通報") {
-                Task {
-                    await cockCardVM.reportPost(
-                        post: showPostData,
-                        reason: reportReason
-                    )
-                }
+        .alert(item: $alertType) { type in
+            switch type {
+            case .noPost:
+                return Alert(title: Text("投稿が存在しません"), message: nil)
+            case .report:
+                return Alert(
+                    title: Text("通報"),
+                    message: Text("通報理由を書いていただくと\n助かります。。。"),
+                    primaryButton: .cancel(),
+                    secondaryButton: .default(Text("通報")) {
+                        Task {
+                            await cockCardVM.reportPost(
+                                post: showPostData,
+                                reason: reportReason
+                            )
+                        }
+                    }
+                )
             }
-        } message: {
-            Text("通報理由を書いていただくと\n助かります。。。")
         }
         .onAppear {
             // 自分の投稿か確認
@@ -258,12 +290,7 @@ struct CockCardView: View {
         var body: some View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 3) { // 隙間を3に設定
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
-                    CockCardView(showPostData: postData, path: $path, isShowUserNameAndFollowButton: true)
+
                 }
             }
             .padding(.horizontal, 3) // 隙間を3に設定

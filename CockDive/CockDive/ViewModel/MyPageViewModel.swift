@@ -23,6 +23,7 @@ class MyPageViewModel: ObservableObject {
     let myDataManager = MyDataCoreDataManager.shared
     let coreDataLikePostModel = LikePostCoreDataManager.shared
     let postDataModel = PostDataModel()
+    let userDataModel = UserDataModel()
 
     // ロードステータス
     enum LoadStatus {
@@ -33,6 +34,10 @@ class MyPageViewModel: ObservableObject {
     }
 
     // MARK: - データ取得
+    /// uid取得
+    func fetchUid() -> String {
+        return userDataModel.fetchUid() ?? ""
+    }
     /// 基本データ取得（ニックネーム、自己紹介、アイコン）
     func fetchUserData() {
         userData = userDefaultsDataModel.fetchUserData()
@@ -164,5 +169,20 @@ class MyPageViewModel: ObservableObject {
             return true
         }
         return false
+    }
+
+    // MARK: - データ削除
+    /// 投稿を削除: firebaseとCoreData
+    func deletePost(postId: String?) async {
+        guard let id = postId else { return }
+        do {
+            // firebaseから削除
+            try await postDataModel.deletePost(postId: id)
+            // CoreDataから削除
+            MyPostCoreDataManager.shared.delete(by: id)
+            print("Post deleted successfully.")
+        } catch {
+            print("Failed to delete post: \(error.localizedDescription)")
+        }
     }
 }

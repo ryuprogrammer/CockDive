@@ -7,6 +7,10 @@ struct PostDetailView: View {
     @State var showIsLike: Bool
     // フォローの初期値
     @State var showIsFollow: Bool
+    // 画面遷移
+    @Binding var cockCardNavigationPath: [CockCardNavigationPath]
+    // 親ViewのPostsData→Detailで削除したときに、親Viewでも削除する
+    @Binding var parentViewPosts: [PostElement]
     // 自分の投稿か
     @State var isMyPost: Bool = false
     // ライクボタン無効状態
@@ -31,8 +35,6 @@ struct PostDetailView: View {
         case post
     }
 
-    // 画面遷移戻る
-    @Environment(\.presentationMode) var presentation
     let maxTextCount = 40
     @StateObject private var hapticsManager = HapticsManager()
 
@@ -278,7 +280,7 @@ struct PostDetailView: View {
             // 戻るボタン
             ToolbarItem(placement: .topBarLeading) {
                 ToolBarBackButtonView {
-                    self.presentation.wrappedValue.dismiss()
+                    cockCardNavigationPath.removeAll()
                 }
             }
 
@@ -307,7 +309,18 @@ struct PostDetailView: View {
                         showReportAlert = true
                     },
                     editAction: {},
-                    deleteAction: {}
+                    deleteAction: {
+                        if showPostData.uid == postDetailVM.fetchUid() {
+                            Task {
+                                // 投稿削除
+                                await postDetailVM.deletePost(postId: showPostData.id)
+                                // 親Viewの該当する投稿も削除
+                                parentViewPosts.removeAll(where: {$0.id == showPostData.id})
+                                // 画面遷移
+                                cockCardNavigationPath.removeLast()
+                            }
+                        }
+                    }
                 )
             }
         }
@@ -377,7 +390,9 @@ struct PostDetailView: View {
                     ),
                     showUserData: nil,
                     showIsLike: false,
-                    showIsFollow: false
+                    showIsFollow: false,
+                    cockCardNavigationPath: .constant([]),
+                    parentViewPosts: .constant([])
                 )
             }
         }

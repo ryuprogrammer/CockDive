@@ -146,6 +146,27 @@ struct PostDataModel {
         }
     }
 
+    /// Post削除メソッド
+    func deletePost(postId: String) async throws {
+        guard let uid = fetchUid() else {
+            throw NSError(domain: "UIDError", code: -1, userInfo: [NSLocalizedDescriptionKey: "User is not logged in."])
+        }
+
+        let postRef = db.collection(postDataCollection).document(postId)
+
+        let document = try await postRef.getDocument()
+        guard document.exists else {
+            throw NSError(domain: "FirestoreError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist."])
+        }
+
+        let postData = try document.data(as: PostElement.self)
+        guard postData.uid == uid else {
+            throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "You are not authorized to delete this post."])
+        }
+
+        try await postRef.delete()
+    }
+
     /// Like押す
     func changeLikeToPost(
         post: PostElement,
@@ -191,6 +212,21 @@ struct PostDataModel {
     /// uid取得
     func fetchUid() -> String? {
         return Auth.auth().currentUser?.uid
+    }
+
+    /// 指定された投稿IDの投稿が存在するかどうかをチェックする
+    /// - Parameter postId: 存在をチェックする投稿のID
+    /// - Returns: 存在する場合はtrue、存在しない場合はfalse
+    func checkPostExists(postId: String) async -> Bool {
+        let document = db.collection(postDataCollection).document(postId)
+
+        do {
+            let documentSnapshot = try await document.getDocument()
+            return documentSnapshot.exists
+        } catch {
+            print("Error fetching document: \(error)")
+            return false
+        }
     }
 
     /// PostIdを件数指定して取得

@@ -91,8 +91,26 @@ struct MyPageView: View {
             }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
-                case .detailView(let postData, let userData, let firstLike, let firstFollow):
-                    PostDetailView(showPostData: postData, showUserData: userData, showIsLike: firstLike, showIsFollow: firstFollow)
+                case .detailView(let postData, let userData, let firstLike, let firstFollow, let parentViewType):
+                    if parentViewType == .myPost {
+                        PostDetailView(
+                            showPostData: postData,
+                            showUserData: userData,
+                            showIsLike: firstLike,
+                            showIsFollow: firstFollow,
+                            cockCardNavigationPath: $cockCardNavigationPath,
+                            parentViewPosts: $showPostListData
+                        )
+                    } else if parentViewType == .likePost {
+                        PostDetailView(
+                            showPostData: postData,
+                            showUserData: userData,
+                            showIsLike: firstLike,
+                            showIsFollow: firstFollow,
+                            cockCardNavigationPath: $cockCardNavigationPath,
+                            parentViewPosts: $showLikePostListData
+                        )
+                    }
                 case .profileView(let userData, let showIsFollow):
                     ProfileView(showUser: userData, showIsFollow: showIsFollow, navigationPath: $cockCardNavigationPath)
                 case .settingView:
@@ -143,8 +161,17 @@ struct MyPageView: View {
                     ForEach(showPostListData, id: \.id) { postData in
                         CockCardView(
                             showPostData: postData,
+                            isShowUserNameAndFollowButton: false,
                             path: $cockCardNavigationPath,
-                            isShowUserNameAndFollowButton: false
+                            parendViewType: .myPost,
+                            deletePostAction: {
+                                if postData.uid == myPageVM.fetchUid() {
+                                    Task {
+                                        await myPageVM.deletePost(postId: postData.id)
+                                        showLikePostListData.removeAll(where: {$0.id == postData.id})
+                                    }
+                                }
+                            }
                         )
                         .id(postData.id)
                         .onAppear {
@@ -208,8 +235,17 @@ struct MyPageView: View {
                     ForEach(showLikePostListData, id: \.id) { postData in
                         CockCardView(
                             showPostData: postData,
+                            isShowUserNameAndFollowButton: true,
                             path: $cockCardNavigationPath,
-                            isShowUserNameAndFollowButton: true
+                            parendViewType: .likePost,
+                            deletePostAction: {
+                                if postData.uid == myPageVM.fetchUid() {
+                                    Task {
+                                        await myPageVM.deletePost(postId: postData.id)
+                                        showLikePostListData.removeAll(where: {$0.id == postData.id})
+                                    }
+                                }
+                            }
                         )
                         .id(postData.id)
                         .onAppear {

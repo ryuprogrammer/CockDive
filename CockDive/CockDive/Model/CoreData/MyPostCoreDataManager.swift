@@ -65,6 +65,23 @@ class MyPostCoreDataManager {
         }
     }
 
+    /// 指定されたIDのMyPostModelが存在するかどうかをチェックする
+    /// - Parameter id: 存在をチェックするMyPostModelのID
+    /// - Returns: 存在する場合はtrue、存在しない場合はfalse
+    func checkIfExists(id: String) -> Bool {
+        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+
+        do {
+            let count = try context.count(for: request)
+            return count > 0
+        } catch {
+            print("Failed to check if MyPostModel exists: \(error)")
+            return false
+        }
+    }
+
+
     // MARK: - データの追加
 
     /// 新しいMyPostModelを作成する
@@ -91,11 +108,20 @@ class MyPostCoreDataManager {
 
     // MARK: - データの削除
 
-    /// 指定されたMyPostModelを削除する
-    func delete(myPost: MyPostModel) {
-        context.delete(myPost)
+    /// 指定されたIDのMyPostModelを削除する
+    /// - Parameter id: 削除するMyPostModelのID
+    func delete(by id: String) {
+        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+
         do {
-            try context.save()
+            let results = try context.fetch(request)
+            if let myPost = results.first {
+                context.delete(myPost)
+                try context.save()
+            } else {
+                print("MyPostModel with id \(id) not found")
+            }
         } catch {
             print("Failed to delete MyPostModel: \(error)")
         }

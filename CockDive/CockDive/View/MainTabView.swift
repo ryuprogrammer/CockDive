@@ -42,9 +42,18 @@ enum ViewType {
 
 enum CockCardNavigationPath: Hashable {
     /// コメント欄
-    case detailView(postData: PostElement, userData: UserElement?, firstLike: Bool, firstFollow: Bool)
+    case detailView(
+        postData: PostElement,
+        userData: UserElement?,
+        firstLike: Bool,
+        firstFollow: Bool,
+        parentViewType: ParendViewType?
+    )
     /// プロフィール
-    case profileView(userData: UserElement, showIsFollow: Bool)
+    case profileView(
+        userData: UserElement,
+        showIsFollow: Bool
+    )
 
     /// 設定画面
     case settingView
@@ -66,6 +75,19 @@ enum SettingViewPath {
     case contactView
     case logoutView
     case deleteAccountView
+}
+
+/*
+ 削除処理したときに、
+ 親ViewのshowPostも削除するため
+ */
+enum ParendViewType {
+    /// 自分の投稿View
+    case myPost
+    /// ライクした投稿View
+    case likePost
+    /// 他の人のプロフィール
+    case profilePost
 }
 
 #Preview {

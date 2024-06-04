@@ -189,4 +189,19 @@ class PostDetailViewModel: ObservableObject {
     func stopListeningToPosts() {
         postListener = nil
     }
+
+    // MARK: - データ削除
+    /// 投稿を削除: firebaseとCoreData
+    func deletePost(postId: String?) async {
+        guard let id = postId else { return }
+        do {
+            // firebaseから削除
+            try await postDataModel.deletePost(postId: id)
+            // CoreDataから削除
+            MyPostCoreDataManager.shared.delete(by: id)
+            print("Post deleted successfully.")
+        } catch {
+            print("Failed to delete post: \(error.localizedDescription)")
+        }
+    }
 }
