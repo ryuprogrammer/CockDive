@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4212EC042C0D851E0015EF20 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC032C0D851E0015EF20 /* LikeButtonView.swift */; };
 		4212EC062C0EAD340015EF20 /* ReportElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC052C0EAD340015EF20 /* ReportElement.swift */; };
+		4212EC082C0ECF140015EF20 /* ReportDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC072C0ECF140015EF20 /* ReportDataModel.swift */; };
 		421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A53992C05705C00795317 /* MyProfileEditView.swift */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
@@ -108,6 +109,7 @@
 /* Begin PBXFileReference section */
 		4212EC032C0D851E0015EF20 /* LikeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonView.swift; sourceTree = "<group>"; };
 		4212EC052C0EAD340015EF20 /* ReportElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportElement.swift; sourceTree = "<group>"; };
+		4212EC072C0ECF140015EF20 /* ReportDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDataModel.swift; sourceTree = "<group>"; };
 		421A53992C05705C00795317 /* MyProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditView.swift; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				423B2A892BF8605800489BCC /* UserPostDataModel.swift */,
 				42DB94942BF48A5E00ECDD84 /* PostDataModel.swift */,
 				423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */,
+				4212EC072C0ECF140015EF20 /* ReportDataModel.swift */,
 				42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */,
 				4253F6222BFEC2870067BF14 /* CoreData */,
 			);
@@ -591,6 +594,7 @@
 				4298D8562BF0984E005AB08F /* ImageCalendarView.swift in Sources */,
 				422EFAA62C05C4C9000DE24C /* NameRegistrationView.swift in Sources */,
 				42C02AC62BF79077000D7CE4 /* SectioinTitleView.swift in Sources */,
+				4212EC082C0ECF140015EF20 /* ReportDataModel.swift in Sources */,
 				42DB94932BF48A5200ECDD84 /* UserDataModel.swift in Sources */,
 				42DB94A02BF503A300ECDD84 /* UserDefaultsDataModel.swift in Sources */,
 				4253F6242C006D730067BF14 /* MyDataCoreDataManager.swift in Sources */,
