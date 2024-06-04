@@ -96,13 +96,8 @@ struct PostDetailView: View {
                                     isFollowButtonDisabled = true
                                     // haptics
                                     hapticsManager.playHapticPattern()
+
                                     showIsFollow.toggle()
-                                    Task {
-                                        // フォローデータ更新
-                                        await postDetailVM.followUser(friendUid: showPostData.uid)
-                                        // フォローデータ取得
-                                        postDetailVM.checkIsFollow(friendUid: showPostData.uid)
-                                    }
 
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         isFollowButtonDisabled = false
@@ -346,9 +341,13 @@ struct PostDetailView: View {
                 )
             }
         }
-        .onChange(of: postDetailVM.isFollow) { isFollow in
-            // フォロー更新
-            showIsFollow = isFollow
+        .onChange(of: showIsFollow) { newFollow in
+            Task {
+                // フォローデータ更新
+                await postDetailVM.followUser(friendUid: showPostData.uid)
+                // フォローデータ取得
+                postDetailVM.checkIsFollow(friendUid: showPostData.uid)
+            }
         }
     }
 }

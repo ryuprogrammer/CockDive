@@ -42,8 +42,10 @@ class MyDataCoreDataManager {
 
     // フォロー状態を判定する
     func checkIsFollow(uid: String) -> Bool {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        return myDataModel?.wrappedFollowUids.contains(uid) ?? false
+        guard let myDataModel = fetchMyDataModels().first ?? createMyDataModel() else {
+            return false
+        }
+        return myDataModel.wrappedFollowUids.contains(uid)
     }
 
     // MARK: - データの変更
@@ -61,20 +63,26 @@ class MyDataCoreDataManager {
 
     // フォローUIDを追加する
     func addFollowUid(uid: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var uids = myDataModel?.wrappedFollowUids ?? []
+        guard let myDataModel = fetchMyDataModels().first ?? createMyDataModel() else {
+            print("MyDataModelの作成または取得に失敗しました")
+            return
+        }
+        var uids = myDataModel.wrappedFollowUids
         uids.append(uid)
-        myDataModel?.followUids = uids as NSObject
+        myDataModel.followUids = uids as NSObject
 
         saveContext()
     }
 
     // コメントポストIDを追加する
     func addCommentPostId(postId: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var postIds = myDataModel?.wrappedCommentPostIds ?? []
+        guard let myDataModel = fetchMyDataModels().first ?? createMyDataModel() else {
+            print("MyDataModelの作成または取得に失敗しました")
+            return
+        }
+        var postIds = myDataModel.wrappedCommentPostIds
         postIds.append(postId)
-        myDataModel?.commentPostIds = postIds as NSObject
+        myDataModel.commentPostIds = postIds as NSObject
 
         saveContext()
     }
@@ -83,24 +91,30 @@ class MyDataCoreDataManager {
 
     // フォローUIDを削除する
     func removeFollowUid(uid: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var uids = myDataModel?.wrappedFollowUids ?? []
+        guard let myDataModel = fetchMyDataModels().first ?? createMyDataModel() else {
+            print("MyDataModelの作成または取得に失敗しました")
+            return
+        }
+        var uids = myDataModel.wrappedFollowUids
         if let index = uids.firstIndex(of: uid) {
             uids.remove(at: index)
         }
-        myDataModel?.followUids = uids as NSObject
+        myDataModel.followUids = uids as NSObject
 
         saveContext()
     }
 
     // コメントポストIDを削除する
     func removeCommentPostId(postId: String) {
-        let myDataModel = fetchMyDataModels().first ?? createMyDataModel()
-        var postIds = myDataModel?.wrappedCommentPostIds ?? []
+        guard let myDataModel = fetchMyDataModels().first ?? createMyDataModel() else {
+            print("MyDataModelの作成または取得に失敗しました")
+            return
+        }
+        var postIds = myDataModel.wrappedCommentPostIds
         if let index = postIds.firstIndex(of: postId) {
             postIds.remove(at: index)
         }
-        myDataModel?.commentPostIds = postIds as NSObject
+        myDataModel.commentPostIds = postIds as NSObject
 
         saveContext()
     }
