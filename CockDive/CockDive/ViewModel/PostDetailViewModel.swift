@@ -3,9 +3,7 @@ import FirebaseFirestore
 
 class PostDetailViewModel: ObservableObject {
     @Published var postData: PostElement?
-
     @Published var userData: UserElement?
-
     @Published var isLike: Bool = false
     @Published var isFollow: Bool = false
 
@@ -17,10 +15,10 @@ class PostDetailViewModel: ObservableObject {
     let coreDataMyDataModel = MyDataCoreDataManager.shared
     let userDefaultsDataModel = UserDefaultsDataModel()
     let coreDataLikePostModel = LikePostCoreDataManager.shared
+    let reportDataModel = ReportDataModel()
 
     // ロードステータス
     private var loadStatus: LoadStatus = .initial
-
     private var postListener: ListenerRegistration? = nil
 
     // ロードステータス
@@ -32,14 +30,20 @@ class PostDetailViewModel: ObservableObject {
     }
 
     // 初期値設定用メソッド
-    func initialize(firstLike: Bool, firstFollow: Bool) {
+    func initialize(
+        firstLike: Bool,
+        firstFollow: Bool
+    ) {
         self.isLike = firstLike
         self.isFollow = firstFollow
     }
 
     // MARK: - データ追加
-    /// コメント更新（追加/ 削除）
-    func updateComment(post: PostElement, newComment: CommentElement) {
+    /// コメント更新（追加/削除）
+    func updateComment(
+        post: PostElement,
+        newComment: CommentElement
+    ) {
         commentDataModel.updateComment(post: post, newComment: newComment)
     }
 
@@ -58,7 +62,9 @@ class PostDetailViewModel: ObservableObject {
     }
 
     /// フォロー変更（CoreDataとFirestore）
-    func followUser(friendUid: String) async {
+    func followUser(
+        friendUid: String
+    ) async {
         // CoreDataのフォロー変更
         coreDataMyDataModel.changeFollow(uid: friendUid)
         // Firestoreのフォロー変更
@@ -66,13 +72,31 @@ class PostDetailViewModel: ObservableObject {
     }
 
     /// ブロック
-    func blockUser(friendUid: String) async {
+    func blockUser(
+        friendUid: String
+    ) async {
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
     }
 
-    /// 通報
-    func reportUser(friendUid: String) async {
-        // TODO: 通報処理書く
+    /// 投稿通報
+    func reportPost(
+        post: PostElement,
+        reason: String
+    ) async {
+        guard let postId = post.id else { return }
+        let report = ReportElement(
+            reportedUserID: post.uid,
+            reportingUserID: fetchUid(),
+            reason: reason,
+            createAt: Date(),
+            postID: postId
+        )
+        do {
+            try await reportDataModel.addReport(report: report)
+            print("Post reported successfully.")
+        } catch {
+            print("Failed to report post: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - データ取得
