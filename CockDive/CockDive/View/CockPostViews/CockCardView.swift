@@ -74,13 +74,16 @@ struct CockCardView: View {
                     HStack(alignment: .top) {
                         Button {
                             let isFollow = cockCardVM.checkIsFollow(friendUid: showUserData?.id)
+                            guard let userData = showUserData else { return }
+                            guard let introduction = userData.introduction else { return }
                             path.append(
                                 .profileView(
                                     userData: UserElement(
                                         id: showPostData.uid,
-                                        nickName: showUserData?.nickName ?? "",
-                                        introduction: nil,
-                                        iconURL: showUserData?.iconURL
+                                        nickName: userData.nickName,
+                                        introduction: introduction,
+                                        iconImage: userData.iconImage,
+                                        iconURL: userData.iconURL
                                     ),
                                     showIsFollow: isFollow
                                 )

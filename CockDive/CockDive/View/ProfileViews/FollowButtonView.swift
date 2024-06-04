@@ -13,9 +13,9 @@ struct FollowButtonView: View {
             Button {
                 isFollowButtonDisabled = true
                 hapticsManager.playHapticPattern()
+                showIsFollow.toggle()
                 Task {
                     await profileVM.followUser(friendUid: showUser.id ?? "")
-                    profileVM.checkIsFollow(friendUid: showUser.id ?? "")
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     isFollowButtonDisabled = false
@@ -31,5 +31,6 @@ struct FollowButtonView: View {
             .disabled(isFollowButtonDisabled)
             .buttonStyle(BorderlessButtonStyle())
         }
+        .padding(.horizontal)
     }
 }

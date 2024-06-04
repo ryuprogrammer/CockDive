@@ -181,6 +181,7 @@ struct ProfileView: View {
                     await profileVM.fetchPostFromUid(uid: uid)
                     await profileVM.fetchUserFriendData(uid: uid)
                     await profileVM.fetchUserPostElement(uid: uid)
+                    await profileVM.fetchUserData(uid: uid)
                 }
             }
         }
@@ -197,8 +198,10 @@ struct ProfileView: View {
                 showUserPosts = userPosts
             }
         }
-        .onChange(of: profileVM.isFollow) { isFollow in
-            showIsFollow = isFollow
+        .onChange(of: profileVM.userData) { newUserData in
+            if let newUserData {
+                showUser = newUserData
+            }
         }
     }
 }

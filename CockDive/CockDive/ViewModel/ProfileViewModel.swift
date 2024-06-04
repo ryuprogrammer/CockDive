@@ -1,6 +1,7 @@
 import Foundation
 
 class ProfileViewModel: ObservableObject {
+    @Published var userData: UserElement?
     @Published var userFriends: UserFriendElement?
     @Published var userPosts: UserPostElement?
     @Published var newPostsData: [PostElement] = []
@@ -28,6 +29,15 @@ class ProfileViewModel: ObservableObject {
     /// uid取得
     func fetchUid() -> String {
         return userDataModel.fetchUid() ?? ""
+    }
+
+    /// UserData取得
+    func fetchUserData(uid: String) async {
+        let user = await userDataModel.fetchUserData(uid: uid)
+        DispatchQueue.main.async {
+            guard let userData = user else { return }
+            self.userData = userData
+        }
     }
 
     /// PostをloadStatusに応じて取得

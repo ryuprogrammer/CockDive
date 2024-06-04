@@ -63,11 +63,14 @@ struct ProfileHeaderView: View {
             }
         }
         .padding()
+        .onAppear {
+            print("自己紹介: \(showUser.introduction ?? "ない、、、、、")")
+        }
     }
 }
 
 struct HeaderView_Previews: PreviewProvider {
-    @State static var user = UserElement(nickName: "ニックネーム")
+    @State static var user = UserElement(nickName: "ニックネーム", introduction: "あああああああああ")
     @State static var postCount = 10
     @State static var friendData = UserFriendElement(followCount: 10, follow: [], followerCount: 10, follower: [], block: [], blockedByFriend: [])
     @State static var userPost = UserPostElement(postCount: 5, posts: [], likePostCount: 10, likePost: [])
