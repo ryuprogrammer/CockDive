@@ -21,6 +21,12 @@ struct ProfileView: View {
         likePostCount: 0,
         likePost: []
     )
+
+    // 通報理由
+    @State private var reportReason: String = ""
+    // 通報アラートの表示
+    @State private var showReportAlert: Bool = false
+
     @State private var isFollowButtonDisabled: Bool = false
     @Environment(\.presentationMode) var presentation
 
@@ -47,10 +53,6 @@ struct ProfileView: View {
                     showUserFriends: $showUserFriends,
                     showUserPosts: $showUserPosts
                 )
-
-                if let introduction = showUser.introduction {
-                    DynamicHeightCommentView(message: introduction, maxTextCount: 30)
-                }
 
                 FollowButtonView(
                     showIsFollow: $showIsFollow,
@@ -117,6 +119,20 @@ struct ProfileView: View {
                 }
             }
         }
+        .alert("通報", isPresented: $showReportAlert) {
+            TextField("通報理由を入力してください", text: $reportReason)
+            Button("キャンセル", role: .cancel) {}
+            Button("通報") {
+                Task {
+                    await profileVM.reportUser(
+                        reportedUid: showUser.id,
+                        reason: reportReason
+                    )
+                }
+            }
+        } message: {
+            Text("通報理由を書いていただくと\n助かります。。。")
+        }
         .ignoresSafeArea(edges: .bottom)
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
@@ -137,22 +153,25 @@ struct ProfileView: View {
                     .font(.title3)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Button { } label: {
-                        Image(systemName: "ellipsis")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 25)
-                            .foregroundStyle(Color.white)
-                        Text("通報する")
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
-                        .foregroundStyle(Color.white)
-                }
+                OptionsView(
+                    isMyData: false,
+                    isAlwaysWhite: true,
+                    isSmall: false,
+                    optionType: .post,
+                    blockAction: {
+                        Task {
+                            // ブロック
+                            guard let uid = showUser.id else { return }
+                            await profileVM.blockUser(friendUid: uid)
+                        }
+                    },
+                    reportAction: {
+                        // 通報アラート表示
+                        showReportAlert = true
+                    },
+                    editAction: {},
+                    deleteAction: {}
+                )
             }
         }
         .onAppear {

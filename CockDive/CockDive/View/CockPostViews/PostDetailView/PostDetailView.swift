@@ -7,6 +7,8 @@ struct PostDetailView: View {
     @State var showIsLike: Bool
     // フォローの初期値
     @State var showIsFollow: Bool
+    // 自分の投稿か
+    @State var isMyPost: Bool = false
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
@@ -16,6 +18,18 @@ struct PostDetailView: View {
     // コメント
     @State private var comment: String = ""
     @ObservedObject var postDetailVM = PostDetailViewModel()
+    // 通報理由
+    @State private var reportReason: String = ""
+    // 通報アラートの表示
+    @State private var showReportAlert: Bool = false
+    // アラートの情報
+    @State private var alertType: AlertType = .post
+
+    // アラートタイプ
+    private enum AlertType {
+        case user(uid: String)
+        case post
+    }
 
     // 画面遷移戻る
     @Environment(\.presentationMode) var presentation
@@ -166,17 +180,24 @@ struct PostDetailView: View {
                             .frame(height: 1)
                             .padding(0)
 
-                        PostCommentView(comment: comment) {
-                            Task {
-                                // ブロック
-                                await postDetailVM.blockUser(friendUid: comment.uid)
+                        PostCommentView(
+                            comment: comment,
+                            isMyComment: postDetailVM.checkIsMyPost(uid: comment.uid),
+                            blockAction: {
+                                Task {
+                                    // ブロック
+                                    await postDetailVM.blockUser(friendUid: comment.uid)
+                                }
+                            },
+                            reportAction: {
+                                // ここでアラート表示
+                                showReportAlert = true
+                                alertType = .user(uid: comment.uid)
+                            },
+                            deleteAction: {
+                                // TODO: - コメント削除処理実装
                             }
-                        } reportAction: {
-                            Task {
-                                // 通報
-                                await postDetailVM.reportUser(friendUid: comment.uid)
-                            }
-                        }
+                        )
                     }
                     .padding(.vertical, 3)
                 }
@@ -231,6 +252,31 @@ struct PostDetailView: View {
                 .background(Color.mainColor)
             }
         }
+        .alert("通報", isPresented: $showReportAlert) {
+            TextField("通報理由を入力してください", text: $reportReason)
+            Button("キャンセル", role: .cancel) {}
+            Button("通報") {
+                switch alertType {
+                case .user(let uid):
+                    Task {
+                        await postDetailVM.reportUser(
+                            reportedUid: uid,
+                            post: showPostData,
+                            reason: reportReason
+                        )
+                    }
+                case .post:
+                    Task {
+                        await postDetailVM.reportPost(
+                            post: showPostData,
+                            reason: reportReason
+                        )
+                    }
+                }
+            }
+        } message: {
+            Text("通報理由を書いていただくと\n助かります。。。")
+        }
         // TabBar非表示
         .toolbar(.hidden, for: .tabBar)
         // 戻るボタン非表示
@@ -254,30 +300,41 @@ struct PostDetailView: View {
                     .font(.title3)
             }
 
-            // 通報
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    Task {
-                        await postDetailVM.reportUser(friendUid: showPostData.uid)
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
-                        .foregroundStyle(Color.white)
-                }
+                OptionsView(
+                    isMyData: isMyPost,
+                    isAlwaysWhite: true,
+                    isSmall: false,
+                    optionType: .post,
+                    blockAction: {
+                        Task {
+                            // ブロック
+                            await postDetailVM.blockUser(friendUid: showPostData.uid)
+                        }
+                    },
+                    reportAction: {
+                        // 通報のアラート表示
+                        showReportAlert = true
+                    },
+                    editAction: {},
+                    deleteAction: {}
+                )
             }
         }
         .onAppear {
+            // 自分の投稿か確認
+            isMyPost = postDetailVM.checkIsMyPost(uid: showPostData.uid)
             Task {
                 await postDetailVM.fetchUserData(uid: showPostData.uid)
                 if let data = postDetailVM.userData {
                     showUserData = data
                 }
             }
-            // Postデータをリッスン
-            postDetailVM.listenToPost(postId: showPostData.id)
+
+            if let postId = showPostData.id {
+                // Postデータをリッスン
+                postDetailVM.listenToPost(postId: postId)
+            }
         }
         .onChange(of: postDetailVM.postData) { newPostData in
             if let newPostData {
@@ -302,8 +359,8 @@ struct PostDetailView: View {
             NavigationStack {
                 PostDetailView(
                     showPostData: PostElement(
-                        id: "000",
-                        uid: "mmmmmmmm",
+                        id: nil,
+                        uid: "0000000",
                         postImage: Data(),
                         title: "定食",
                         memo: """
@@ -319,7 +376,7 @@ struct PostDetailView: View {
                             CommentElement(id: UUID(), uid: "aaaa", comment: "美味しそ", createAt: Date())
                         ]
                     ),
-                    showUserData: UserElement(nickName: "ニックネーム"),
+                    showUserData: nil,
                     showIsLike: false,
                     showIsFollow: false
                 )

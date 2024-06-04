@@ -9,10 +9,16 @@ struct CockCardView: View {
     /// ニックネームとフォローボタンを表示するかどうか
     /// CockPostでは表示、Profileでは非表示
     let isShowUserNameAndFollowButton: Bool
+    // 自分の投稿か
+    @State var isMyPost: Bool = false
     // ライクボタン無効状態
     @State private var isLikeButtonDisabled: Bool = false
     // フォローボタン無効状態
     @State private var isFollowButtonDisabled: Bool = false
+    // 通報理由
+    @State private var reportReason: String = ""
+    // 通報アラートの表示
+    @State private var showReportAlert: Bool = false
 
     let maxTextCount = 20
     @ObservedObject private var cockCardVM = CockCardViewModel()
@@ -65,7 +71,7 @@ struct CockCardView: View {
             VStack {
                 // アイコン、ニックネーム
                 if isShowUserNameAndFollowButton {
-                    HStack {
+                    HStack(alignment: .top) {
                         Button {
                             let isFollow = cockCardVM.checkIsFollow(friendUid: showUserData?.id)
                             path.append(
@@ -109,8 +115,33 @@ struct CockCardView: View {
                         )
 
                         Spacer()
+
+                        OptionsView(
+                            isMyData: isMyPost,
+                            isAlwaysWhite: true,
+                            isSmall: true,
+                            optionType: .post,
+                            blockAction: {
+                                Task {
+                                    if let friend = showUserData,
+                                       let friendUid = friend.id {
+                                        await cockCardVM.blockUser(friendUid: friendUid)
+                                    }
+                                }
+                            },
+                            reportAction: {
+                                showReportAlert = true
+                            },
+                            editAction: {
+
+                            },
+                            deleteAction: {
+
+                            }
+                        )
+                        .padding(.horizontal, 3)
                     }
-                    .padding(.horizontal, 3) // 隙間を3に設定
+                    .padding(.horizontal, 3)
                     .frame(width: cardWidth)
                 }
 
@@ -163,7 +194,23 @@ struct CockCardView: View {
             .frame(width: cardWidth, height: cardHeight)
         }
         .frame(width: cardWidth, height: cardHeight)
+        .alert("通報", isPresented: $showReportAlert) {
+            TextField("通報理由を入力してください", text: $reportReason)
+            Button("キャンセル", role: .cancel) {}
+            Button("通報") {
+                Task {
+                    await cockCardVM.reportPost(
+                        post: showPostData,
+                        reason: reportReason
+                    )
+                }
+            }
+        } message: {
+            Text("通報理由を書いていただくと\n助かります。。。")
+        }
         .onAppear {
+            // 自分の投稿か確認
+            isMyPost = cockCardVM.checkIsMyPost(uid: showPostData.uid)
             Task {
                 await cockCardVM.fetchUserData(uid: showPostData.uid)
                 showUserData = cockCardVM.userData

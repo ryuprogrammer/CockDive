@@ -5,11 +5,14 @@ struct PostCommentView: View {
     let comment: CommentElement
     @State private var showUserData: UserElement? = nil
     @ObservedObject var postCommentVM = PostCommentViewModel()
-
+    // 自分のコメントか
+    let isMyComment: Bool
     // ブロック
     let blockAction: () -> Void
     // 通報処理
     let reportAction: () -> Void
+    // コメント削除処理
+    let deleteAction: () -> Void
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -40,32 +43,23 @@ struct PostCommentView: View {
                         .font(.caption)
                     
                     Spacer()
-                    
-                    Menu {
-                        Button(action: {
+
+                    OptionsView(
+                        isMyData: isMyComment,
+                        isAlwaysWhite: false,
+                        isSmall: true,
+                        optionType: .comment,
+                        blockAction: {
                             blockAction()
-                        }, label: {
-                            HStack {
-                                Image(systemName: "nosign")
-                                Spacer()
-                                Text("ブロック")
-                            }
-                        })
-                        
-                        Button(action: {
+                        },
+                        reportAction: {
                             reportAction()
-                        }, label: {
-                            HStack {
-                                Image(systemName: "exclamationmark.bubble")
-                                Spacer()
-                                Text("通報")
-                            }
-                        })
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundStyle(Color.black)
-                            .frame(width: 20, height: 20)
-                    }
+                        },
+                        editAction: {},
+                        deleteAction: {
+                            deleteAction()
+                        }
+                    )
                 }
                 
                 DynamicHeightCommentView(message: comment.comment, maxTextCount: maxTextCount)
@@ -85,7 +79,9 @@ struct PostCommentView: View {
 #Preview {
     PostCommentView(
         comment: CommentElement(uid: "aaa", comment: "美味しそう", createAt: Date()),
+        isMyComment: true,
         blockAction: {},
-        reportAction: {}
+        reportAction: {},
+        deleteAction: {}
     )
 }

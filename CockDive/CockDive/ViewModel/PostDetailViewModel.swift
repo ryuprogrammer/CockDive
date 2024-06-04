@@ -78,6 +78,28 @@ class PostDetailViewModel: ObservableObject {
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
     }
 
+    /// Userを通報
+    func reportUser(
+        reportedUid: String,
+        post: PostElement,
+        reason: String
+    ) async {
+        guard let postId = post.id else { return }
+        let report = ReportElement(
+            reportedUserID: reportedUid,
+            reportingUserID: fetchUid(),
+            reason: reason,
+            createAt: Date(),
+            postID: postId
+        )
+        do {
+            try await reportDataModel.addReport(report: report)
+            print("Post reported successfully.")
+        } catch {
+            print("Failed to report post: \(error.localizedDescription)")
+        }
+    }
+
     /// 投稿通報
     func reportPost(
         post: PostElement,
@@ -111,6 +133,16 @@ class PostDetailViewModel: ObservableObject {
         DispatchQueue.main.async {
             guard let userData = user else { return }
             self.userData = userData
+        }
+    }
+
+    /// 自分の投稿か判定
+    func checkIsMyPost(uid: String) -> Bool {
+        let myUid = fetchUid()
+        if uid == myUid {
+            return true
+        } else {
+            return false
         }
     }
 

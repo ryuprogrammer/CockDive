@@ -12,12 +12,23 @@ class CockCardViewModel: ObservableObject {
     let postDataModel = PostDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
     let coreDataLikePostModel = LikePostCoreDataManager.shared
+    let reportDataModel = ReportDataModel()
 
     private var postListener: ListenerRegistration? = nil
 
     /// uid取得
     func fetchUid() -> String {
         return userDataModel.fetchUid() ?? ""
+    }
+
+    /// 自分の投稿か判定
+    func checkIsMyPost(uid: String) -> Bool {
+        let myUid = fetchUid()
+        if uid == myUid {
+            return true
+        } else {
+            return false
+        }
     }
 
     // MARK: - データのリッスン
@@ -64,6 +75,34 @@ class CockCardViewModel: ObservableObject {
         await postDataModel.changeLikeToPost(post: post, toLike: toLike)
         // FirestoreのUserPostDataModelのライク変更
         await userPostDataModel.addPostId(postId: id, userPostType: .like)
+    }
+
+    /// ブロック
+    func blockUser(
+        friendUid: String
+    ) async {
+        await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
+    }
+
+    /// 投稿通報
+    func reportPost(
+        post: PostElement,
+        reason: String
+    ) async {
+        guard let postId = post.id else { return }
+        let report = ReportElement(
+            reportedUserID: post.uid,
+            reportingUserID: fetchUid(),
+            reason: reason,
+            createAt: Date(),
+            postID: postId
+        )
+        do {
+            try await reportDataModel.addReport(report: report)
+            print("Post reported successfully.")
+        } catch {
+            print("Failed to report post: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - CoreData

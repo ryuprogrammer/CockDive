@@ -13,6 +13,8 @@ class ProfileViewModel: ObservableObject {
     let userFriendModel = UserFriendModel()
     let postDataModel = PostDataModel()
     let coreDataMyDataModel = MyDataCoreDataManager.shared
+    let reportDataModel = ReportDataModel()
+    let userDataModel = UserDataModel()
 
     // ロードステータス
     enum LoadStatus {
@@ -23,6 +25,11 @@ class ProfileViewModel: ObservableObject {
     }
 
     // MARK: - データ取得
+    /// uid取得
+    func fetchUid() -> String {
+        return userDataModel.fetchUid() ?? ""
+    }
+
     /// PostをloadStatusに応じて取得
     func fetchPostsDataByStatus(uid: String, lastId: String?) async {
         switch loadStatus {
@@ -100,9 +107,25 @@ class ProfileViewModel: ObservableObject {
         await userFriendModel.addUserFriend(friendUid: friendUid, friendType: .block)
     }
 
-    /// 通報
-    func reportUser(friendUid: String) {
-        // TODO: 通報処理書く
+    /// Userを通報
+    func reportUser(
+        reportedUid: String?,
+        reason: String
+    ) async {
+        guard let uid = reportedUid else { return }
+        let report = ReportElement(
+            reportedUserID: uid,
+            reportingUserID: fetchUid(),
+            reason: reason,
+            createAt: Date(),
+            postID: nil
+        )
+        do {
+            try await reportDataModel.addReport(report: report)
+            print("Post reported successfully.")
+        } catch {
+            print("Failed to report post: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - CoreData
