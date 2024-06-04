@@ -195,7 +195,11 @@ struct PostDetailView: View {
                                 alertType = .user(uid: comment.uid)
                             },
                             deleteAction: {
-                                // TODO: - コメント削除処理実装
+                                // コメント削除→自分のコメントのみ削除
+                                postDetailVM.deleteComment(
+                                    post: showPostData,
+                                    commentToDelete: comment
+                                )
                             }
                         )
                     }

@@ -46,6 +46,14 @@ class PostDetailViewModel: ObservableObject {
     ) {
         commentDataModel.updateComment(post: post, newComment: newComment)
     }
+    
+    /// コメント削除
+    func deleteComment(
+        post: PostElement,
+        commentToDelete: CommentElement
+    ) {
+        commentDataModel.deleteComment(post: post, commentToDelete: commentToDelete)
+    }
 
     /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(

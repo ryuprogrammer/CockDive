@@ -35,4 +35,32 @@ struct CommentDataModel {
             print("Error encoding newComment: \(error)")
         }
     }
+
+    // MARK: - データ削除
+    /// コメント削除
+    func deleteComment(post: PostElement, commentToDelete: CommentElement) {
+        // id取得
+        guard let postId = post.id else { return }
+
+        // リファレンスを作成
+        let docRef = db.collection(postDataCollection).document(postId)
+
+        do {
+            // commentToDeleteをエンコード
+            let encodedComment = try Firestore.Encoder().encode(commentToDelete)
+
+            // コメントフィールドから削除
+            docRef.updateData([
+                "comment": FieldValue.arrayRemove([encodedComment])
+            ]) { error in
+                if let error = error {
+                    print("Error deleting comment: \(error)")
+                } else {
+                    print("Comment successfully deleted")
+                }
+            }
+        } catch {
+            print("Error encoding commentToDelete: \(error)")
+        }
+    }
 }
