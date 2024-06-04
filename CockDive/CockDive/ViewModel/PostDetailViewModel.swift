@@ -46,7 +46,7 @@ class PostDetailViewModel: ObservableObject {
     ) {
         commentDataModel.updateComment(post: post, newComment: newComment)
     }
-    
+
     /// コメント削除
     func deleteComment(
         post: PostElement,
@@ -57,10 +57,10 @@ class PostDetailViewModel: ObservableObject {
 
     /// Like変更（CoreDataとFirestore（UserPostDataModelとPostDataModel））
     func likePost(
-        post: PostElement
+        post: PostElement,
+        toLike: Bool
     ) async {
         guard let id = post.id else { return }
-        let toLike = !isLike
         // CoreDataのライク変更
         coreDataLikePostModel.toggleLikePost(id: id, toLike: toLike)
         // FirestoreのPostDataModelのライク変更

@@ -8,6 +8,7 @@ class LikePostCoreDataManager {
     var context: NSManagedObjectContext {
         return PersistenceController.shared.container.viewContext
     }
+
     // MARK: - データの存在確認
 
     /// 指定されたIDのLikePostModelが存在するかどうかをチェックする
@@ -22,14 +23,14 @@ class LikePostCoreDataManager {
     /// 指定されたIDのLikePostModelが存在するなら削除、存在しないなら追加する
     /// - Parameters:
     ///   - id: LikePostModelのID
-    ///   - createAt: 今日
+    ///   - toLike: ライクするかどうかのフラグ
     func toggleLikePost(id: String, toLike: Bool) {
-        if let _ = fetchById(id: id) { // ライクしてあるけど、
-            if !toLike { // ライクを外したい！
-                deleteById(id: id)
+        if let likePost = fetchById(id: id) {
+            if !toLike {
+                delete(likePost)
             }
-        } else { // ライクしてないから、
-            if toLike { // ライクにしたい！
+        } else {
+            if toLike {
                 create(id: id, createAt: Date())
             }
         }
@@ -89,18 +90,14 @@ class LikePostCoreDataManager {
 
     // MARK: - データの削除
 
-    /// 指定されたIDのLikePostModelを削除する
-    /// - Parameter id: 削除するLikePostModelのID
-    private func deleteById(id: String) {
-        if let likePost = fetchById(id: id) {
-            context.delete(likePost)
-            do {
-                try context.save()
-            } catch {
-                print("Failed to delete LikePostModel: \(error)")
-            }
-        } else {
-            print("LikePostModel with id \(id) does not exist.")
+    /// LikePostModelを削除する
+    /// - Parameter likePost: 削除するLikePostModel
+    private func delete(_ likePost: LikePostModel) {
+        context.delete(likePost)
+        do {
+            try context.save()
+        } catch {
+            print("Failed to delete LikePostModel: \(error)")
         }
     }
 }

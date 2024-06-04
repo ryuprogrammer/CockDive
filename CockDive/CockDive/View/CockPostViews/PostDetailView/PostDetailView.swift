@@ -120,6 +120,38 @@ struct PostDetailView: View {
                             }
 
                             Spacer()
+
+                            HStack {
+                                Spacer()
+
+                                Text("\(showPostData.likeCount)")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color.white)
+
+                                // ライクボタン
+                                LikeButtonView(
+                                    isLiked: $showIsLike,
+                                    isButtonDisabled: $isLikeButtonDisabled,
+                                    buttonSize: CGSize(width: screenWidth/12, height: screenWidth/12)
+                                ) {
+                                    // ボタンの無効化
+                                    isLikeButtonDisabled = true
+                                    // haptics
+                                    hapticsManager.playHapticPattern()
+
+                                    if showIsLike {
+                                        showPostData.likeCount -= 1
+                                    } else {
+                                        showPostData.likeCount += 1
+                                    }
+                                    showIsLike.toggle()
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        isLikeButtonDisabled = false
+                                    }
+                                }
+                            }
                         }
                         .padding(5)
                         .frame(width: screenWidth, height: screenWidth)
@@ -127,52 +159,11 @@ struct PostDetailView: View {
                     .frame(width: screenWidth, height: screenWidth)
                 }
 
-                // ボタンを有効にするために分割
-                HStack {
-                    if let memo = showPostData.memo {
-                        DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
-                    }
-
-                    VStack {
-                        // ライクボタン
-                        Button {
-                            // ボタンの無効化
-                            isLikeButtonDisabled = true
-                            // haptics
-                            hapticsManager.playHapticPattern()
-
-                            if showIsLike {
-                                showPostData.likeCount -= 1
-                            } else {
-                                showPostData.likeCount += 1
-                            }
-                            showIsLike.toggle()
-                            Task {
-                                // ライクデータ変更（FirebaseとCoreData）
-                                await postDetailVM.likePost(post: showPostData)
-                                // CoreDataからライクデータ取得
-                                postDetailVM.checkIsLike(postId: showPostData.id)
-                            }
-
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                isLikeButtonDisabled = false
-                            }
-                        } label: {
-                            Image(systemName: showIsLike ? "heart.fill" : "heart")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30)
-                                .foregroundStyle(isLikeButtonDisabled ? Color.pink.opacity(0.7) : Color.pink)
-                        }
-                        .disabled(isLikeButtonDisabled)
-                        .buttonStyle(BorderlessButtonStyle())
-
-                        Text("\(showPostData.likeCount)")
-                            .font(.footnote)
-                    }
+                if let memo = showPostData.memo {
+                    DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
+                        .padding(.top, 3)
+                        .padding(.horizontal)
                 }
-                .padding(.top, 3)
-                .padding(.horizontal)
 
                 ForEach(showPostData.comment.reversed(), id: \.id) { comment in
                     VStack {
@@ -346,9 +337,14 @@ struct PostDetailView: View {
                 showPostData = newPostData
             }
         }
-        .onChange(of: postDetailVM.isLike) { isLike in
-            // ライク更新
-            showIsLike = isLike
+        .onChange(of: showIsLike) { newLike in
+            Task {
+                // ライクデータ変更（FirebaseとCoreData）
+                await postDetailVM.likePost(
+                    post: showPostData,
+                    toLike: newLike
+                )
+            }
         }
         .onChange(of: postDetailVM.isFollow) { isFollow in
             // フォロー更新
