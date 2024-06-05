@@ -77,7 +77,6 @@ class AuthenticationManager: ObservableObject {
             deleteAllPosts()
             deleteAllLikedPosts()
             deleteAllMyDataModels()
-            await deleteAllPost(completion: completion)
             await deleteUser(completion: completion)
         }
     }
@@ -103,10 +102,6 @@ class AuthenticationManager: ObservableObject {
     }
 
     // MARK: - Firebase
-
-    private func deleteAllPost(completion: @escaping (Result<Void, Error>) -> Void) async {
-        await postDataModel.deleteAllUserPosts(completion: completion)
-    }
 
     private func deleteUser(completion: @escaping (Result<Void, Error>) -> Void) async {
         await userDataModel.deleteAllUserData(completion: completion)

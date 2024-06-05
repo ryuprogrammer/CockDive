@@ -2,7 +2,6 @@ import Foundation
 import FirebaseAuth
 
 class StartViewModel: ObservableObject {
-    // iOS16でも使うので、Publuish
     @Published var userStatus: UserStatus = .loading
     @Published var userUpdateStatus: UserUpdateStatus = .idle
     private var handle: AuthStateDidChangeListenerHandle!

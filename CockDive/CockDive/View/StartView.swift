@@ -26,6 +26,8 @@ struct StartView: View {
                 let iconImageData = iconImage?.castToData()
                 // ユーザー登録
                 startViewModel.addUser(nickName: nickName, iconImageData: iconImageData)
+                // メイン画面に画面遷移
+                startViewModel.userStatus = .normalUser
             }
         case .normalUser:
             // メイン画面

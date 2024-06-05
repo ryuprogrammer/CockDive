@@ -107,7 +107,7 @@ struct IconRegistrationView: View {
                 Spacer()
 
                 // Sign-In状態なので登録画面に遷移
-                if let uiImage {
+                if uiImage != nil {
                     LongBarButton(text: "ユーザー登録", isStroke: true) {
                         registrationAction()
                     }
