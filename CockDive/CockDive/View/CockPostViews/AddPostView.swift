@@ -6,6 +6,15 @@ enum PostType: String {
     case add = "新規投稿"
     /// 編集
     case edit = "投稿を編集"
+
+    var buttonText: String {
+        switch self {
+        case .add:
+            return "投稿"
+        case .edit:
+            return "更新"
+        }
+    }
 }
 
 struct AddPostView: View {
@@ -180,14 +189,14 @@ struct AddPostView: View {
                 }
 
                 ToolbarItem(placement: .principal) {
-                    Text("ご飯を投稿")
+                    Text(postType.rawValue)
                         .foregroundStyle(Color.white)
                         .font(.title3)
                         .fontWeight(.bold)
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    ToolBarAddButtonView(text: "投稿") {
+                    ToolBarAddButtonView(text: postType.buttonText) {
                         validateTitle()
                         validateMemo()
                         validateImage()
