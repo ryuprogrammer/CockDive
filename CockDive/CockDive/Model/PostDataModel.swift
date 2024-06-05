@@ -167,6 +167,35 @@ struct PostDataModel {
         try await postRef.delete()
     }
 
+    /// 自分の投稿をすべて削除する
+    func deleteAllUserPosts(completion: @escaping (Result<Void, Error>) -> Void) async {
+        // uid取得
+        guard let uid = fetchUid() else {
+            completion(.failure(NSError(domain: "Auth", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated."])))
+            return
+        }
+
+        do {
+            // ユーザーの投稿を取得
+            let querySnapshot = try await db.collection(postDataCollection)
+                .whereField("uid", isEqualTo: uid)
+                .getDocuments()
+
+            // 取得した投稿を削除
+            let batch = db.batch()
+            querySnapshot.documents.forEach { document in
+                batch.deleteDocument(document.reference)
+            }
+            try await batch.commit()
+
+            // 削除成功を通知
+            completion(.success(()))
+        } catch {
+            // エラーを通知
+            completion(.failure(error))
+        }
+    }
+
     /// Like押す
     func changeLikeToPost(
         post: PostElement,

@@ -8,6 +8,13 @@ class AuthenticationManager: ObservableObject {
     @Published private(set) var userStatus: UserStatus = .signInRequired
     private var handle: AuthStateDidChangeListenerHandle!
 
+    let userDataModel = UserDataModel()
+    let postDataModel = PostDataModel()
+    let userDefaultsModel = UserDefaultsDataModel()
+    let myPostCoreDataManager = MyPostCoreDataManager.shared
+    let likePostCoreDataManager = LikePostCoreDataManager.shared
+    let myDataCoreDataManager = MyDataCoreDataManager.shared
+
     init() {
         // 認証状態の変化を監視するリスナー
         handle = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
@@ -61,5 +68,47 @@ class AuthenticationManager: ObservableObject {
                 completion(.success(()))
             }
         }
+    }
+
+    /// データを全て削除
+    func deleteAllData(completion: @escaping (Result<Void, Error>) -> Void) {
+        Task {
+            deleteAllUserData()
+            deleteAllPosts()
+            deleteAllLikedPosts()
+            deleteAllMyDataModels()
+            await deleteAllPost(completion: completion)
+            await deleteUser(completion: completion)
+        }
+    }
+
+    // MARK: - userDefaultsModel
+
+    private func deleteAllUserData() {
+        userDefaultsModel.removeAllUserData()
+    }
+
+    // MARK: - CoreData
+
+    private func deleteAllPosts() {
+        myPostCoreDataManager.deleteAllPosts()
+    }
+
+    private func deleteAllLikedPosts() {
+        likePostCoreDataManager.deleteAllLikedPosts()
+    }
+
+    private func deleteAllMyDataModels() {
+        myDataCoreDataManager.deleteAllMyDataModels()
+    }
+
+    // MARK: - Firebase
+
+    private func deleteAllPost(completion: @escaping (Result<Void, Error>) -> Void) async {
+        await postDataModel.deleteAllUserPosts(completion: completion)
+    }
+
+    private func deleteUser(completion: @escaping (Result<Void, Error>) -> Void) async {
+        await userDataModel.deleteAllUserData(completion: completion)
     }
 }

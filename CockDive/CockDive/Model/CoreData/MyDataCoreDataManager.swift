@@ -118,4 +118,19 @@ class MyDataCoreDataManager {
 
         saveContext()
     }
+
+    /// MyDataModelを全て削除する
+    func deleteAllMyDataModels() {
+        let request: NSFetchRequest<MyDataModel> = MyDataModel.fetchRequest()
+        do {
+            let results = try context.fetch(request)
+            for dataModel in results {
+                context.delete(dataModel)
+            }
+            try context.save()
+        } catch {
+            print("Failed to delete all MyDataModel: \(error)")
+        }
+    }
+
 }

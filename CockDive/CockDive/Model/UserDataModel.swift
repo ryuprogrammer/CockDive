@@ -143,4 +143,36 @@ class UserDataModel {
 
         return iconData
     }
+
+    /// ユーザーに関連するすべてのデータを削除する
+    func deleteAllUserData(completion: @escaping (Result<Void, Error>) -> Void) async {
+        // uid取得
+        guard let uid = fetchUid() else {
+            completion(.failure(NSError(domain: "Auth", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated."])))
+            return
+        }
+
+        // Firestoreのユーザーデータを削除
+        do {
+            try await deleteUserDataFromFirestore(uid: uid)
+            try await deleteIconImageFromStorage(uid: uid)
+            completion(.success(()))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    /// Firestoreからユーザーデータを削除する
+    private func deleteUserDataFromFirestore(uid: String) async throws {
+        let documentRef = db.collection(userCollection).document(uid)
+        try await documentRef.delete()
+    }
+
+    /// Storageからユーザーのアイコン画像を削除する
+    private func deleteIconImageFromStorage(uid: String) async throws {
+        let storageRef = storage.reference()
+        let iconImageRef = storageRef.child("iconImage/\(uid)/icon.jpg")
+        try await iconImageRef.delete()
+    }
 }
+

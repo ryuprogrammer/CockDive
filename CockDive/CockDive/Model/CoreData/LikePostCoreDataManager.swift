@@ -100,4 +100,19 @@ class LikePostCoreDataManager {
             print("Failed to delete LikePostModel: \(error)")
         }
     }
+
+    /// すべてのLikePostModelを削除する
+    func deleteAllLikedPosts() {
+        let request: NSFetchRequest<LikePostModel> = LikePostModel.fetchRequest()
+        do {
+            let results = try context.fetch(request)
+            for post in results {
+                context.delete(post)
+            }
+            try context.save()
+        } catch {
+            print("Failed to delete all LikePostModel: \(error)")
+        }
+    }
+
 }

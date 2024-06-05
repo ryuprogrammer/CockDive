@@ -126,4 +126,18 @@ class MyPostCoreDataManager {
             print("Failed to delete MyPostModel: \(error)")
         }
     }
+
+    /// 全てのMyPostModelを削除する
+    func deleteAllPosts() {
+        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
+        do {
+            let results = try context.fetch(request)
+            for post in results {
+                context.delete(post)
+            }
+            try context.save()
+        } catch {
+            print("Failed to delete all MyPostModel: \(error)")
+        }
+    }
 }

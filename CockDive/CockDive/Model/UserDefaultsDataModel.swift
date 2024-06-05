@@ -41,4 +41,9 @@ struct UserDefaultsDataModel {
         print("object: \(userExists)")
         return userExists
     }
+
+    /// userデータを削除
+    func removeAllUserData() {
+        UserDefaults.standard.removeObject(forKey: userKey)
+    }
 }
