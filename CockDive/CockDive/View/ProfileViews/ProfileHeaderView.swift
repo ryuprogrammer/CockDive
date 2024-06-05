@@ -57,8 +57,7 @@ struct ProfileHeaderView: View {
 
             if let introduction = showUser.introduction {
                 DynamicHeightCommentView(
-                    message: introduction,
-                    maxTextCount: 30
+                    message: introduction
                 )
             }
         }

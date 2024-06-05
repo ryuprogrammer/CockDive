@@ -36,8 +36,6 @@ struct PostDetailView: View {
         case user(uid: String)
         case post
     }
-
-    let maxTextCount = 40
     @StateObject private var hapticsManager = HapticsManager()
 
     // 画面サイズ取得
@@ -159,7 +157,7 @@ struct PostDetailView: View {
                 }
 
                 if let memo = showPostData.memo {
-                    DynamicHeightCommentView(message: memo, maxTextCount: maxTextCount)
+                    DynamicHeightCommentView(message: memo)
                         .padding(.top, 3)
                         .padding(.horizontal)
                 }
@@ -316,12 +314,14 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
-            // 自分の投稿か確認
-            isMyPost = postDetailVM.checkIsMyPost(uid: showPostData.uid)
-            Task {
-                await postDetailVM.fetchUserData(uid: showPostData.uid)
-                if let data = postDetailVM.userData {
-                    showUserData = data
+            if let uid = showPostData.id {
+                // 自分の投稿か確認
+                isMyPost = postDetailVM.checkIsMyPost(uid: uid)
+                Task {
+                    await postDetailVM.fetchUserData(uid: uid)
+                    if let data = postDetailVM.userData {
+                        showUserData = data
+                    }
                 }
             }
 

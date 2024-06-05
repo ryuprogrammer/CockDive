@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PostCommentView: View {
-    let maxTextCount: Int = 50
     let comment: CommentElement
     @State private var showUserData: UserElement? = nil
     @ObservedObject var postCommentVM = PostCommentViewModel()
@@ -62,7 +61,7 @@ struct PostCommentView: View {
                     )
                 }
                 
-                DynamicHeightCommentView(message: comment.comment, maxTextCount: maxTextCount)
+                DynamicHeightCommentView(message: comment.comment)
             }
             
             Spacer()

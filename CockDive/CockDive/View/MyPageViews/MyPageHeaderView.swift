@@ -61,8 +61,7 @@ struct MyPageHeaderView: View {
             
             if let introduction = showUserData.introduction {
                 DynamicHeightCommentView(
-                    message: introduction,
-                    maxTextCount: 30
+                    message: introduction
                 )
             }
         }
