@@ -130,6 +130,7 @@ class PostDetailViewModel: ObservableObject {
     }
 
     // MARK: - データ取得
+
     /// uid取得
     func fetchUid() -> String {
         return userDataModel.fetchUid() ?? ""

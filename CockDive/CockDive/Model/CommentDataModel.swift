@@ -42,25 +42,33 @@ struct CommentDataModel {
         // id取得
         guard let postId = post.id else { return }
 
+        // 新しいコメントデータ
+        var updatedComments = post.comment
+
+        // 該当するコメントを削除
+        updatedComments.removeAll { $0.id == commentToDelete.id }
+
+        // 更新する投稿データ
+        var updatedPost = post
+        updatedPost.comment = updatedComments
+
         // リファレンスを作成
         let docRef = db.collection(postDataCollection).document(postId)
 
         do {
-            // commentToDeleteをエンコード
-            let encodedComment = try Firestore.Encoder().encode(commentToDelete)
+            // 更新した投稿データをエンコード
+            let encodedPost = try Firestore.Encoder().encode(updatedPost)
 
-            // コメントフィールドから削除
-            docRef.updateData([
-                "comment": FieldValue.arrayRemove([encodedComment])
-            ]) { error in
+            // 投稿データを更新
+            docRef.setData(encodedPost) { error in
                 if let error = error {
-                    print("Error deleting comment: \(error)")
+                    print("Error updating post: \(error)")
                 } else {
-                    print("Comment successfully deleted")
+                    print("Post successfully updated with deleted comment")
                 }
             }
         } catch {
-            print("Error encoding commentToDelete: \(error)")
+            print("Error encoding updatedPost: \(error)")
         }
     }
 }
