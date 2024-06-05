@@ -139,7 +139,7 @@ struct CockCardView: View {
                             .frame(width: cardWidth / 6, height: cardWidth / 6)
                             .clipShape(Circle())
 
-                            VStack(alignment: .leading, spacing: 3) { // 隙間を3に設定
+                            VStack(alignment: .leading, spacing: 3) {
                                 // ニックネーム
                                 Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
                                     .foregroundStyle(Color.white)
@@ -234,7 +234,7 @@ struct CockCardView: View {
                             .blur(radius: 15)
                     )
                 }
-                .padding(.horizontal, 3) // 隙間を3に設定
+                .padding(.horizontal, 3)
             }
             .padding(3) // 隙間を3に設定
             .frame(width: cardWidth, height: cardHeight)
