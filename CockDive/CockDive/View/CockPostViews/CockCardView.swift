@@ -23,12 +23,9 @@ struct CockCardView: View {
     // 通報理由
     @State private var reportReason: String = ""
     // アラートの種類
-    @State private var alertType: AlertType?
-
-    // アラートを表示する関数
-    private func showAlert(_ type: AlertType) {
-        alertType = type
-    }
+    @State private var alertType: AlertType = .report
+    // 通報アラートの表示
+    @State private var showReportAlert: Bool = false
 
     let maxTextCount = 20
     @ObservedObject private var cockCardVM = CockCardViewModel()
@@ -58,6 +55,24 @@ struct CockCardView: View {
         case report
 
         var id: AlertType { self }
+
+        var title: String {
+            switch self {
+                case .noPost:
+                    return "投稿が存在しません"
+                case .report:
+                    return "通報"
+            }
+        }
+
+        var message: String {
+            switch self {
+                case .noPost:
+                    return ""
+                case .report:
+                    return "通報理由を書いていただくと\n助かります。。。"
+            }
+        }
     }
 
     var body: some View {
@@ -79,7 +94,8 @@ struct CockCardView: View {
                             )
                         )
                     } else {
-                        showAlert(.noPost)
+                        showReportAlert = true
+                        alertType = .noPost
                     }
                 }
             } label: {
@@ -159,7 +175,8 @@ struct CockCardView: View {
                                 }
                             },
                             reportAction: {
-                                showAlert(.report)
+                                showReportAlert = true
+                                alertType = .report
                             },
                             editAction: {
 
@@ -223,25 +240,24 @@ struct CockCardView: View {
             .frame(width: cardWidth, height: cardHeight)
         }
         .frame(width: cardWidth, height: cardHeight)
-        .alert(item: $alertType) { type in
-            switch type {
+        .alert(alertType.title, isPresented: $showReportAlert) {
+            switch alertType {
             case .noPost:
-                return Alert(title: Text("投稿が存在しません"), message: nil)
+                Button("OK", role: .cancel) {}
             case .report:
-                return Alert(
-                    title: Text("通報"),
-                    message: Text("通報理由を書いていただくと\n助かります。。。"),
-                    primaryButton: .cancel(),
-                    secondaryButton: .default(Text("通報")) {
-                        Task {
-                            await cockCardVM.reportPost(
-                                post: showPostData,
-                                reason: reportReason
-                            )
-                        }
+                TextField("通報理由", text: $reportReason)
+                Button("キャンセル", role: .cancel) {}
+                Button("通報", role: .destructive) {
+                    Task {
+                        await cockCardVM.reportPost(
+                            post: showPostData,
+                            reason: reportReason
+                        )
                     }
-                )
+                }
             }
+        } message: {
+            Text(alertType.message)
         }
         .onAppear {
             // 自分の投稿か確認
@@ -277,37 +293,15 @@ struct CockCardView: View {
     }
 }
 
-#Preview {
-    struct PreviewView: View {
-        let postData: PostElement = PostElement(uid: "dummy_uid", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: [])
-
-        @State var path: [CockCardNavigationPath] = []
-        let columns = [
-            GridItem(.flexible()),
-            GridItem(.flexible())
-        ]
-
-        var body: some View {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 3) { // 隙間を3に設定
-
-                }
-            }
-            .padding(.horizontal, 3) // 隙間を3に設定
-        }
+struct CockCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        CockCardView(
+            showPostData: PostElement(uid: "dummy_uid", title: "定食定食定食定食定食定食", memo: "ここに説明文を挿入", isPrivate: false, createAt: Date(), likeCount: 22, likedUser: [], comment: []),
+            showUserData: nil,
+            isShowUserNameAndFollowButton: true,
+            path: .constant([]),
+            parendViewType: nil,
+            deletePostAction: {}
+        )
     }
-    return PreviewView()
 }
-
-
-// メッセージ
-//VStack(spacing: 1) {
-//    Image(systemName: "message")
-//        .resizable()
-//        .aspectRatio(contentMode: .fit)
-//        .frame(width: 30)
-//        .foregroundStyle(Color.black)
-//
-//    Text(String(showPostData.comment.count))
-//        .font(.footnote)
-//}

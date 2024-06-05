@@ -247,7 +247,7 @@ struct PostDetailView: View {
         .alert("通報", isPresented: $showReportAlert) {
             TextField("通報理由を入力してください", text: $reportReason)
             Button("キャンセル", role: .cancel) {}
-            Button("通報") {
+            Button("通報", role: .destructive) {
                 switch alertType {
                 case .user(let uid):
                     Task {
