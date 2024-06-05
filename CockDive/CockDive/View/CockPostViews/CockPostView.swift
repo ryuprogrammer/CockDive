@@ -51,7 +51,7 @@ struct CockPostView: View {
             }
         }
         .sheet(isPresented: $isShowSheet) {
-            AddPostView()
+            AddPostView(postType: .add)
                 .onDisappear {
                     cockPostVM.loadStatus = .initial
                     showPostsData.removeAll()

@@ -1,7 +1,15 @@
 import SwiftUI
 import PhotosUI
 
+enum PostType: String {
+    /// 新規投稿
+    case add = "新規投稿"
+    /// 編集
+    case edit = "投稿を編集"
+}
+
 struct AddPostView: View {
+    let postType: PostType
     @StateObject private var addPostVM = AddPostViewModel()
     @State private var title: String = ""
     @State private var memo: String = ""
@@ -113,7 +121,7 @@ struct AddPostView: View {
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
                         .overlay(alignment: .topLeading) {
-                            Text(memo.isEmpty ? "ご飯のメモ\n 例） 旬の野菜を取り入れてみました。" : "")
+                            Text(memo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
                                 .foregroundStyle(Color.gray.opacity(0.5))
                                 .padding(5)
                         }
@@ -322,5 +330,5 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 #Preview {
-    AddPostView()
+    AddPostView(postType: .add)
 }
