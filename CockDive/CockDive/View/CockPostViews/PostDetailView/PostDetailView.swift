@@ -212,7 +212,6 @@ struct PostDetailView: View {
                     )
 
                     Button {
-                        print("こめ")
                         isCommentButtonDisabled = true
                         let uid = postDetailVM.fetchUid()
                         // 新しいコメント

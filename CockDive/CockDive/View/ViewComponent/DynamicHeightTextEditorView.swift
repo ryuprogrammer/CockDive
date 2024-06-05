@@ -14,7 +14,8 @@ struct DynamicHeightTextEditorView: View {
             HStack {
                 if text.isEmpty {
                     Text(placeholder)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.grayWhite)
+                        .fontWeight(.bold)
                 } else {
                     Text(text)
                 }
@@ -32,7 +33,7 @@ struct DynamicHeightTextEditorView: View {
         .padding(.horizontal, 10)
         .frame(maxHeight: maxHeight)
         .fixedSize(horizontal: false, vertical: true)
-        .background(Color.white)
+        .background(Color.whiteBlack)
         .mask(RoundedRectangle(cornerRadius: 18).padding(.vertical, 3))
     }
 }

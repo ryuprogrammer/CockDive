@@ -21,16 +21,16 @@ struct NavigationLinkButtonView: View {
         }, label: {
             HStack {
                 Image(systemName: icon)
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(Color.blackWhite)
                     .padding(.trailing, 5)
                 
                 Text(text)
-                    .foregroundStyle(Color.black)
-                
+                    .foregroundStyle(Color.blackWhite)
+
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(Color.grayWhite)
             }
         })
     }

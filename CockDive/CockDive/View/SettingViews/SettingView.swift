@@ -38,14 +38,14 @@ struct SettingView: View {
                     VStack(alignment: .leading) {
                         Text(showUserData?.nickName ?? "ニックネーム")
                             .font(.title)
-                            .foregroundStyle(Color.black)
+                            .foregroundStyle(Color.blackWhite)
                         Text("プロフィールを編集")
-                            .foregroundStyle(Color.gray)
+                            .foregroundStyle(Color.grayWhite)
                     }
 
                     Spacer()
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(Color.gray)
+                        .foregroundStyle(Color.grayWhite)
                 }
             }
 
