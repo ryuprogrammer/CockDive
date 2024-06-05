@@ -16,22 +16,10 @@ struct TermsOfServiceView: View {
             }
         }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationTitle("利用規約")
+            .toolbarColorScheme(.dark)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    ToolBarBackButtonView {
-                        path.removeLast()
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("利用規約")
-                        .foregroundStyle(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title3)
-                }
-            }
     }
 }
 

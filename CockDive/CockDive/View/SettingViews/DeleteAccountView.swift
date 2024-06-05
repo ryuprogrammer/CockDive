@@ -87,22 +87,10 @@ struct DeleteAccountView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("アカウント削除")
+        .toolbarColorScheme(.dark)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    path.removeLast()
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("アカウント削除")
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
-        }
     }
 
     func deleteAllData() {

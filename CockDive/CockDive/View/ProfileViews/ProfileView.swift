@@ -100,23 +100,13 @@ struct ProfileView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .toolbar(.hidden, for: .tabBar)
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle(showUser.nickName)
+        .toolbarColorScheme(.dark)
         .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    self.presentation.wrappedValue.dismiss()
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text(showUser.nickName)
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
             ToolbarItem(placement: .topBarTrailing) {
                 OptionsView(
                     isMyData: false,

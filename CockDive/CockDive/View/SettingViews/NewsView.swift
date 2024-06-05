@@ -7,22 +7,10 @@ struct NewsView: View {
     var body: some View {
         Text("まだお知らせはありません、")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationTitle("お知らせ")
+            .toolbarColorScheme(.dark)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    ToolBarBackButtonView {
-                        path.removeLast()
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("お知らせ")
-                        .foregroundStyle(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title3)
-                }
-            }
     }
 }
 

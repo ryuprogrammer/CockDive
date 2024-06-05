@@ -15,7 +15,6 @@ struct DynamicHeightTextEditorView: View {
                 if text.isEmpty {
                     Text(placeholder)
                         .foregroundColor(.grayWhite)
-                        .fontWeight(.bold)
                 } else {
                     Text(text)
                 }

@@ -59,22 +59,10 @@ struct LogoutView: View {
 
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("お知らせ")
+        .toolbarColorScheme(.dark)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    path.removeLast()
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("ログアウト")
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
-        }
     }
 }
 

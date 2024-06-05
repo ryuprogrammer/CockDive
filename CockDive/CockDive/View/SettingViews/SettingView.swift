@@ -103,23 +103,11 @@ struct SettingView: View {
         }
         // TabBar非表示
         .toolbar(flag, for: .tabBar)
+        .navigationTitle("設定")
+        .toolbarColorScheme(.dark)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    path.removeLast()
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("設定")
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
-        }
         .onAppear {
             settingVM.fetchUserData()
         }

@@ -28,6 +28,8 @@ struct PostDetailView: View {
     @State private var showReportAlert: Bool = false
     // アラートの情報
     @State private var alertType: AlertType = .post
+    // キーボードフォーカス
+    @FocusState private var keyboardFocus: Bool
 
     // アラートタイプ
     private enum AlertType {
@@ -210,6 +212,7 @@ struct PostDetailView: View {
                         placeholder: "コメントしよう！",
                         maxHeight: 200
                     )
+                    .focused($keyboardFocus)
 
                     Button {
                         isCommentButtonDisabled = true
@@ -243,6 +246,10 @@ struct PostDetailView: View {
                 .background(Color.mainColor)
             }
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            keyboardFocus = false
+        }
         .alert("通報", isPresented: $showReportAlert) {
             TextField("通報理由を入力してください", text: $reportReason)
             Button("キャンセル", role: .cancel) {}
@@ -270,27 +277,12 @@ struct PostDetailView: View {
         }
         // TabBar非表示
         .toolbar(.hidden, for: .tabBar)
-        // 戻るボタン非表示
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle(showPostData.title)
+        .toolbarColorScheme(.dark)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            // 戻るボタン
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    cockCardNavigationPath.removeAll()
-                }
-            }
-
-            // タイトル
-            ToolbarItem(placement: .principal) {
-                Text(showPostData.title)
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
-
             ToolbarItem(placement: .topBarTrailing) {
                 OptionsView(
                     isMyData: isMyPost,

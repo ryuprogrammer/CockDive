@@ -69,22 +69,10 @@ struct BlockListView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("ブロックリスト")
+        .toolbarColorScheme(.dark)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ToolBarBackButtonView {
-                    path.removeLast()
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("ブロックリスト")
-                    .foregroundStyle(Color.white)
-                    .fontWeight(.bold)
-                    .font(.title3)
-            }
-        }
     }
 }
 

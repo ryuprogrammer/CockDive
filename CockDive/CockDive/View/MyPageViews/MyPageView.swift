@@ -67,16 +67,12 @@ struct MyPageView: View {
                 ])
             }
             .frame(maxHeight: .infinity)
+            .navigationTitle("ごはんのきろく")
+            .toolbarColorScheme(.dark)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("ごはんのきろく")
-                        .foregroundStyle(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title3)
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         cockCardNavigationPath.append(.settingView)

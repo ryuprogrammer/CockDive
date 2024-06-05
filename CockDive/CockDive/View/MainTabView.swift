@@ -14,9 +14,6 @@ struct MainTabView: View {
                         Image(systemName: "fork.knife")
                         Text("みんなのごはん")
                     }
-                    .onTapGesture {
-                        cockPostNavigationPath.removeAll()
-                    }
                 }
                 .tag(ViewType.cockCard)
             
@@ -25,9 +22,6 @@ struct MainTabView: View {
                     VStack {
                         Image(systemName: "frying.pan")
                         Text("ごはんのきろく")
-                    }
-                    .onTapGesture {
-                        myPageNavigationPath.removeAll()
                     }
                 }.tag(ViewType.home)
         }

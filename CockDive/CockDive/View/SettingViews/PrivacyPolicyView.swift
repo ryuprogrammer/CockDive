@@ -16,22 +16,10 @@ struct PrivacyPolicyView: View {
             }
         }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationTitle("プライバシーポリシー")
+            .toolbarColorScheme(.dark)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    ToolBarBackButtonView {
-                        path.removeLast()
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("プライバシーポリシー")
-                        .foregroundStyle(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title3)
-                }
-            }
     }
 }
 

@@ -28,16 +28,10 @@ struct CockPostView: View {
                 addButton
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("みんなのごはん")
+            .toolbarColorScheme(.dark)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("みんなのごはん")
-                        .foregroundStyle(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title3)
-                }
-            }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
                 case .detailView(let postData, let userData, let firstLike, let firstFollow, let parentViewType):
