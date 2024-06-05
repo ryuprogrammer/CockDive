@@ -57,6 +57,9 @@ struct NameRegistrationView: View {
                     .frame(height: 100)
             }
         }
+        .onAppear {
+            nickName = ""
+        }
         .onChange(of: nickName) { _ in
             validateNickName()
         }

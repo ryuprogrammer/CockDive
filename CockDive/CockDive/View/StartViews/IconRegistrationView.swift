@@ -8,7 +8,9 @@ struct IconRegistrationView: View {
     let registrationAction: () -> Void
     // PhotosPickerで選択された写真
     @State private var selectedImage: [PhotosPickerItem] = []
-    // MARK: - その他
+    // エラーメッセージ
+    @State private var errorMessage: String?
+
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
     var screenWidth: CGFloat {
@@ -38,7 +40,7 @@ struct IconRegistrationView: View {
                     preferredItemEncoding: .current,
                     photoLibrary: .shared()) {
                         ZStack {
-                            if let uiImage {
+                            if let uiImage = uiImage {
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -106,13 +108,17 @@ struct IconRegistrationView: View {
 
                 Spacer()
 
+                // エラーメッセージの表示
+                if uiImage == nil {
+                    Text("写真を追加してください")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                }
+
                 // Sign-In状態なので登録画面に遷移
-                if uiImage != nil {
-                    LongBarButton(text: "ユーザー登録", isStroke: true) {
-                        registrationAction()
-                    }
-                } else {
-                    LongBarButton(text: "あとで追加", isStroke: true) {
+                LongBarButton(text: "ユーザー登録", isStroke: true) {
+                    if uiImage != nil {
                         registrationAction()
                     }
                 }
@@ -121,6 +127,9 @@ struct IconRegistrationView: View {
                     .frame(height: 100)
             }
             .padding()
+        }
+        .onAppear {
+            uiImage = nil
         }
     }
 }
