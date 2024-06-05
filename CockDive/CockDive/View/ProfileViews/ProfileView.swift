@@ -102,7 +102,6 @@ struct ProfileView: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationTitle(showUser.nickName)
         .toolbarColorScheme(.dark)
-        .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
