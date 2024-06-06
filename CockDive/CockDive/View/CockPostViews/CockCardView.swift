@@ -13,7 +13,7 @@ struct CockCardView: View {
     /// 投稿を削除
     let deletePostAction: () -> Void
     /// 投稿を編集
-    let editPostAction: () -> Void
+    let editPostAction: (_ editPost: PostElement) -> Void
     @State var showIsLikePost: Bool = false
 
     // 自分の投稿か
@@ -181,7 +181,7 @@ struct CockCardView: View {
                                 alertType = .report
                             },
                             editAction: {
-                                editPostAction()
+                                editPostAction(showPostData)
                             },
                             deleteAction: {
                                 deletePostAction()
@@ -304,7 +304,7 @@ struct CockCardView_Previews: PreviewProvider {
             path: .constant([]),
             parendViewType: nil,
             deletePostAction: {},
-            editPostAction: {}
+            editPostAction: {editPost in }
         )
     }
 }

@@ -22,6 +22,9 @@ struct ProfileView: View {
         likePost: []
     )
 
+    // 投稿を編集
+    @State private var editPost: PostElement? = nil
+
     @State private var reportReason: String = ""
     @State private var showReportAlert: Bool = false
     @State private var isFollowButtonDisabled: Bool = false
@@ -126,6 +129,12 @@ struct ProfileView: View {
                 )
             }
         }
+        .sheet(item: $editPost) { post in
+            AddPostView(
+                postType: .edit,
+                editPost: post
+            )
+        }
         .onAppear {
             loadInitialData()
         }
@@ -154,11 +163,13 @@ struct ProfileView: View {
         ForEach(showPostsData, id: \.id) { postData in
             CockCardView(
                 showPostData: postData,
-                isShowUserNameAndFollowButton: false,
+                isShowUserNameAndFollowButton: true,
                 path: $navigationPath,
                 parendViewType: .profilePost,
                 deletePostAction: {},
-                editPostAction: {}
+                editPostAction: { editPost in
+                    self.editPost = editPost
+                }
             )
             .id(postData.id)
             .onAppear {

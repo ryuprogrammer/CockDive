@@ -15,6 +15,9 @@ struct MyPageView: View {
     // 表示している月
     @State private var showDate: Date = Date()
 
+    // 投稿を編集
+    @State private var editPost: PostElement? = nil
+
     // MARK: - 自分の投稿画面用
     @State var showPostListData: [PostElement] = []
     @State private var lastPost: PostElement?
@@ -131,6 +134,12 @@ struct MyPageView: View {
                 }
             }
         }
+        .sheet(item: $editPost) { post in
+            AddPostView(
+                postType: .edit,
+                editPost: post
+            )
+        }
         .onChange(of: myPageVM.userData) { userData in
             if let userData {
                 showUserData = userData
@@ -168,7 +177,9 @@ struct MyPageView: View {
                                     }
                                 }
                             },
-                            editPostAction: {}
+                            editPostAction: { editPost in
+                                self.editPost = editPost
+                            }
                         )
                         .id(postData.id)
                         .onAppear {
@@ -243,7 +254,9 @@ struct MyPageView: View {
                                     }
                                 }
                             },
-                            editPostAction: {}
+                            editPostAction: { editPost in
+                                self.editPost = editPost
+                            }
                         )
                         .id(postData.id)
                         .onAppear {
