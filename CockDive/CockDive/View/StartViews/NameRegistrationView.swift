@@ -34,6 +34,7 @@ struct NameRegistrationView: View {
                 TextField("2～8文字以内で入力！", text: $nickName)
                     .padding(8)
                     .background(Color.white)
+                    .foregroundStyle(Color.black)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 20)
 

@@ -65,22 +65,22 @@ struct SettingView: View {
                 Text("アプリ情報")
             }
             
-            Section {
-                NavigationLinkButtonView(icon: "nosign", text: "ブロックリスト") {
-                    path.append(.blockListView)
-                }
-            } header: {
-                Text("友達")
-            }
+//            Section {
+//                NavigationLinkButtonView(icon: "nosign", text: "ブロックリスト") {
+//                    path.append(.blockListView)
+//                }
+//            } header: {
+//                Text("友達")
+//            }
             
             Section {
-                NavigationLinkButtonView(icon: "star", text: "レビューを書く") {
-                    path.append(.contactView)
-                }
-                
-                NavigationLinkButtonView(icon: "square.and.arrow.up", text: "アプリをシェア") {
-                    path.append(.contactView)
-                }
+//                NavigationLinkButtonView(icon: "star", text: "レビューを書く") {
+//                    path.append(.contactView)
+//                }
+//                
+//                NavigationLinkButtonView(icon: "square.and.arrow.up", text: "アプリをシェア") {
+//                    path.append(.contactView)
+//                }
                 
                 NavigationLinkButtonView(icon: "envelope", text: "お問合せ") {
                     path.append(.contactView)
