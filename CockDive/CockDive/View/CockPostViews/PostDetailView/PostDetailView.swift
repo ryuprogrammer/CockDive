@@ -33,6 +33,8 @@ struct PostDetailView: View {
 
     // 投稿を編集
     @State private var editPost: PostElement? = nil
+    // 不適切なコメントアラートの表示
+    @State private var showInappropriateCommentAlert: Bool = false
 
     // アラートタイプ
     private enum AlertType {
@@ -216,22 +218,26 @@ struct PostDetailView: View {
                     .focused($keyboardFocus)
 
                     Button {
-                        isCommentButtonDisabled = true
-                        let uid = postDetailVM.fetchUid()
-                        // 新しいコメント
-                        let newComment: CommentElement = CommentElement(
-                            uid: uid,
-                            comment: comment,
-                            createAt: Date()
-                        )
-                        // コメント追加
-                        showPostData.comment.append(newComment)
-                        comment = ""
-                        // コメント保存
-                        postDetailVM.updateComment(post: showPostData, newComment: newComment)
-                        UIApplication.shared.keybordClose()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            isCommentButtonDisabled = false
+                        if comment.containsNGWord() {
+                            showInappropriateCommentAlert = true
+                        } else if !comment.isEmpty {
+                            isCommentButtonDisabled = true
+                            let uid = postDetailVM.fetchUid()
+                            // 新しいコメント
+                            let newComment: CommentElement = CommentElement(
+                                uid: uid,
+                                comment: comment,
+                                createAt: Date()
+                            )
+                            // コメント追加
+                            showPostData.comment.append(newComment)
+                            comment = ""
+                            // コメント保存
+                            postDetailVM.updateComment(post: showPostData, newComment: newComment)
+                            UIApplication.shared.keybordClose()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                isCommentButtonDisabled = false
+                            }
                         }
                     } label: {
                         Image(systemName: "paperplane.circle")
@@ -250,6 +256,11 @@ struct PostDetailView: View {
         .contentShape(Rectangle())
         .onTapGesture {
             keyboardFocus = false
+        }
+        .alert("不適切なコメント", isPresented: $showInappropriateCommentAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("コメントに不適切なワードが含まれています")
         }
         .alert("通報", isPresented: $showReportAlert) {
             TextField("通報理由を入力してください", text: $reportReason)
