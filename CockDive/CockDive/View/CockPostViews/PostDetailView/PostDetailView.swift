@@ -314,14 +314,12 @@ struct PostDetailView: View {
             }
         }
         .onAppear {
-            if let uid = showPostData.id {
-                // 自分の投稿か確認
-                isMyPost = postDetailVM.checkIsMyPost(uid: uid)
-                Task {
-                    await postDetailVM.fetchUserData(uid: uid)
-                    if let data = postDetailVM.userData {
-                        showUserData = data
-                    }
+            // 自分の投稿か確認
+            isMyPost = postDetailVM.checkIsMyPost(uid: showPostData.uid)
+            Task {
+                await postDetailVM.fetchUserData(uid: showPostData.uid)
+                if let data = postDetailVM.userData {
+                    showUserData = data
                 }
             }
 
