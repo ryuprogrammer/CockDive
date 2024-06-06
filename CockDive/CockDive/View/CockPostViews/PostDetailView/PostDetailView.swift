@@ -193,6 +193,9 @@ struct PostDetailView: View {
                                     post: showPostData,
                                     commentToDelete: comment
                                 )
+                                Task {
+                                    await postDetailVM.fetchPostData(postId: showPostData.id)
+                                }
                             }
                         )
                     }
@@ -229,11 +232,12 @@ struct PostDetailView: View {
                                 comment: comment,
                                 createAt: Date()
                             )
-                            // コメント追加
-                            showPostData.comment.append(newComment)
                             comment = ""
                             // コメント保存
                             postDetailVM.updateComment(post: showPostData, newComment: newComment)
+                            Task {
+                                await postDetailVM.fetchPostData(postId: showPostData.id)
+                            }
                             UIApplication.shared.keybordClose()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 isCommentButtonDisabled = false

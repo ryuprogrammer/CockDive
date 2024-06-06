@@ -136,6 +136,15 @@ class PostDetailViewModel: ObservableObject {
         return userDataModel.fetchUid() ?? ""
     }
 
+    /// Post取得
+    func fetchPostData(postId: String?) async {
+        guard let postId = postId else { return }
+        let postData = await postDataModel.fetchPostFromPostId(postId: postId)
+        DispatchQueue.main.async {
+            self.postData = postData
+        }
+    }
+
     /// userData取得
     func fetchUserData(uid: String) async {
         let user = await userDataModel.fetchUserData(uid: uid)
