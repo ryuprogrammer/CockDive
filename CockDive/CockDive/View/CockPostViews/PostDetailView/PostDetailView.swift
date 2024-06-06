@@ -31,6 +31,9 @@ struct PostDetailView: View {
     // キーボードフォーカス
     @FocusState private var keyboardFocus: Bool
 
+    // 投稿を編集
+    @State private var editPost: PostElement? = nil
+
     // アラートタイプ
     private enum AlertType {
         case user(uid: String)
@@ -297,7 +300,9 @@ struct PostDetailView: View {
                         // 通報のアラート表示
                         showReportAlert = true
                     },
-                    editAction: {},
+                    editAction: {
+                        editPost = showPostData
+                    },
                     deleteAction: {
                         if showPostData.uid == postDetailVM.fetchUid() {
                             Task {
@@ -312,6 +317,12 @@ struct PostDetailView: View {
                     }
                 )
             }
+        }
+        .sheet(item: $editPost) { post in
+            AddPostView(
+                postType: .edit,
+                editPost: post
+            )
         }
         .onAppear {
             // 自分の投稿か確認
