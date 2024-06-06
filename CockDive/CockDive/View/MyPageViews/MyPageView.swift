@@ -57,6 +57,9 @@ struct MyPageView: View {
                         .onAppear {
                             showMyPostData = myPageVM.fetchMyPostData(date: showDate)
                         }
+                        .onChange(of: showDate) { newDate in
+                            showMyPostData = myPageVM.fetchMyPostData(date: newDate)
+                        }
                     )),
                     (title: "投稿", view: AnyView(
                         myPostListView()
@@ -141,9 +144,6 @@ struct MyPageView: View {
         .onChange(of: myPageVM.myPostCount) { myPostCount in
             showMyPostCount = myPostCount
         }
-        .onChange(of: showDate) { newDate in
-            showMyPostData = myPageVM.fetchMyPostData(date: newDate)
-        }
     }
 
     // 自分の投稿リスト
@@ -167,7 +167,8 @@ struct MyPageView: View {
                                         showLikePostListData.removeAll(where: {$0.id == postData.id})
                                     }
                                 }
-                            }
+                            },
+                            editPostAction: {}
                         )
                         .id(postData.id)
                         .onAppear {
@@ -241,7 +242,8 @@ struct MyPageView: View {
                                         showLikePostListData.removeAll(where: {$0.id == postData.id})
                                     }
                                 }
-                            }
+                            },
+                            editPostAction: {}
                         )
                         .id(postData.id)
                         .onAppear {

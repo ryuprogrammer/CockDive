@@ -12,6 +12,9 @@ struct CockPostView: View {
 
     @State private var lastPost: PostElement?
 
+    // 投稿を編集
+    @State private var editPost: PostElement? = nil
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -34,7 +37,7 @@ struct CockPostView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
-                case .detailView(let postData, let userData, let firstLike, let firstFollow, let parentViewType):
+                case .detailView(let postData, let userData, let firstLike, let firstFollow, _):
                     PostDetailView(
                         showPostData: postData,
                         showUserData: userData,
@@ -51,7 +54,7 @@ struct CockPostView: View {
             }
         }
         .sheet(isPresented: $isShowSheet) {
-            AddPostView(postType: .add)
+            AddPostView(postType: .add, editPost: nil)
                 .onDisappear {
                     cockPostVM.loadStatus = .initial
                     showPostsData.removeAll()
@@ -91,10 +94,14 @@ struct CockPostView: View {
                                     Task {
                                         // 投稿削除
                                         await cockPostVM.deletePost(postId: postData.id)
-                                        showPostsData.removeAll(where: {$0.id == postData.id})
+                                        showPostsData.removeAll(where: { $0.id == postData.id })
                                     }
                                 }
-                        })
+                            },
+                            editPostAction: {
+                                editPost = postData
+                            }
+                        )
                         .id(postData.id)
                         .onAppear {
                             if cockPostVM.checkIsLastPost(postData: postData) {
@@ -127,6 +134,20 @@ struct CockPostView: View {
                 Task {
                     await cockPostVM.fetchPostsDataByStatus()
                 }
+            }
+            .sheet(item: $editPost) { post in
+                AddPostView(
+                    postType: .edit,
+                    editPost: post
+                )
+//                .onDisappear {
+//                    cockPostVM.loadStatus = .initial
+//                    showPostsData.removeAll()
+//                    cockPostVM.newPostsData.removeAll()
+//                    Task {
+//                        await cockPostVM.fetchPostsDataByStatus()
+//                    }
+//                }
             }
         }
     }

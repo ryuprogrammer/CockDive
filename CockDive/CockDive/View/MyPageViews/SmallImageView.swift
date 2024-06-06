@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SmallImageView: View {
     let day: Int
-    let posts: [MyPostModel]
+    @Binding var posts: [MyPostModel]
     let image: Image = Image("cockImage")
 
     // 画面サイズ取得
@@ -94,6 +94,5 @@ struct SmallImageView: View {
 }
 
 #Preview {
-    SmallImageView(day: 12, posts: [])
+    SmallImageView(day: 12, posts: .constant([]))
 }
-

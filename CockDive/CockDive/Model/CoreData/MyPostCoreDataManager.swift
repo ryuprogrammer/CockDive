@@ -106,6 +106,52 @@ class MyPostCoreDataManager {
         }
     }
 
+    // MARK: - データの更新
+    
+    /// 指定されたIDのMyPostModelを更新する
+    /// - Parameters:
+    ///   - id: 更新するMyPostModelのID
+    ///   - createAt: 新しい作成日時
+    ///   - title: 新しいタイトル
+    ///   - memo: 新しいメモ
+    ///   - image: 新しい画像データ
+    func update(
+        id: String,
+        createAt: Date,
+        title: String,
+        memo: String,
+        image: Data
+    ) {
+        // MyPostModelのフェッチリクエストを作成
+        let request: NSFetchRequest<MyPostModel> = MyPostModel.fetchRequest()
+        // 指定されたIDに一致するレコードを検索する述語を設定
+        request.predicate = NSPredicate(format: "id == %@", id)
+
+        do {
+            // 指定されたIDのレコードをフェッチ
+            let results = try context.fetch(request)
+            // フェッチした結果から最初のレコードを取得
+            if let myPost = results.first {
+                // レコードの各フィールドを新しい値で更新
+                myPost.createAt = createAt
+                myPost.title = title
+                myPost.memo = memo
+                myPost.image = image
+
+                // コンテキストの変更を保存
+                try context.save()
+                print("Update successful for MyPostModel with id \(id)")
+            } else {
+                // 指定されたIDのレコードが見つからなかった場合のエラーメッセージ
+                print("MyPostModel with id \(id) not found")
+            }
+        } catch {
+            // エラーハンドリング: フェッチや保存に失敗した場合
+            print("Failed to update MyPostModel: \(error)")
+        }
+    }
+
+
     // MARK: - データの削除
 
     /// 指定されたIDのMyPostModelを削除する

@@ -157,9 +157,8 @@ struct ProfileView: View {
                 isShowUserNameAndFollowButton: false,
                 path: $navigationPath,
                 parendViewType: .profilePost,
-                deletePostAction: {
-                    // 他の人のプロフィールなので、投稿削除は不可
-                }
+                deletePostAction: {},
+                editPostAction: {}
             )
             .id(postData.id)
             .onAppear {

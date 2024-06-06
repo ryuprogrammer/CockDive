@@ -19,17 +19,19 @@ enum PostType: String {
 
 struct AddPostView: View {
     let postType: PostType
+    // 編集の場合のみ受け取る
+    let editPost: PostElement?
     @StateObject private var addPostVM = AddPostViewModel()
-    @State private var title: String = ""
-    @State private var memo: String = ""
-    @State private var isPrivate: Bool = false
+    @State private var newTitle: String = ""
+    @State private var newMemo: String = ""
+    @State private var newImage: UIImage?
+    @State private var newIsPrivate: Bool = false
     @State private var titleErrorMessage = ""
     @State private var memoErrorMessage = ""
     @State private var imageErrorMessage = ""
     @State private var showErrorDialog = false
     @State private var showAlertDialog = false
     @State private var isPresentedCameraView: Bool = false
-    @State private var image: UIImage?
     @State private var showImagePicker: Bool = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @FocusState private var keybordFocuse: Bool
@@ -53,8 +55,8 @@ struct AddPostView: View {
                     SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
                         .padding(.top)
 
-                    if let image {
-                        Image(uiImage: image)
+                    if let newImage {
+                        Image(uiImage: newImage)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: screenWidth*3/5, height: screenWidth*3/5)
@@ -63,7 +65,7 @@ struct AddPostView: View {
                         HStack {
                             Spacer()
                             Button {
-                                self.image = nil
+                                self.newImage = nil
                             } label: {
                                 StrokeIconButtonUI(text: "写真を選び直す", icon: "gobackward", size: .small)
                             }
@@ -78,7 +80,7 @@ struct AddPostView: View {
                         .sheet(isPresented: $showImagePicker) {
                             ImagePicker() { selectedImage in
                                 if let selectedImage = selectedImage {
-                                    image = selectedImage
+                                    newImage = selectedImage
                                 }
                             }
                             .ignoresSafeArea(.all)
@@ -91,7 +93,7 @@ struct AddPostView: View {
                             StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
                         }
                         .fullScreenCover(isPresented: $isPresentedCameraView) {
-                            CameraView(image: $image)
+                            CameraView(image: $newImage)
                                 .ignoresSafeArea()
                         }
                     }
@@ -104,13 +106,13 @@ struct AddPostView: View {
 
                     SectioinTitleView(text: "料理名を入力", isRequired: true)
 
-                    TextField("料理名を入力", text: $title)
+                    TextField("料理名を入力", text: $newTitle)
                         .padding(6)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
-                        .onChange(of: title) { _ in
+                        .onChange(of: newTitle) { _ in
                             validateTitle()
                         }
 
@@ -122,7 +124,7 @@ struct AddPostView: View {
 
                     SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
 
-                    TextEditor(text: $memo)
+                    TextEditor(text: $newMemo)
                         .focused($keybordFocuse)
                         .frame(height: 100)
                         .overlay(
@@ -130,11 +132,11 @@ struct AddPostView: View {
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
                         .overlay(alignment: .topLeading) {
-                            Text(memo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
+                            Text(newMemo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
                                 .foregroundStyle(Color.gray.opacity(0.5))
                                 .padding(5)
                         }
-                        .onChange(of: memo) { _ in
+                        .onChange(of: newMemo) { _ in
                             validateMemo()
                         }
                         .onTapGesture {
@@ -179,7 +181,7 @@ struct AddPostView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     ToolBarBackButtonView {
                         if addPostVM.loadStatus != .loading {
-                            if image != nil || !title.isEmpty || !memo.isEmpty {
+                            if newImage != nil || !newTitle.isEmpty || !newMemo.isEmpty {
                                 showAlertDialog = true
                             } else {
                                 dismiss()
@@ -202,24 +204,29 @@ struct AddPostView: View {
                         validateImage()
                         if titleErrorMessage.isEmpty &&
                             memoErrorMessage.isEmpty &&
-                            image != nil &&
+                            newImage != nil &&
                             addPostVM.loadStatus != .loading {
-                            print("ワードチェック完了")
                             Task {
-                                guard let dataImage = image?.castToData() else { return }
+                                guard let dataImage = newImage?.castToData() else { return }
 
-                                // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
-                                addPostVM.addPost(post: PostElement(
-                                    uid: addPostVM.fetchUid(),
-                                    postImage: dataImage,
-                                    title: title,
-                                    memo: memo,
-                                    isPrivate: isPrivate,
-                                    createAt: Date(),
-                                    likeCount: 0,
-                                    likedUser: [],
-                                    comment: []
-                                ))
+                                if postType == .add {
+                                    // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
+                                    addPostVM.addPost(
+                                        uid: addPostVM.fetchUid(),
+                                        postImage: dataImage,
+                                        title: newTitle,
+                                        memo: newMemo
+                                    )
+                                } else if postType == .edit {
+                                    guard let editPost else { return }
+                                    // firebase（PostDataModelとUserPostDataModel）とCoreDataに更新
+                                    addPostVM.upDate(
+                                        editPost: editPost,
+                                        newTitle: newTitle,
+                                        newMemo: newMemo,
+                                        newImage: dataImage
+                                    )
+                                }
                             }
                         }
                     }
@@ -235,6 +242,7 @@ struct AddPostView: View {
                 }
             }
         }
+        .interactiveDismissDisabled(isLoading)
         .alert(isPresented: $showErrorDialog) {
             Alert(
                 title: Text("エラー"),
@@ -260,32 +268,42 @@ struct AddPostView: View {
                 isLoading = true
             }
         }
-        .interactiveDismissDisabled(isLoading)
+        .onAppear {
+            // 編集の場合は初期値挿入
+            if let editPost {
+                let title = editPost.title
+                let memo = editPost.memo
+                guard let imageData = editPost.postImage else { return }
+                self.newTitle = title
+                self.newMemo = memo ?? ""
+                self.newImage = UIImage(data: imageData)
+            }
+        }
     }
 
     private func validateTitle() {
         titleErrorMessage = ""
-        if title.isEmpty {
+        if newTitle.isEmpty {
             titleErrorMessage = "料理名を入力してください"
-        } else if title.containsNGWord() {
+        } else if newTitle.containsNGWord() {
             titleErrorMessage = "不適切な言葉が含まれています"
-        } else if title.count > 15 {
+        } else if newTitle.count > 15 {
             titleErrorMessage = "料理名は15文字以下で入力してください"
         }
     }
 
     private func validateMemo() {
         memoErrorMessage = ""
-        if memo.containsNGWord() {
+        if newMemo.containsNGWord() {
             memoErrorMessage = "不適切な言葉が含まれています"
-        } else if memo.count > 150 {
+        } else if newMemo.count > 150 {
             memoErrorMessage = "メモは150文字以下で入力してください"
         }
     }
 
     private func validateImage() {
         imageErrorMessage = ""
-        if image == nil {
+        if newImage == nil {
             imageErrorMessage = "写真を追加してください"
         }
     }
@@ -339,5 +357,5 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 #Preview {
-    AddPostView(postType: .add)
+    AddPostView(postType: .add, editPost: nil)
 }

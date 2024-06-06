@@ -46,9 +46,11 @@ struct ImageCalendarView: View {
                         Spacer()
                     } else {
                         let showDay = index - showingDate.weekdayOfFirstDay.rawValue + 1
-                        let showPosts = getPosts(for: showDay)
-                        SmallImageView(day: showDay, posts: showPosts)
-                            .frame(maxWidth: .infinity)
+                        SmallImageView(day: showDay, posts: Binding(
+                            get: { getPosts(for: showDay) },
+                            set: { _ in }
+                        ))
+                        .frame(maxWidth: .infinity)
                     }
                 }
             }

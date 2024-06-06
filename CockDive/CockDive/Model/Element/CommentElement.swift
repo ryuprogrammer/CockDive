@@ -1,6 +1,6 @@
 import Foundation
 
-struct CommentElement: Codable, Equatable, Hashable {
+struct CommentElement: Codable, Equatable, Hashable, Identifiable {
     var id = UUID()
     /// uid
     var uid: String

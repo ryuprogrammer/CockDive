@@ -12,6 +12,8 @@ struct CockCardView: View {
     let parendViewType: ParendViewType?
     /// 投稿を削除
     let deletePostAction: () -> Void
+    /// 投稿を編集
+    let editPostAction: () -> Void
     @State var showIsLikePost: Bool = false
 
     // 自分の投稿か
@@ -179,7 +181,7 @@ struct CockCardView: View {
                                 alertType = .report
                             },
                             editAction: {
-
+                                editPostAction()
                             },
                             deleteAction: {
                                 deletePostAction()
@@ -301,7 +303,8 @@ struct CockCardView_Previews: PreviewProvider {
             isShowUserNameAndFollowButton: true,
             path: .constant([]),
             parendViewType: nil,
-            deletePostAction: {}
+            deletePostAction: {},
+            editPostAction: {}
         )
     }
 }

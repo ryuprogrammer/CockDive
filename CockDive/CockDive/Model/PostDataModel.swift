@@ -50,8 +50,10 @@ struct PostDataModel {
     func addPost(post: PostElement, completion: @escaping (Result<String, Error>) -> Void) {
         var docId: String {
             if let postId = post.id {
+                print("更新")
                 return postId
             } else {
+                print("追加")
                 let docRef = db.collection(postDataCollection).document()
                 return docRef.documentID
             }

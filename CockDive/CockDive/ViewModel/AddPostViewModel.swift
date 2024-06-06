@@ -18,39 +18,96 @@ class AddPostViewModel: ObservableObject {
     @Published var loadStatus: PostStatus?
 
     // MARK: - データ追加
-    /// Post追加/ 更新（firebaseとCoreData）
-    func addPost(post: PostElement) {
+    /// Post追加
+    /// firebase（PostDataModelとUserPostDataModel）とCoreData
+    func addPost(
+        uid: String,
+        postImage: Data,
+        title: String,
+        memo: String
+    ) {
         loadStatus = .loading
 
-        let newPost = post
+        let newPost = PostElement(
+            uid: uid,
+            postImage: postImage,
+            title: title,
+            memo: memo,
+            isPrivate: false,
+            createAt: Date(),
+            likeCount: 0,
+            likedUser: [],
+            comment: []
+        )
 
-        if let userData = userDefaultsDataModel.fetchUserData() {
-            postDataModel.addPost(post: newPost) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let postId):
-                        Task {
-                            // firebaseのuserPostDataModelに追加
-                            await self.userPostDataModel.addPostId(postId: postId, userPostType: .post)
-                        }
-                        // CoreDataに保存
-                        self.coreDataMyPostModel.create(
-                            id: postId,
-                            createAt: post.createAt,
-                            title: post.title,
-                            memo: post.memo ?? "",
-                            image: post.postImage ?? Data()
-                        )
-                        self.loadStatus = .success
-                        print("成功")
-                    case .failure(let error):
-                        print("エラー: \(error.localizedDescription)")
-                        self.loadStatus = .error(error.localizedDescription)
+        postDataModel.addPost(post: newPost) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let postId):
+                    Task {
+                        // firebaseのuserPostDataModelに追加
+                        await self.userPostDataModel.addPostId(postId: postId, userPostType: .post)
                     }
+                    // CoreDataに保存
+                    self.coreDataMyPostModel.create(
+                        id: postId,
+                        createAt: newPost.createAt,
+                        title: newPost.title,
+                        memo: newPost.memo ?? "",
+                        image: newPost.postImage ?? Data()
+                    )
+                    self.loadStatus = .success
+                case .failure(let error):
+                    self.loadStatus = .error(error.localizedDescription)
                 }
             }
-        } else {
-            loadStatus = .error("User data not found")
+        }
+    }
+
+    /// Postの更新
+    /// firebase（PostDataModelとUserPostDataModel）とCoreData
+    func upDate(
+        editPost: PostElement,
+        newTitle: String,
+        newMemo: String,
+        newImage: Data?
+    ) {
+        loadStatus = .loading
+
+        let newPost = PostElement(
+            id: editPost.id,
+            uid: editPost.uid,
+            postImage: newImage,
+            title: newTitle,
+            memo: newMemo,
+            isPrivate: editPost.isPrivate,
+            createAt: editPost.createAt,
+            likeCount: editPost.likeCount,
+            likedUser: editPost.likedUser,
+            comment: editPost.comment
+        )
+
+        postDataModel.addPost(post: newPost) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let postId):
+                    Task {
+                        // firebaseのuserPostDataModelに追加
+                        await self.userPostDataModel.addPostId(postId: postId, userPostType: .post)
+                    }
+                    // CoreDataに保存
+                    self.coreDataMyPostModel.update(
+                        id: postId,
+                        createAt: newPost.createAt,
+                        title: newPost.title,
+                        memo: newPost.memo ?? "",
+                        image: newPost.postImage ?? Data()
+                    )
+                    self.loadStatus = .success
+                case .failure(let error):
+                    self.loadStatus = .error(error.localizedDescription)
+                }
+            }
         }
     }
 
