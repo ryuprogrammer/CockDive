@@ -26,7 +26,7 @@ struct PostDataModel {
     /// コレクション名
     private let postDataCollection: String = "posts"
     /// Postを取得するリミット
-    private let fetchPostLimit: Int = 10
+    private let fetchPostLimit: Int = 20
     private let maxDocSize = 1000000
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
