@@ -3,7 +3,7 @@ import SwiftUI
 struct MyPageView: View {
     @ObservedObject var myPageVM = MyPageViewModel()
     // UserDefaultsの基本データ（ニックネーム、自己紹介、アイコン）
-    @State var showUserData = UserElementForUserDefaults(nickName: "テスト")
+    @State var showUserData = UserElementForUserDefaults(nickName: "なまえ", introduction: "自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介")
     // UserFriendElement（フォロー、フォロワー）
     @State var showFriendData = UserFriendElement(followCount: 0, follow: [], followerCount: 0, follower: [], block: [], blockedByFriend: [])
     // 投稿数
@@ -73,7 +73,7 @@ struct MyPageView: View {
                 ])
             }
             .frame(maxHeight: .infinity)
-            .navigationTitle("ごはんのきろく")
+            .navigationTitle("\(showUserData.nickName)のきろく")
             .toolbarColorScheme(.dark)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.mainColor, for: .navigationBar)

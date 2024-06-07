@@ -82,7 +82,7 @@ struct SettingView: View {
 //                    path.append(.contactView)
 //                }
                 
-                NavigationLinkButtonView(icon: "envelope", text: "お問合せ") {
+                NavigationLinkButtonView(icon: "envelope", text: "運営へのお問合せ") {
                     path.append(.contactView)
                 }
             } header: {
