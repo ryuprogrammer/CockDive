@@ -765,6 +765,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CockDive/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "みんなのごはん";
 				INFOPLIST_KEY_NSCameraUsageDescription = "ご飯を撮影するためにカメラを使います。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -806,6 +807,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CockDive/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "みんなのごはん";
 				INFOPLIST_KEY_NSCameraUsageDescription = "ご飯を撮影するためにカメラを使います。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
