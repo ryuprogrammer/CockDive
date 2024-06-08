@@ -6,6 +6,7 @@ enum ActiveAlert {
 }
 
 struct DeleteAccountView: View {
+    @State private var signInWithAppleObject = SignInWithAppleObject()
     // ルート階層から受け取った配列パスの参照
     @Binding var path: [CockCardNavigationPath]
     @State private var showAlert = false
@@ -94,23 +95,45 @@ struct DeleteAccountView: View {
     }
 
     func deleteAllData() {
-        authenticationManager.deleteAllData { result in
+        performSignInWithApple()
+    }
+
+    private func performSignInWithApple() {
+        guard let window = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow }) else {
+            print("No key window available for presentation anchor.")
+            return
+        }
+        signInWithAppleObject.signInWithApple(presentationAnchor: window) { result in
             switch result {
-            case .success:
-                // 成功した場合にアカウントを削除
-                authenticationManager.deleteAccount { result in
+            case .success(let user):
+                // Appleサインインが成功した場合、データ削除を実行
+                authenticationManager.deleteAllData { result in
                     switch result {
                     case .success:
-                        path.removeAll()
+                        // 成功した場合にアカウントを削除
+                        authenticationManager.deleteAccount { result in
+                            switch result {
+                            case .success:
+                                path.removeAll()
+                            case .failure(let error):
+                                // アカウント削除に失敗した場合、エラーメッセージを表示
+                                activeAlert = .error(error.localizedDescription)
+                                showAlert = true
+                            }
+                            isLoading = false // ローディングを終了
+                        }
                     case .failure(let error):
-                        // アカウント削除に失敗した場合、エラーメッセージを表示
+                        // データの削除に失敗した場合、エラーメッセージを表示
                         activeAlert = .error(error.localizedDescription)
                         showAlert = true
+                        isLoading = false // ローディングを終了
                     }
-                    isLoading = false // ローディングを終了
                 }
             case .failure(let error):
-                // データの削除に失敗した場合、エラーメッセージを表示
+                // Appleサインインに失敗した場合、エラーメッセージを表示
                 activeAlert = .error(error.localizedDescription)
                 showAlert = true
                 isLoading = false // ローディングを終了

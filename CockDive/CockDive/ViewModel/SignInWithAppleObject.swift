@@ -4,8 +4,11 @@ import FirebaseAuth
 
 public class SignInWithAppleObject: NSObject {
     private var currentNonce: String?
+    private var completion: ((Result<User, Error>) -> Void)?
 
-    public func signInWithApple(presentationAnchor: ASPresentationAnchor) {
+    public func signInWithApple(presentationAnchor: ASPresentationAnchor, completion: @escaping (Result<User, Error>) -> Void) {
+        self.completion = completion
+
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.email, .fullName]
         let nonce = randomNonceString()
@@ -68,34 +71,31 @@ extension SignInWithAppleObject: ASAuthorizationControllerDelegate, ASAuthorizat
 
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         print("Sign in with Apple errored: \(error.localizedDescription)")
-        if let nsError = error as NSError? {
-            print("Error code: \(nsError.code), domain: \(nsError.domain)")
-            if let userInfo = nsError.userInfo as? [String: Any] {
-                for (key, value) in userInfo {
-                    print("\(key): \(value)")
-                }
-            }
-        }
+        completion?(.failure(error))
     }
 
     private func handleAuthorization(_ authorization: ASAuthorization) {
         guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
             print("Failed to retrieve Apple ID Credential")
+            completion?(.failure(NSError(domain: "com.example.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to retrieve Apple ID Credential"])))
             return
         }
 
         guard let nonce = currentNonce else {
             print("Invalid state: A login callback was received, but no login request was sent.")
+            completion?(.failure(NSError(domain: "com.example.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid state: A login callback was received, but no login request was sent."])))
             return
         }
 
         guard let appleIDToken = appleIDCredential.identityToken else {
             print("Unable to fetch identity token")
+            completion?(.failure(NSError(domain: "com.example.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to fetch identity token"])))
             return
         }
 
         guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
             print("Unable to serialize token string from data")
+            completion?(.failure(NSError(domain: "com.example.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to serialize token string from data"])))
             return
         }
 
@@ -103,12 +103,14 @@ extension SignInWithAppleObject: ASAuthorizationControllerDelegate, ASAuthorizat
         Auth.auth().signIn(with: credential) { result, error in
             if let error = error {
                 print("Error during Firebase sign in: \(error.localizedDescription)")
+                self.completion?(.failure(error))
                 return
             }
 
             // Successful sign in handling
             if let user = result?.user {
                 print("User signed in: \(user.uid), email: \(user.email ?? "No email")")
+                self.completion?(.success(user))
             }
         }
     }
