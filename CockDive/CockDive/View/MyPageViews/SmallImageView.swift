@@ -3,7 +3,6 @@ import SwiftUI
 struct SmallImageView: View {
     let day: Int
     @Binding var posts: [MyPostModel]
-    let image: Image = Image("cockImage")
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
