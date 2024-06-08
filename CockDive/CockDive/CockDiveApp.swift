@@ -12,17 +12,17 @@ struct CockDiveApp: App {
     init() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = .white
+        tabBarAppearance.backgroundColor = UIColor(Color.whiteMain)
 
         // タブ選択時のテキスト設定
-        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(.mainColor.opacity(0.8)), .font: UIFont.systemFont(ofSize: 10, weight: .bold)]
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(.mainWhite.opacity(0.8)), .font: UIFont.systemFont(ofSize: 10, weight: .bold)]
         // タブ選択時のアイコン設定
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = UIColor(.mainColor.opacity(0.8))
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = UIColor(.mainWhite.opacity(0.8))
 
         // タブ非選択時のテキスト設定
-        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(.black.opacity(0.5)), .font: UIFont.systemFont(ofSize: 10, weight: .medium)]
+        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(.mainWhite.opacity(0.5)), .font: UIFont.systemFont(ofSize: 10, weight: .medium)]
         // タブ非選択時のアイコン設定
-        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = UIColor(.black.opacity(0.5))
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = UIColor(.mainWhite.opacity(0.5))
 
         UITabBar.appearance().standardAppearance = tabBarAppearance
         if #available(iOS 15.0, *) {

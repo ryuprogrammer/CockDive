@@ -32,6 +32,7 @@ struct StrokeIconButtonUI: View {
                 Spacer()
                 Text(text)
                     .fontWeight(.bold)
+                    .font(.title3)
                     .foregroundStyle(Color.mainColor)
                     .padding(.horizontal)
                 Spacer()
@@ -45,7 +46,7 @@ struct StrokeIconButtonUI: View {
                 width: (window?.screen.bounds.width ?? 400) - 40,
                 height: (window?.screen.bounds.height ?? 60) / 16
             )
-            .background(Color.white)
+            .background(Color.whiteBlack)
             .clipShape(RoundedRectangle(cornerRadius: 30))
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
@@ -70,7 +71,7 @@ struct StrokeIconButtonUI: View {
                     .foregroundStyle(Color.mainColor)
                     .padding(.trailing, 8)
             }
-            .background(Color.white)
+            .background(Color.whiteBlack)
             .clipShape(RoundedRectangle(cornerRadius: 30))
             .overlay(
                 RoundedRectangle(cornerRadius: 30)

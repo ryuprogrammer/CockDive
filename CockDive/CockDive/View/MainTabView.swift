@@ -16,7 +16,7 @@ struct MainTabView: View {
                     }
                 }
                 .tag(ViewType.cockCard)
-            
+
             MyPageView(cockCardNavigationPath: $myPageNavigationPath)
                 .tabItem {
                     VStack {
@@ -87,4 +87,3 @@ enum ParendViewType {
 #Preview {
     MainTabView()
 }
-
