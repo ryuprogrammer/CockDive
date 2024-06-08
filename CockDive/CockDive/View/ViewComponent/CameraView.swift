@@ -52,29 +52,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        captureSession = AVCaptureSession()
-        captureSession.beginConfiguration()
-
-        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
-              let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice),
-              captureSession.canAddInput(videoDeviceInput) else {
-            return
+        checkCameraAuthorization { authorized in
+            if authorized {
+                self.setupCamera()
+            } else {
+                self.showSettingsAlert()
+            }
         }
-        captureSession.addInput(videoDeviceInput)
-
-        photoOutput = AVCapturePhotoOutput()
-        guard captureSession.canAddOutput(photoOutput) else {
-            return
-        }
-        captureSession.addOutput(photoOutput)
-        captureSession.commitConfiguration()
-
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = .resizeAspectFill
-        previewLayer.frame = view.bounds
-        view.layer.addSublayer(previewLayer)
-
-        captureSession.startRunning()
 
         let overlay = createSquareOverlay()
         view.addSubview(overlay)
@@ -132,5 +116,69 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         overlay.layer.addSublayer(borderLayer)
 
         return overlay
+    }
+
+    private func checkCameraAuthorization(completion: @escaping (Bool) -> Void) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    completion(granted)
+                }
+            }
+        case .denied, .restricted:
+            completion(false)
+        @unknown default:
+            completion(false)
+        }
+    }
+
+    private func setupCamera() {
+        captureSession = AVCaptureSession()
+        captureSession.beginConfiguration()
+
+        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+              let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice),
+              captureSession.canAddInput(videoDeviceInput) else {
+            return
+        }
+        captureSession.addInput(videoDeviceInput)
+
+        photoOutput = AVCapturePhotoOutput()
+        guard captureSession.canAddOutput(photoOutput) else {
+            return
+        }
+        captureSession.addOutput(photoOutput)
+        captureSession.commitConfiguration()
+
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.frame = view.bounds
+        view.layer.addSublayer(previewLayer)
+
+        captureSession.startRunning()
+    }
+
+    private func showSettingsAlert() {
+        let alertController = UIAlertController(
+            title: "カメラへのアクセスが許可されていません",
+            message: "カメラの使用を許可するには、設定に移動してください。",
+            preferredStyle: .alert
+        )
+        let settingsAction = UIAlertAction(title: "設定へ", style: .default) { _ in
+            if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsUrl)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel) { _ in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
 }
