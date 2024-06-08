@@ -158,7 +158,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         previewLayer.frame = view.bounds
         view.layer.addSublayer(previewLayer)
 
-        captureSession.startRunning()
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
     }
 
     private func showSettingsAlert() {
