@@ -501,11 +501,12 @@
 			};
 			buildConfigurationList = 422C69BC2BED1C570012FB8F /* Build configuration list for PBXProject "CockDive" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 422C69B82BED1C570012FB8F;
 			packageReferences = (
