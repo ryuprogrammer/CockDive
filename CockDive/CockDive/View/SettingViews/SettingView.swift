@@ -94,7 +94,7 @@ struct SettingView: View {
                     path.append(.logoutView)
                 }
                 
-                NavigationLinkButtonView(icon: "person.crop.circle.badge.xmark", text: "退会") {
+                NavigationLinkButtonView(icon: "person.crop.circle.badge.xmark", text: "アカウント削除") {
                     path.append(.deleteAccountView)
                 }
             } header: {
