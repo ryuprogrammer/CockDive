@@ -77,6 +77,7 @@ struct MyProfileEditView: View {
                     TextField(text: $nickName) {
                         Text("ニックネーム")
                     }
+                    .tint(Color.blackWhite)
                     .padding(8)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .overlay(
@@ -102,6 +103,7 @@ struct MyProfileEditView: View {
 
                     TextEditor(text: $introduction)
                         .padding(5)
+                        .tint(Color.blackWhite)
                         .focused($keybordFocuse)
                         .frame(height: 100)
                         .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -126,7 +128,6 @@ struct MyProfileEditView: View {
                             Text(introductionErrorMessage)
                                 .fontWeight(.bold)
                                 .foregroundColor(.red)
-                                .font(.caption)
                             Spacer()
                         }
                         .padding(.horizontal)
@@ -257,7 +258,9 @@ struct MyProfileEditView: View {
 
     private func validateIntroduction() {
         introductionErrorMessage = ""
-        if introduction.count > 150 {
+        if introduction.containsNGWord() {
+            introductionErrorMessage = "不適切な言葉が含まれています"
+        } else if introduction.count > 150 {
             introductionErrorMessage = "自己紹介文は150文字以内で入力してください。"
         }
     }

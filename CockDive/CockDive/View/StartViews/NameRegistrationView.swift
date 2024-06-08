@@ -33,9 +33,12 @@ struct NameRegistrationView: View {
                 // 名前入力欄
                 TextField("2～8文字以内で入力！", text: $nickName)
                     .padding(8)
-                    .background(Color.white)
-                    .foregroundStyle(Color.black)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.white.opacity(0.5), lineWidth: 2)
+                    )
+                    .foregroundStyle(Color.blackWhite)
+                    .tint(Color.white)
                     .padding(.horizontal, 20)
 
                 if !errorMessage.isEmpty {

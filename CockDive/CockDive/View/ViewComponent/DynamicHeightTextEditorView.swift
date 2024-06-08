@@ -27,6 +27,7 @@ struct DynamicHeightTextEditorView: View {
             .background(
                 TextEditor(text: $text)
                     .offset(y: 1.8)
+                    .tint(Color.blackWhite)
             )
         }
         .padding(.horizontal, 10)

@@ -105,13 +105,16 @@ struct AddPostView: View {
                     }
 
                     SectioinTitleView(text: "料理名を入力", isRequired: true)
+                        .padding(.top)
 
                     TextField("料理名を入力", text: $newTitle)
-                        .padding(6)
+                        .padding(7)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 10)
+                            RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
+                        .tint(Color.blackWhite)
                         .onChange(of: newTitle) { _ in
                             validateTitle()
                         }
@@ -123,18 +126,22 @@ struct AddPostView: View {
                     }
 
                     SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
+                        .padding(.top)
 
                     TextEditor(text: $newMemo)
                         .focused($keybordFocuse)
+                        .padding(6)
+                        .tint(Color.blackWhite)
                         .frame(height: 100)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 10)
+                            RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color.gray, lineWidth: 0.6)
                         )
                         .overlay(alignment: .topLeading) {
                             Text(newMemo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
                                 .foregroundStyle(Color.gray.opacity(0.5))
-                                .padding(5)
+                                .padding(7)
+                                .padding(.vertical, 3)
                         }
                         .onChange(of: newMemo) { _ in
                             validateMemo()
@@ -199,6 +206,7 @@ struct AddPostView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarAddButtonView(text: postType.buttonText) {
+                        keybordFocuse = false
                         validateTitle()
                         validateMemo()
                         validateImage()
