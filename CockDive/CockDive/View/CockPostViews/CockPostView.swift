@@ -20,6 +20,8 @@ struct CockPostView: View {
         GridItem(.flexible())
     ]
 
+    @AppStorage("hasSeenPostTutorial") var hasSeenPostTutorial: Bool = false
+
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
             ZStack {
@@ -157,6 +159,8 @@ struct CockPostView: View {
                 .foregroundStyle(Color.white)
                 .background(Color.mainColor)
                 .clipShape(Circle())
+                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 5, y: 5)
+                .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         .padding()
