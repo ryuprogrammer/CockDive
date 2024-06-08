@@ -15,7 +15,6 @@
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
 		422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */; };
-		422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69CB2BED1C570012FB8F /* ContentView.swift */; };
 		422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 422C69CD2BED1C590012FB8F /* Assets.xcassets */; };
 		422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 422C69D12BED1C590012FB8F /* Preview Assets.xcassets */; };
 		422C69D92BED1FE10012FB8F /* CockCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69D82BED1FE10012FB8F /* CockCardView.swift */; };
@@ -117,7 +116,6 @@
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
 		422C69C62BED1C570012FB8F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		422C69C92BED1C570012FB8F /* CockDive.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CockDive.xcdatamodel; sourceTree = "<group>"; };
-		422C69CB2BED1C570012FB8F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		422C69CD2BED1C590012FB8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		422C69CF2BED1C590012FB8F /* CockDive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CockDive.entitlements; sourceTree = "<group>"; };
 		422C69D12BED1C590012FB8F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -295,7 +293,6 @@
 		4298D8422BEDDD65005AB08F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				422C69CB2BED1C570012FB8F /* ContentView.swift */,
 				42DB947A2BF3187300ECDD84 /* StartView.swift */,
 				42DB94872BF3C30000ECDD84 /* MainTabView.swift */,
 				42DB94612BF2F8C100ECDD84 /* StartViews */,
@@ -620,7 +617,6 @@
 				4212EC0A2C0EF4170015EF20 /* OptionsView.swift in Sources */,
 				42DB947B2BF3187300ECDD84 /* StartView.swift in Sources */,
 				4298D8642BF106BD005AB08F /* PrivacyPolicyView.swift in Sources */,
-				422C69CC2BED1C570012FB8F /* ContentView.swift in Sources */,
 				42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */,
 				422EFAA82C05C4D5000DE24C /* IconRegistrationView.swift in Sources */,
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
