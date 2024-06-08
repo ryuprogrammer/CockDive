@@ -28,7 +28,7 @@ struct StrokeButtonUI: View {
                     .foregroundStyle(Color.mainColor)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 5)
-                    .background(Color.white)
+                    .background(Color.whiteBlack)
                     .clipShape(RoundedRectangle(cornerRadius: 30))
                     .overlay(
                         RoundedRectangle(cornerRadius: 30)
