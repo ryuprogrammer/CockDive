@@ -42,10 +42,6 @@ struct StrokeIconButtonUI: View {
                         height: (window?.screen.bounds.height ?? 50) / 18
                     )
             }
-            .frame(
-                width: (window?.screen.bounds.width ?? 400) - 40,
-                height: (window?.screen.bounds.height ?? 60) / 16
-            )
             .background(Color.whiteBlack)
             .clipShape(RoundedRectangle(cornerRadius: 30))
             .overlay(
