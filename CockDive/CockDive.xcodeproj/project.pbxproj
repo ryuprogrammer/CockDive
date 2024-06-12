@@ -263,6 +263,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		42370F442C19AA61008B577C /* Advertisement */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Advertisement;
+			sourceTree = "<group>";
+		};
 		4253F6152BFE00B00067BF14 /* ProfileViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +307,7 @@
 				4298D8542BF097BA005AB08F /* MyPageViews */,
 				4298D85D2BF10194005AB08F /* SettingViews */,
 				4253F6152BFE00B00067BF14 /* ProfileViews */,
+				42370F442C19AA61008B577C /* Advertisement */,
 				4298D84F2BEF50CE005AB08F /* ViewComponent */,
 			);
 			path = View;
