@@ -11,6 +11,7 @@
 		4212EC062C0EAD340015EF20 /* ReportElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC052C0EAD340015EF20 /* ReportElement.swift */; };
 		4212EC082C0ECF140015EF20 /* ReportDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC072C0ECF140015EF20 /* ReportDataModel.swift */; };
 		4212EC0A2C0EF4170015EF20 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4212EC092C0EF4170015EF20 /* OptionsView.swift */; };
+		42164E252C1EB9DE00510C99 /* AdvertisementBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42164E242C1EB9DE00510C99 /* AdvertisementBarView.swift */; };
 		421A539A2C05705C00795317 /* MyProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A53992C05705C00795317 /* MyProfileEditView.swift */; };
 		422C69C52BED1C570012FB8F /* CockDiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C42BED1C570012FB8F /* CockDiveApp.swift */; };
 		422C69C72BED1C570012FB8F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C69C62BED1C570012FB8F /* Persistence.swift */; };
@@ -112,6 +113,7 @@
 		4212EC052C0EAD340015EF20 /* ReportElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportElement.swift; sourceTree = "<group>"; };
 		4212EC072C0ECF140015EF20 /* ReportDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDataModel.swift; sourceTree = "<group>"; };
 		4212EC092C0EF4170015EF20 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
+		42164E242C1EB9DE00510C99 /* AdvertisementBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisementBarView.swift; sourceTree = "<group>"; };
 		421A53992C05705C00795317 /* MyProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEditView.swift; sourceTree = "<group>"; };
 		422C69C12BED1C570012FB8F /* CockDive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CockDive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		422C69C42BED1C570012FB8F /* CockDiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockDiveApp.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				42370F452C19AC13008B577C /* AdvertisementView.swift */,
+				42164E242C1EB9DE00510C99 /* AdvertisementBarView.swift */,
 			);
 			path = AdvertisementViews;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				4298D85F2BF101C4005AB08F /* SettingView.swift in Sources */,
 				4298D8662BF1071C005AB08F /* TermsOfServiceView.swift in Sources */,
 				42DB948F2BF470E100ECDD84 /* PostElement.swift in Sources */,
+				42164E252C1EB9DE00510C99 /* AdvertisementBarView.swift in Sources */,
 				42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */,
 				423B2A8A2BF8605800489BCC /* UserPostDataModel.swift in Sources */,
 				42DB949E2BF4BC7B00ECDD84 /* StartViewModel.swift in Sources */,
