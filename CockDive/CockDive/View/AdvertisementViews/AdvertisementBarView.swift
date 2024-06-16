@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AdvertisementBarView: View {
-    @State private var gradientColors: [Color] = [.blue, .blue, .green]
+    @State private var gradientColors: [Color] = [.pink, .pink, .red]
 
     var body: some View {
         ZStack {
@@ -10,7 +10,7 @@ struct AdvertisementBarView: View {
                 startPoint: .leading,
                 endPoint: .trailing
             )
-            .opacity(0.5)
+            .opacity(0.7)
             .frame(maxWidth: .infinity)
             .frame(height: 70)
             .onAppear {
@@ -26,9 +26,9 @@ struct AdvertisementBarView: View {
 
     private func animateColors() {
         let baseColors: [[Color]] = [
-            [.blue, .blue, .green],
-            [.green, .blue, .blue, .green],
-            [.green, .blue, .blue]
+            [.pink, .pink, .red],
+            [.pink, .pink, .pink, .red],
+            [.red, .pink, .pink]
         ]
 
         var index = 0
