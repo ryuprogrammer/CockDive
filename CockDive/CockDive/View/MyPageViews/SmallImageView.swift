@@ -3,6 +3,7 @@ import SwiftUI
 struct SmallImageView: View {
     let day: Int
     @Binding var posts: [MyPostModel]
+    @State private var showModal = false
 
     // 画面サイズ取得
     let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -89,6 +90,85 @@ struct SmallImageView: View {
             width: (window?.screen.bounds.width ?? 400) - 50,
             height: (window?.screen.bounds.height ?? 800) / 10
         )
+        .onTapGesture {
+            showModal.toggle()
+        }
+        .sheet(isPresented: $showModal) {
+            HalfModalView(posts: posts)
+        }
+    }
+}
+
+struct HalfModalView: View {
+    let posts: [MyPostModel]
+
+    var date: Date {
+        return posts.first?.createAt ?? Date()
+    }
+
+    // 画面サイズ取得
+    var cardWidth: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return (screen.bounds.width) * 2 / 3
+        }
+        return 400
+    }
+
+    // 画面サイズ取得
+    var modalHeight: CGFloat {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let screen = windowScene.windows.first?.screen {
+            return screen.bounds.width - 10
+        }
+        return 400
+    }
+
+    var body: some View {
+        VStack {
+            HStack {
+                Text(date.dateStringDate())
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.top, 5)
+                    .padding(.leading)
+
+                Spacer()
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(posts, id: \.id) { post in
+                        if let data = post.image,
+                           let uiImage = UIImage(data: data) {
+                            VStack(alignment: .leading) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: cardWidth, height: cardWidth)
+                                    .clipShape(Rectangle())
+
+                                Text(post.wrappedTitle)
+                                    .fontWeight(.bold)
+                                    .padding(.leading)
+
+                                ScrollView {
+                                    Text(post.wrappedMemo)
+                                        .padding(.leading)
+                                }
+
+                                Spacer()
+                            }
+                            .frame(width: cardWidth)
+                        }
+                    }
+                }
+            }
+        }
+        .frame(height: modalHeight)
+        .presentationDetents([
+            .medium
+        ])
     }
 }
 

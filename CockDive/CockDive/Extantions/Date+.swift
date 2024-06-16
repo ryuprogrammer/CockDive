@@ -100,4 +100,13 @@ extension Date {
         dateFormatter.dateFormat = "'今日 'HH:mm"
         return dateFormatter.string(from: self)
     }
+
+    /// 日付のみ（"M月d日"）
+    func dateStringDate() -> String {
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "M月d日"
+        return dateFormatter.string(from: self)
+    }
 }

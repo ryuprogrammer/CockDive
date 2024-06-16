@@ -30,6 +30,10 @@ struct CockPostView: View {
                 } else {
                     postListView
                 }
+                VStack {
+                    AdvertisementBarView()
+                    Spacer()
+                }
                 addButton
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -82,7 +86,7 @@ struct CockPostView: View {
     private var postListView: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                Spacer().frame(height: 3)
+                Spacer().frame(height: 73)
 
                 LazyVGrid(columns: columns, spacing: 3) {
                     ForEach(showPostsData, id: \.id) { postData in

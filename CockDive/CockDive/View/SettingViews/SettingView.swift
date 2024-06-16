@@ -74,20 +74,37 @@ struct SettingView: View {
 //            }
             
             Section {
-//                NavigationLinkButtonView(icon: "star", text: "レビューを書く") {
-//                    path.append(.contactView)
-//                }
-//                
-//                NavigationLinkButtonView(icon: "square.and.arrow.up", text: "アプリをシェア") {
-//                    path.append(.contactView)
-//                }
-                
+                if let url = URL(string: "https://apps.apple.com/jp/app/id6504010784?action=write-review") {
+                    Link(destination: url) {
+                        HStack {
+                            Image(systemName: "star").foregroundStyle(Color.blackWhite)
+                            .padding(.trailing, 5)
+                            Text("レビューを書く").foregroundStyle(Color.blackWhite)
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundStyle(Color.grayWhite)
+                        }
+                    }
+                }
+
+                if let url = URL(string: "https://apps.apple.com/jp/app/id6504010784") {
+                    ShareLink(item: url) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up").foregroundStyle(Color.blackWhite)
+                            .padding(.trailing, 5)
+                            Text("アプリをシェア").foregroundStyle(Color.blackWhite)
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundStyle(Color.grayWhite)
+                        }
+                    }
+                }
+
                 NavigationLinkButtonView(icon: "envelope", text: "運営へのお問合せ") {
                     path.append(.contactView)
                 }
             } header: {
                 Text("フィードバック")
             }
+
             
             Section {
                 NavigationLinkButtonView(icon: "person.crop.circle.badge.minus", text: "ログアウト") {
