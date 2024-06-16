@@ -103,7 +103,6 @@ extension Date {
 
     /// 日付のみ（"M月d日"）
     func dateStringDate() -> String {
-        let calendar = Calendar.current
         let dateFormatter = DateFormatter()
 
         dateFormatter.dateFormat = "M月d日"
