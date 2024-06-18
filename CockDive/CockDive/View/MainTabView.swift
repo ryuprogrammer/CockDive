@@ -60,17 +60,6 @@ enum CockCardNavigationPath: Hashable {
     case deleteAccountView
 }
 
-enum SettingViewPath {
-    case settingView
-    case newsView
-    case privacyPolicyView
-    case termsOfServiceView
-    case blockListView
-    case contactView
-    case logoutView
-    case deleteAccountView
-}
-
 /*
  削除処理したときに、
  親ViewのshowPostも削除するため
