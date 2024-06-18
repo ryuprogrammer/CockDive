@@ -51,6 +51,7 @@ enum CockCardNavigationPath: Hashable {
 
     /// 設定画面
     case settingView
+    case mainColorEditView
     case newsView
     case privacyPolicyView
     case termsOfServiceView
