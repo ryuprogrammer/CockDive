@@ -47,6 +47,7 @@
 		423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */; };
 		423B2A922BFA293C00489BCC /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A912BFA293C00489BCC /* UIApplication+.swift */; };
 		42446AB22C214CE500AE39F3 /* MainColorEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42446AB12C214CE500AE39F3 /* MainColorEditView.swift */; };
+		42446AB42C21566E00AE39F3 /* UserDefaultsColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42446AB32C21566E00AE39F3 /* UserDefaultsColorModel.swift */; };
 		4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */; };
 		4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6132BFDEB890067BF14 /* HapticsManager.swift */; };
 		4253F6172BFE00DF0067BF14 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6162BFE00DF0067BF14 /* ProfileView.swift */; };
@@ -152,6 +153,7 @@
 		423B2A8F2BFA050B00489BCC /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		423B2A912BFA293C00489BCC /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		42446AB12C214CE500AE39F3 /* MainColorEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainColorEditView.swift; sourceTree = "<group>"; };
+		42446AB32C21566E00AE39F3 /* UserDefaultsColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsColorModel.swift; sourceTree = "<group>"; };
 		4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
 		4253F6132BFDEB890067BF14 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		4253F6162BFE00DF0067BF14 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				423B2A8B2BF86CDB00489BCC /* CommentDataModel.swift */,
 				4212EC072C0ECF140015EF20 /* ReportDataModel.swift */,
 				42DB949F2BF503A300ECDD84 /* UserDefaultsDataModel.swift */,
+				42446AB32C21566E00AE39F3 /* UserDefaultsColorModel.swift */,
 				4253F6222BFEC2870067BF14 /* CoreData */,
 			);
 			path = Model;
@@ -670,6 +673,7 @@
 				4298D86C2BF107C4005AB08F /* LogoutView.swift in Sources */,
 				4253F6192BFE0ECA0067BF14 /* ProfileViewModel.swift in Sources */,
 				422C69CA2BED1C570012FB8F /* CockDive.xcdatamodeld in Sources */,
+				42446AB42C21566E00AE39F3 /* UserDefaultsColorModel.swift in Sources */,
 				4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */,
 				42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */,
 				423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */,
