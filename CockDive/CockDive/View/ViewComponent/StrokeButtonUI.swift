@@ -44,7 +44,7 @@ struct StrokeButtonUI: View {
                     width: (window?.screen.bounds.width ?? 400) - 40,
                     height: (window?.screen.bounds.height ?? 800) / 16
                 )
-                .background(Color.white)
+                .background(Color.whiteBlack)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
