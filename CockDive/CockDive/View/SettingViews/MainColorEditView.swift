@@ -39,7 +39,6 @@ struct MainColorEditView: View {
 
             // Confirm button
             Button(action: {
-                print("Selected color confirmed: \(selectedColor.description)")
                 // ここに決定ボタンが押された時のアクションを追加
             }) {
                 StrokeButtonUI(text: "決定", size: .large, isFill: false)

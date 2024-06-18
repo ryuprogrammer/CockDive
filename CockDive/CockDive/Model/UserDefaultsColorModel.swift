@@ -15,7 +15,7 @@ struct UserDefaultsColorModel {
     func fetchColor() -> Color {
         guard let colorData = UserDefaults.standard.data(forKey: colorKey),
               let uiColor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) else {
-            return .white // デフォルトの色
+            return .main // デフォルトの色
         }
         return Color(uiColor)
     }
