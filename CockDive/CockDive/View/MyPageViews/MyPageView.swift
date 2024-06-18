@@ -117,6 +117,8 @@ struct MyPageView: View {
                     ProfileView(showUser: userData, showIsFollow: showIsFollow, navigationPath: $cockCardNavigationPath)
                 case .settingView:
                     SettingView(path: $cockCardNavigationPath)
+                case .mainColorEditView:
+                    MainColorEditView(path: $cockCardNavigationPath)
                 case .newsView:
                     NewsView(path: $cockCardNavigationPath)
                 case .privacyPolicyView:

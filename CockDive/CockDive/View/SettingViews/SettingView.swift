@@ -50,6 +50,14 @@ struct SettingView: View {
             }
 
             Section {
+                NavigationLinkButtonView(icon: "circle.lefthalf.filled.inverse", text: "テーマカラー変更") {
+                    path.append(.mainColorEditView)
+                }
+            } header: {
+                Text("アプリ設定")
+            }
+
+            Section {
                 NavigationLinkButtonView(icon: "bell", text: "お知らせ") {
                     path.append(.newsView)
                 }
