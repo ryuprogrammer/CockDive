@@ -55,11 +55,8 @@ struct LogoutView: View {
                 }
             )
         }
-        .onAppear {
-
-        }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("お知らせ")
+        .navigationTitle("ログアウト")
         .toolbarColorScheme(.dark)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)

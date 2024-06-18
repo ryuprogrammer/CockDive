@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct MainColorEditView: View {
+    // ルート階層から受け取った配列パスの参照
+    @Binding var path: [CockCardNavigationPath]
     @State private var selectedColor: Color = .mainColor
     let sampleColors: [Color] = [.red, .green, .blue, .yellow, .orange, .purple, .pink]
+    let mainColorEditViewModel = MainColorEditViewModel()
 
     var body: some View {
         VStack {
@@ -39,7 +42,8 @@ struct MainColorEditView: View {
 
             // Confirm button
             Button(action: {
-                // ここに決定ボタンが押された時のアクションを追加
+                mainColorEditViewModel.setMainColor(color: selectedColor)
+                path.removeLast()
             }) {
                 StrokeButtonUI(text: "決定", size: .large, isFill: false)
             }
@@ -56,6 +60,6 @@ struct MainColorEditView: View {
 
 #Preview {
     NavigationStack {
-        MainColorEditView()
+        MainColorEditView(path: .constant([]))
     }
 }

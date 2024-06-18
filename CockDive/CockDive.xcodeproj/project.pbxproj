@@ -48,6 +48,7 @@
 		423B2A922BFA293C00489BCC /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B2A912BFA293C00489BCC /* UIApplication+.swift */; };
 		42446AB22C214CE500AE39F3 /* MainColorEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42446AB12C214CE500AE39F3 /* MainColorEditView.swift */; };
 		42446AB42C21566E00AE39F3 /* UserDefaultsColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42446AB32C21566E00AE39F3 /* UserDefaultsColorModel.swift */; };
+		42446AB62C21E62A00AE39F3 /* MainColorEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42446AB52C21E62A00AE39F3 /* MainColorEditViewModel.swift */; };
 		4253F6122BFDE1310067BF14 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */; };
 		4253F6142BFDEB890067BF14 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6132BFDEB890067BF14 /* HapticsManager.swift */; };
 		4253F6172BFE00DF0067BF14 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4253F6162BFE00DF0067BF14 /* ProfileView.swift */; };
@@ -154,6 +155,7 @@
 		423B2A912BFA293C00489BCC /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		42446AB12C214CE500AE39F3 /* MainColorEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainColorEditView.swift; sourceTree = "<group>"; };
 		42446AB32C21566E00AE39F3 /* UserDefaultsColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsColorModel.swift; sourceTree = "<group>"; };
+		42446AB52C21E62A00AE39F3 /* MainColorEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainColorEditViewModel.swift; sourceTree = "<group>"; };
 		4253F6112BFDE1310067BF14 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
 		4253F6132BFDEB890067BF14 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		4253F6162BFE00DF0067BF14 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 				422EFAB12C061E44000DE24C /* SettingViewModel.swift */,
 				422EFAB52C08013E000DE24C /* BlockListViewModel.swift */,
 				422EFAC12C0C3AAB000DE24C /* PostCommentViewModel.swift */,
+				42446AB52C21E62A00AE39F3 /* MainColorEditViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -679,6 +682,7 @@
 				423B2A902BFA050B00489BCC /* AddPostViewModel.swift in Sources */,
 				422EFABE2C08974E000DE24C /* String+.swift in Sources */,
 				42DB949C2BF4A2D100ECDD84 /* UserPostElement.swift in Sources */,
+				42446AB62C21E62A00AE39F3 /* MainColorEditViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
