@@ -6,8 +6,8 @@ struct MainColorEditView: View {
     @State private var selectedColor: Color = .mainColor
     @State private var showError: Bool = false
     let sampleColors: [Color] = [
-        .red, .green, .blue, .yellow, .orange, .purple, .pink, .brown,
-        .cyan, .teal, .indigo, .mint
+        .red, .green, .orange, .pink,
+        .cyan, .indigo, .mint, .main
     ]
     let mainColorEditViewModel = MainColorEditViewModel()
 
@@ -30,31 +30,32 @@ struct MainColorEditView: View {
                 .font(.headline)
                 .padding(.bottom, 5)
 
-            ScrollView {
-                LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 15) {
-                    ForEach(sampleColors, id: \.self) { color in
-                        Button(action: {
-                            if color != .white && color != .black {
-                                selectedColor = color
-                                showError = false
-                            } else {
-                                showError = true
-                            }
-                        }) {
-                            Circle()
-                                .fill(color)
-                                .frame(width: circleSize, height: circleSize)
-                                .overlay(Circle().stroke(Color.white, lineWidth: selectedColor == color ? 3 : 0))
-                                .shadow(
-                                    color: selectedColor == color ? color : .clear,
-                                    radius: selectedColor == color ? 5 : 0
-                                )
-                                .padding(1)
+            LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 15) {
+                ForEach(sampleColors, id: \.self) { color in
+                    Button(action: {
+                        if color != .white && color != .black {
+                            selectedColor = color
+                            showError = false
+                        } else {
+                            showError = true
                         }
+                    }) {
+                        Circle()
+                            .fill(color)
+                            .frame(width: circleSize, height: circleSize)
+                            .overlay(Circle().stroke(Color.white, lineWidth: selectedColor == color ? 3 : 0))
+                            .shadow(
+                                color: selectedColor == color ? color : .clear,
+                                radius: selectedColor == color ? 5 : 0
+                            )
+                            .padding(1)
                     }
                 }
-                .padding()
             }
+            .padding()
+
+            Spacer()
+                .frame(height: 50)
 
             // Display selected colors
             Text("選択された色")
@@ -95,3 +96,4 @@ struct MainColorEditView: View {
         MainColorEditView(path: .constant([]))
     }
 }
+

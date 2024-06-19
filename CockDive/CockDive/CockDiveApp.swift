@@ -12,7 +12,7 @@ struct CockDiveApp: App {
     init() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = UIColor(Color.whiteMain)
+        tabBarAppearance.backgroundColor = UIColor(Color.whiteBlack)
 
         // タブ選択時のテキスト設定
         tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(.mainWhite), .font: UIFont.systemFont(ofSize: 10, weight: .bold)]
