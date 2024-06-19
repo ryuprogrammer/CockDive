@@ -6,8 +6,8 @@ struct MainColorEditView: View {
     @State private var selectedColor: Color = .mainColor
     @State private var showError: Bool = false
     let sampleColors: [Color] = [
-        .red, .green, .orange, .pink,
-        .cyan, .indigo, .mint, .main
+        .mainPink, .mainBlue, .red, .green, .orange, .pink,
+        .cyan, .indigo, .mint
     ]
     let mainColorEditViewModel = MainColorEditViewModel()
 
