@@ -26,12 +26,12 @@ struct MainColorEditView: View {
                 .frame(height: 50)
 
             // Sample colors
-            Text("おすすめの色")
+            Text("色をタップして選択してね！")
                 .font(.headline)
                 .padding(.bottom, 5)
 
             ScrollView {
-                LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 10) {
+                LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 15) {
                     ForEach(sampleColors, id: \.self) { color in
                         Button(action: {
                             if color != .white && color != .black {
