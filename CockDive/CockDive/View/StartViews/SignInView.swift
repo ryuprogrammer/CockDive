@@ -22,7 +22,12 @@ struct SignInView: View {
                 Spacer()
 
                 Text("みんなのごはん")
-                    .font(.largeTitle)
+                    .font(.mainFont(size: 45))
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.white)
+
+                Text("〜簡単に毎日のごはん日記〜")
+                    .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.white)
 
