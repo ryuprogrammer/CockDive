@@ -20,7 +20,7 @@ struct MainTabView: View {
             MyPageView(cockCardNavigationPath: $myPageNavigationPath)
                 .tabItem {
                     VStack {
-                        Image(systemName: "frying.pan")
+                        Image(systemName: "calendar.badge.checkmark")
                         Text("ごはんのきろく")
                     }
                 }.tag(ViewType.home)
