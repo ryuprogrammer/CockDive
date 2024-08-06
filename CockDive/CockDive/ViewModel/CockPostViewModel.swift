@@ -9,10 +9,14 @@ class CockPostViewModel: ObservableObject {
     @Published var newPostsData: [PostElement] = []
     // ロードステータス
     @Published var loadStatus: LoadStatus = .initial
+    /// 投稿数
+    @Published var myPostCount: Int = 0
+
     let userDataModel = UserDataModel()
     var postDataModel = PostDataModel()
     let userFriendDataModel = UserFriendModel()
     let userPostDataModel = UserPostDataModel()
+    let myPostManager = MyPostCoreDataManager.shared
 
     private var postListeners: [ListenerRegistration] = []
 
@@ -80,6 +84,17 @@ class CockPostViewModel: ObservableObject {
     func stopListeningToPosts() {
         postListeners.forEach { $0.remove() }
         postListeners.removeAll()
+    }
+
+    /// 投稿数を取得
+    func fetchMyPostCount() {
+        myPostCount = myPostManager.countAllPosts()
+    }
+
+    /// チュートリアルの表示有無
+    func isShowPostTutorial() -> Bool {
+        let myPostCount = myPostManager.countAllPosts()
+        return myPostCount == 0 ? true : false
     }
 
     // MARK: - その他

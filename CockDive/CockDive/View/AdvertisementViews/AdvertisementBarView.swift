@@ -7,6 +7,8 @@ struct AdvertisementBarView: View {
     @State private var colorTimer: Timer?
     @State private var heartTimer: Timer?
 
+    let postCount: Int
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -27,8 +29,8 @@ struct AdvertisementBarView: View {
             }
 
             HStack {
-                Text("カレンダーを埋め尽くそう")
-                    .font(.title)
+                Text(getMessage(for: postCount))
+                    .font(.mainFont(size: 27))
                     .fontWeight(.bold)
                     .foregroundStyle(Color.white)
 
@@ -45,6 +47,19 @@ struct AdvertisementBarView: View {
                         .transition(.scale)
                 }
             }
+        }
+    }
+
+    private func getMessage(for count: Int) -> String {
+        switch count {
+        case 0:
+            return "投稿していいねをもらおう"
+        case 1...5:
+            return "コメントしてみよう"
+        case 6...10:
+            return "カレンダーを埋め尽くそう"
+        default:
+            return "毎日頑張ってえらすぎる"
         }
     }
 
@@ -87,5 +102,10 @@ struct AdvertisementBarView: View {
 }
 
 #Preview {
-    AdvertisementBarView()
+    VStack {
+        AdvertisementBarView(postCount: 0)
+        AdvertisementBarView(postCount: 3)
+        AdvertisementBarView(postCount: 10)
+        AdvertisementBarView(postCount: 100)
+    }
 }

@@ -90,6 +90,8 @@
 		42A1C7B52C0CDDC30036AC0E /* SignInWithAppleObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A1C7B42C0CDDC30036AC0E /* SignInWithAppleObject.swift */; };
 		42C02AC62BF79077000D7CE4 /* SectioinTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C02AC52BF79077000D7CE4 /* SectioinTitleView.swift */; };
 		42C02ACA2BF7A851000D7CE4 /* CockCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */; };
+		42D07BEB2C6220080067450F /* MochiyPopOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42D07BEA2C6220080067450F /* MochiyPopOne-Regular.ttf */; };
+		42D07BED2C6239620067450F /* Font+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D07BEC2C6239620067450F /* Font+.swift */; };
 		42DB945A2BF20B5A00ECDD84 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */; };
 		42DB945C2BF20B7600ECDD84 /* PostCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */; };
 		42DB945E2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */; };
@@ -197,6 +199,8 @@
 		42A1C7B42C0CDDC30036AC0E /* SignInWithAppleObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleObject.swift; sourceTree = "<group>"; };
 		42C02AC52BF79077000D7CE4 /* SectioinTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectioinTitleView.swift; sourceTree = "<group>"; };
 		42C02AC92BF7A851000D7CE4 /* CockCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockCardViewModel.swift; sourceTree = "<group>"; };
+		42D07BEA2C6220080067450F /* MochiyPopOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MochiyPopOne-Regular.ttf"; sourceTree = "<group>"; };
+		42D07BEC2C6239620067450F /* Font+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+.swift"; sourceTree = "<group>"; };
 		42DB94592BF20B5A00ECDD84 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		42DB945B2BF20B7600ECDD84 /* PostCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentView.swift; sourceTree = "<group>"; };
 		42DB945D2BF248D500ECDD84 /* DynamicHeightTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextEditorView.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 				42DB94802BF3282D00ECDD84 /* Model */,
 				4298D8492BEF4E1D005AB08F /* Extantions */,
 				422C69CD2BED1C590012FB8F /* Assets.xcassets */,
+				42D07BEA2C6220080067450F /* MochiyPopOne-Regular.ttf */,
 				42DB947C2BF323FD00ECDD84 /* GoogleService-Info.plist */,
 				422C69CF2BED1C590012FB8F /* CockDive.entitlements */,
 				422C69C82BED1C570012FB8F /* CockDive.xcdatamodeld */,
@@ -352,6 +357,7 @@
 				422EFAA92C05C999000DE24C /* PhotosPickerItem+.swift */,
 				422EFAAB2C05CA39000DE24C /* UIImage+.swift */,
 				422EFABD2C08974E000DE24C /* String+.swift */,
+				42D07BEC2C6239620067450F /* Font+.swift */,
 			);
 			path = Extantions;
 			sourceTree = "<group>";
@@ -578,6 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42DB947D2BF323FD00ECDD84 /* GoogleService-Info.plist in Resources */,
+				42D07BEB2C6220080067450F /* MochiyPopOne-Regular.ttf in Resources */,
 				422C69D22BED1C590012FB8F /* Preview Assets.xcassets in Resources */,
 				422C69CE2BED1C590012FB8F /* Assets.xcassets in Resources */,
 			);
@@ -664,6 +671,7 @@
 				4253F6262C00E0A00067BF14 /* MyPostCoreDataManager.swift in Sources */,
 				4298D8462BEDE782005AB08F /* MyPageView.swift in Sources */,
 				4298D8762BF2050D005AB08F /* ToolBarAddButtonView.swift in Sources */,
+				42D07BED2C6239620067450F /* Font+.swift in Sources */,
 				42DB945A2BF20B5A00ECDD84 /* PostDetailView.swift in Sources */,
 				423B2A8E2BF8994100489BCC /* PostDetailViewModel.swift in Sources */,
 				4212EC0A2C0EF4170015EF20 /* OptionsView.swift in Sources */,

@@ -12,6 +12,11 @@ struct CockPostView: View {
 
     @State private var lastPost: PostElement?
 
+    // 自分の投稿数
+    @State private var myPostCount: Int = 0
+    // チュートリアル表示有無
+    @State private var isShowPostTutorial: Bool = false
+
     // 投稿を編集
     @State private var editPost: PostElement? = nil
 
@@ -19,8 +24,6 @@ struct CockPostView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-
-    @AppStorage("hasSeenPostTutorial") var hasSeenPostTutorial: Bool = false
 
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
@@ -31,9 +34,15 @@ struct CockPostView: View {
                     postListView
                 }
                 VStack {
-                    AdvertisementBarView()
+                    AdvertisementBarView(postCount: myPostCount)
                     Spacer()
                 }
+
+                if isShowPostTutorial {
+                    Color.black.opacity(0.7)
+                        .edgesIgnoringSafeArea(.all)
+                }
+
                 addButton
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -75,6 +84,10 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
+            // チュートリアル表示有無
+            isShowPostTutorial = cockPostVM.isShowPostTutorial()
+            // 投稿数を取得
+            myPostCount = cockPostVM.myPostCount
             if cockPostVM.loadStatus == .initial {
                 Task {
                     await cockPostVM.fetchPostsDataByStatus()
@@ -150,21 +163,29 @@ struct CockPostView: View {
         }
     }
 
-
     private var addButton: some View {
         Button(action: {
             isShowSheet = true
         }, label: {
-            Image(systemName: "plus")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding()
-                .frame(width: 65, height: 65)
-                .foregroundStyle(Color.white)
-                .background(Color.mainColor)
-                .clipShape(Circle())
-                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 5, y: 5)
-                .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
+            VStack(alignment: .trailing) {
+                if isShowPostTutorial {
+                    Text("ごはんを投稿！")
+                        .font(.mainFont(size: 20))
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.white)
+                }
+
+                Image(systemName: "plus")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 65, height: 65)
+                    .foregroundStyle(Color.white)
+                    .background(Color.mainColor)
+                    .clipShape(Circle())
+                    .shadow(color: Color.black.opacity(0.3), radius: 10, x: 5, y: 5)
+                    .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
+            }
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         .padding()
