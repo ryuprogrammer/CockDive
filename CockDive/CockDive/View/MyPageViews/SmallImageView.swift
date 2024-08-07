@@ -136,30 +136,40 @@ struct HalfModalView: View {
                 Spacer()
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(posts, id: \.id) { post in
-                        if let data = post.image,
-                           let uiImage = UIImage(data: data) {
-                            VStack(alignment: .leading) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: cardWidth, height: cardWidth)
-                                    .clipShape(Rectangle())
+            if posts.isEmpty {
+                Spacer()
+                Text("この日の記録はありません")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .padding(.top, 5)
+                    .padding(.leading)
+                Spacer()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(posts, id: \.id) { post in
+                            if let data = post.image,
+                               let uiImage = UIImage(data: data) {
+                                VStack(alignment: .leading) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: cardWidth, height: cardWidth)
+                                        .clipShape(Rectangle())
 
-                                Text(post.wrappedTitle)
-                                    .fontWeight(.bold)
-                                    .padding(.leading)
-
-                                ScrollView {
-                                    Text(post.wrappedMemo)
+                                    Text(post.wrappedTitle)
+                                        .fontWeight(.bold)
                                         .padding(.leading)
-                                }
 
-                                Spacer()
+                                    ScrollView {
+                                        Text(post.wrappedMemo)
+                                            .padding(.leading)
+                                    }
+
+                                    Spacer()
+                                }
+                                .frame(width: cardWidth)
                             }
-                            .frame(width: cardWidth)
                         }
                     }
                 }
