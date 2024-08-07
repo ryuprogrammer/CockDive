@@ -14,11 +14,11 @@ struct CockPostView: View {
 
     // 自分の投稿数
     @State private var myPostCount: Int = 0
-    // チュートリアル表示有無
-    @State private var isShowPostTutorial: Bool = false
 
     // 投稿を編集
     @State private var editPost: PostElement? = nil
+
+    @AppStorage("isShowAddPostTutorial") var isShowAddPostTutorial: Bool = true
 
     let columns = [
         GridItem(.flexible()),
@@ -38,7 +38,7 @@ struct CockPostView: View {
                     Spacer()
                 }
 
-                if !isShowPostTutorial {
+                if isShowAddPostTutorial {
                     Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                 }
@@ -50,6 +50,21 @@ struct CockPostView: View {
             .toolbarColorScheme(.dark)
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            isShowAddPostTutorial = true
+                        }
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 33)
+                            .foregroundStyle(Color.white)
+                    }
+                }
+            }
             .navigationDestination(for: CockCardNavigationPath.self) { pathData in
                 switch pathData {
                 case .detailView(let postData, let userData, let firstLike, let firstFollow, _):
@@ -84,8 +99,7 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
-            // チュートリアル表示有無
-            isShowPostTutorial = cockPostVM.isShowPostTutorial()
+            isShowAddPostTutorial = cockPostVM.isShowPostTutorial()
             // 投稿数を取得
             myPostCount = cockPostVM.myPostCount
             if cockPostVM.loadStatus == .initial {
@@ -165,10 +179,11 @@ struct CockPostView: View {
 
     private var addButton: some View {
         Button(action: {
+            isShowAddPostTutorial.toggle()
             isShowSheet = true
         }, label: {
             VStack(alignment: .trailing) {
-                if !isShowPostTutorial {
+                if isShowAddPostTutorial {
                     Text("ごはんを投稿！")
                         .font(.mainFont(size: 20))
                         .fontWeight(.bold)

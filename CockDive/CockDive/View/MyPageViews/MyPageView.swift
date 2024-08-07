@@ -124,9 +124,7 @@ struct MyPageView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        withAnimation {
-                            isShowFullCalender = true
-                        }
+                        isShowFullCalender.toggle()
                     } label: {
                         Image(systemName: "questionmark.circle")
                             .resizable()
