@@ -26,6 +26,8 @@ struct MyPageView: View {
     @State var showLikePostListData: [PostElement] = []
     @State private var lastLikePost: PostElement?
 
+    @AppStorage("isShowFullCalender") var isShowFullCalender: Bool = true
+
     // 画面遷移用
     @Binding var cockCardNavigationPath: [CockCardNavigationPath]
 
@@ -36,41 +38,82 @@ struct MyPageView: View {
 
     var body: some View {
         NavigationStack(path: $cockCardNavigationPath) {
-            VStack {
-                MyPageHeaderView(
-                    showUserData: $showUserData,
-                    postCount: $showMyPostCount,
-                    showFriendData: $showFriendData
-                )
-                .onAppear {
-                    print("onAppear")
-                    myPageVM.fetchUserData()
-                    myPageVM.fetchMyPostCount()
-                    Task {
-                        await myPageVM.fetchUserFriendElement()
+            ZStack {
+                VStack {
+                    MyPageHeaderView(
+                        showUserData: $showUserData,
+                        postCount: $showMyPostCount,
+                        showFriendData: $showFriendData
+                    )
+                    .onAppear {
+                        print("onAppear")
+                        myPageVM.fetchUserData()
+                        myPageVM.fetchMyPostCount()
+                        Task {
+                            await myPageVM.fetchUserFriendElement()
+                        }
                     }
+
+                    SwipeableTabView(tabs: [
+                        (title: "カレンダー", view: AnyView(
+                            ImageCalendarView(
+                                showingDate: $showDate,
+                                showMyPostData: $showMyPostData
+                            )
+                            .onAppear {
+                                showMyPostData = myPageVM.fetchMyPostData(date: showDate)
+                            }
+                                .onChange(of: showDate) { newDate in
+                                    showMyPostData = myPageVM.fetchMyPostData(date: newDate)
+                                }
+                        )),
+                        (title: "投稿", view: AnyView(
+                            myPostListView()
+                        )),
+                        (title: "いいね", view: AnyView(
+                            likePostListView()
+                        ))
+                    ])
                 }
 
-                SwipeableTabView(tabs: [
-                    (title: "カレンダー", view: AnyView(
-                        ImageCalendarView(
-                            showingDate: $showDate,
-                            showMyPostData: $showMyPostData
-                        )
-                        .onAppear {
-                            showMyPostData = myPageVM.fetchMyPostData(date: showDate)
+                if isShowFullCalender {
+                    Color.black.opacity(0.8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                    VStack {
+                        Spacer()
+
+                        Text("カレンダーをご飯で埋め尽くそう！")
+                            .font(.mainFont(size: 23))
+                            .foregroundStyle(Color.white)
+
+                        Image("fullCalender")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.horizontal, 50)
+                            .frame(maxWidth: .infinity)
+
+                        Text("閉じる")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 8)
+                            .background(
+                                Capsule()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .foregroundColor(.white)
+                            .padding(.vertical, 10)
+
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            isShowFullCalender = false
                         }
-                        .onChange(of: showDate) { newDate in
-                            showMyPostData = myPageVM.fetchMyPostData(date: newDate)
-                        }
-                    )),
-                    (title: "投稿", view: AnyView(
-                        myPostListView()
-                    )),
-                    (title: "いいね", view: AnyView(
-                        likePostListView()
-                    ))
-                ])
+                    }
+                }
             }
             .frame(maxHeight: .infinity)
             .navigationTitle("\(showUserData.nickName)のきろく")
@@ -79,6 +122,20 @@ struct MyPageView: View {
             .toolbarBackground(Color.mainColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            isShowFullCalender = true
+                        }
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 33)
+                            .foregroundStyle(Color.white)
+                    }
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         cockCardNavigationPath.append(.settingView)
@@ -86,7 +143,7 @@ struct MyPageView: View {
                         Image(systemName: "gearshape")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 35)
+                            .frame(width: 33)
                             .foregroundStyle(Color.white)
                     }
                 }

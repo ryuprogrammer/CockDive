@@ -38,7 +38,7 @@ struct CockPostView: View {
                     Spacer()
                 }
 
-                if isShowPostTutorial {
+                if !isShowPostTutorial {
                     Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                 }
@@ -168,7 +168,7 @@ struct CockPostView: View {
             isShowSheet = true
         }, label: {
             VStack(alignment: .trailing) {
-                if isShowPostTutorial {
+                if !isShowPostTutorial {
                     Text("ごはんを投稿！")
                         .font(.mainFont(size: 20))
                         .fontWeight(.bold)
