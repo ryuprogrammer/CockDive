@@ -39,24 +39,37 @@ struct ImageCalendarView: View {
             }
             .padding(.horizontal, 5)
 
-            // 日付と投稿画像のグリッド表示
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7), spacing: 5) {
-                ForEach(0..<showingDate.numberOfDaysInMonth + showingDate.weekdayOfFirstDay.rawValue, id: \.self) { index in
-                    if index < showingDate.weekdayOfFirstDay.rawValue {
-                        Spacer()
-                    } else {
-                        let showDay = index - showingDate.weekdayOfFirstDay.rawValue + 1
-                        SmallImageView(day: showDay, posts: Binding(
-                            get: { getPosts(for: showDay) },
-                            set: { _ in }
-                        ))
-                        .frame(maxWidth: .infinity)
+            ZStack {
+                // 日付と投稿画像のグリッド表示
+                LazyVGrid(columns: Array(repeating: GridItem(), count: 7), spacing: 5) {
+                    ForEach(0..<showingDate.numberOfDaysInMonth + showingDate.weekdayOfFirstDay.rawValue, id: \.self) { index in
+                        if index < showingDate.weekdayOfFirstDay.rawValue {
+                            Spacer()
+                        } else {
+                            let showDay = index - showingDate.weekdayOfFirstDay.rawValue + 1
+                            SmallImageView(day: showDay, posts: Binding(
+                                get: { getPosts(for: showDay) },
+                                set: { _ in }
+                            ))
+                            .frame(maxWidth: .infinity)
+                        }
                     }
                 }
+                .animation(.linear, value: showingDate)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 5)
+
+                if showMyPostData.isEmpty {
+                    Text("記録はありません")
+                        .font(.mainFont(size: 30))
+                        .foregroundStyle(Color.mainColor)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(Color.whiteBlack)
+                                .blur(radius: 20)
+                        )
+                }
             }
-            .animation(.linear, value: showingDate)
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 5)
         }
     }
 
@@ -74,7 +87,11 @@ struct ImageCalendarView_Previews: PreviewProvider {
             (day: 3, posts: [createSamplePost(context: context, id: "2", title: "Sample 2", memo: "Memo 2")]),
             (day: 15, posts: [createSamplePost(context: context, id: "3", title: "Sample 3", memo: "Memo 3")])
         ]
-        ImageCalendarView(showingDate: .constant(Date()), showMyPostData: .constant(samplePosts))
+        VStack {
+            ImageCalendarView(showingDate: .constant(Date()), showMyPostData: .constant(samplePosts))
+
+            ImageCalendarView(showingDate: .constant(Date()), showMyPostData: .constant([]))
+        }
     }
 
     static func createSamplePost(context: NSManagedObjectContext, id: String, title: String, memo: String) -> MyPostModel {
