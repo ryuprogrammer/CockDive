@@ -212,6 +212,7 @@ struct CockCardView: View {
                     LikeButtonView(
                         isLiked: $showIsLikePost,
                         isButtonDisabled: $isLikeButtonDisabled,
+                        likeCount: $showPostData.likeCount,
                         buttonSize: CGSize(width: cardWidth/8, height: cardWidth/8)
                     ) {
                         // ボタンの無効化
@@ -238,7 +239,7 @@ struct CockCardView: View {
                 }
                 .padding(.horizontal, 3)
             }
-            .padding(3) // 隙間を3に設定
+            .padding(3)
             .frame(width: cardWidth, height: cardHeight)
         }
         .frame(width: cardWidth, height: cardHeight)

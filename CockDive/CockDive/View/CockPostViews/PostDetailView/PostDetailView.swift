@@ -126,15 +126,11 @@ struct PostDetailView: View {
                             HStack {
                                 Spacer()
 
-                                Text("\(showPostData.likeCount)")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color.white)
-
                                 // ライクボタン
                                 LikeButtonView(
                                     isLiked: $showIsLike,
                                     isButtonDisabled: $isLikeButtonDisabled,
+                                    likeCount: $showPostData.likeCount,
                                     buttonSize: CGSize(width: screenWidth/12, height: screenWidth/12)
                                 ) {
                                     // ボタンの無効化
