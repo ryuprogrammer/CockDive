@@ -19,7 +19,7 @@ enum PostType: String {
 
 struct AddPostView: View {
     let postType: PostType
-    // 編集の場合のみ受け取る
+    /// 編集の場合のみ受け取る
     let editPost: PostElement?
     @StateObject private var addPostVM = AddPostViewModel()
     @State private var newTitle: String = ""
@@ -50,116 +50,118 @@ struct AddPostView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .center) {
-                SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
-                    .padding(.top)
+            ScrollView {
+                VStack(alignment: .center) {
+                    SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
+                        .padding(.top)
 
-                if let newImage {
-                    Image(uiImage: newImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth*3/5, height: screenWidth*3/5)
-                        .clipShape(Rectangle())
+                    if let newImage {
+                        Image(uiImage: newImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: screenWidth*3/5, height: screenWidth*3/5)
+                            .clipShape(Rectangle())
 
-                    HStack {
-                        Spacer()
-                        Button {
-                            self.newImage = nil
-                        } label: {
-                            StrokeIconButtonUI(text: "写真を選び直す", icon: "gobackward", size: .small)
-                        }
-                    }
-                } else {
-                    Button {
-                        imagePickerSourceType = .photoLibrary
-                        showImagePicker = true
-                    } label: {
-                        StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled", size: .large)
-                    }
-                    .sheet(isPresented: $showImagePicker) {
-                        ImagePicker() { selectedImage in
-                            if let selectedImage = selectedImage {
-                                newImage = selectedImage
+                        HStack {
+                            Spacer()
+                            Button {
+                                self.newImage = nil
+                            } label: {
+                                StrokeIconButtonUI(text: "写真を選び直す", icon: "gobackward", size: .small)
                             }
                         }
-                        .ignoresSafeArea(.all)
+                    } else {
+                        Button {
+                            imagePickerSourceType = .photoLibrary
+                            showImagePicker = true
+                        } label: {
+                            StrokeIconButtonUI(text: "アルバムから選ぶ", icon: "photo.on.rectangle.angled", size: .large)
+                        }
+                        .sheet(isPresented: $showImagePicker) {
+                            ImagePicker() { selectedImage in
+                                if let selectedImage = selectedImage {
+                                    newImage = selectedImage
+                                }
+                            }
+                            .ignoresSafeArea(.all)
+                        }
+
+                        Button {
+                            imagePickerSourceType = .camera
+                            isPresentedCameraView = true
+                        } label: {
+                            StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
+                        }
+                        .fullScreenCover(isPresented: $isPresentedCameraView) {
+                            CameraView(image: $newImage)
+                                .ignoresSafeArea()
+                        }
                     }
 
-                    Button {
-                        imagePickerSourceType = .camera
-                        isPresentedCameraView = true
-                    } label: {
-                        StrokeIconButtonUI(text: "写真を撮る", icon: "camera", size: .large)
+                    if !imageErrorMessage.isEmpty {
+                        Text(imageErrorMessage)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.red)
                     }
-                    .fullScreenCover(isPresented: $isPresentedCameraView) {
-                        CameraView(image: $newImage)
-                            .ignoresSafeArea()
+
+                    SectioinTitleView(text: "料理名を入力", isRequired: true)
+                        .padding(.top)
+
+                    TextField("料理名を入力", text: $newTitle)
+                        .padding(7)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.gray, lineWidth: 0.6)
+                        )
+                        .tint(Color.blackWhite)
+                        .onChange(of: newTitle) { _ in
+                            validateTitle()
+                        }
+
+                    if !titleErrorMessage.isEmpty {
+                        Text(titleErrorMessage)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.red)
                     }
+
+                    SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
+                        .padding(.top)
+
+                    TextEditor(text: $newMemo)
+                        .focused($keybordFocuse)
+                        .padding(6)
+                        .tint(Color.blackWhite)
+                        .frame(height: 100)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.gray, lineWidth: 0.6)
+                        )
+                        .overlay(alignment: .topLeading) {
+                            Text(newMemo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
+                                .foregroundStyle(Color.gray.opacity(0.5))
+                                .padding(7)
+                                .padding(.vertical, 3)
+                        }
+                        .onChange(of: newMemo) { _ in
+                            validateMemo()
+                        }
+                        .onTapGesture {
+                            keybordFocuse.toggle()
+                        }
+
+                    if !memoErrorMessage.isEmpty {
+                        Text(memoErrorMessage)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.red)
+                    }
+
+                    Spacer()
+                        .frame(height: 10)
+                        .listRowSeparator(.hidden)
+
+                    Spacer()
                 }
-
-                if !imageErrorMessage.isEmpty {
-                    Text(imageErrorMessage)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.red)
-                }
-
-                SectioinTitleView(text: "料理名を入力", isRequired: true)
-                    .padding(.top)
-
-                TextField("料理名を入力", text: $newTitle)
-                    .padding(7)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.gray, lineWidth: 0.6)
-                    )
-                    .tint(Color.blackWhite)
-                    .onChange(of: newTitle) { _ in
-                        validateTitle()
-                    }
-
-                if !titleErrorMessage.isEmpty {
-                    Text(titleErrorMessage)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.red)
-                }
-
-                SectioinTitleView(text: "ご飯のメモをしよう", isRequired: false)
-                    .padding(.top)
-
-                TextEditor(text: $newMemo)
-                    .focused($keybordFocuse)
-                    .padding(6)
-                    .tint(Color.blackWhite)
-                    .frame(height: 100)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.gray, lineWidth: 0.6)
-                    )
-                    .overlay(alignment: .topLeading) {
-                        Text(newMemo.isEmpty ? "ご飯のメモ\n 例） 食べすぎた。。。" : "")
-                            .foregroundStyle(Color.gray.opacity(0.5))
-                            .padding(7)
-                            .padding(.vertical, 3)
-                    }
-                    .onChange(of: newMemo) { _ in
-                        validateMemo()
-                    }
-                    .onTapGesture {
-                        keybordFocuse.toggle()
-                    }
-
-                if !memoErrorMessage.isEmpty {
-                    Text(memoErrorMessage)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.red)
-                }
-
-                Spacer()
-                    .frame(height: 10)
-                    .listRowSeparator(.hidden)
-
-                Spacer()
             }
             .padding(.horizontal)
             .overlay {

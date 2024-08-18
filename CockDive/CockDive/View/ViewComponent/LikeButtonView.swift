@@ -3,6 +3,7 @@ import SwiftUI
 struct LikeButtonView: View {
     @Binding var isLiked: Bool
     @Binding var isButtonDisabled: Bool
+    @Binding var likeCount: Int
     let buttonSize: CGSize
     var particleSize: CGSize {
         return CGSize(width: buttonSize.width * 2, height: buttonSize.height * 2)
@@ -25,6 +26,12 @@ struct LikeButtonView: View {
                     .scaledToFit()
                     .frame(width: buttonSize.width, height: buttonSize.height)
                     .foregroundStyle(isLiked ? Color.pink : Color.white)
+                    .overlay {
+                        Text("\(likeCount)")
+                            .font(.system(size: buttonSize.height/2))
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.white)
+                    }
             }
             .disabled(isButtonDisabled)
 
@@ -42,10 +49,12 @@ struct LikeButtonView: View {
     struct PreviewView: View {
         @State var isLike = false
         @State var isButton = false
+        @State var likeCount = 10
         var body: some View {
             LikeButtonView(
                 isLiked: $isLike,
                 isButtonDisabled: $isButton,
+                likeCount: $likeCount,
                 buttonSize: CGSize(width: 50, height: 50),
                 action: {
                     isLike.toggle()

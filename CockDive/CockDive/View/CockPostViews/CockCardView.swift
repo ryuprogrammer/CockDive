@@ -60,19 +60,19 @@ struct CockCardView: View {
 
         var title: String {
             switch self {
-                case .noPost:
-                    return "投稿が存在しません"
-                case .report:
-                    return "通報"
+            case .noPost:
+                return "投稿が存在しません"
+            case .report:
+                return "通報"
             }
         }
 
         var message: String {
             switch self {
-                case .noPost:
-                    return ""
-                case .report:
-                    return "通報理由を書いていただくと\n助かります。。。"
+            case .noPost:
+                return ""
+            case .report:
+                return "通報理由を書いていただくと\n助かります。。。"
             }
         }
     }
@@ -143,7 +143,7 @@ struct CockCardView: View {
 
                             VStack(alignment: .leading, spacing: 3) {
                                 // ニックネーム
-                                Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
+                                Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "なまえ")")
                                     .foregroundStyle(Color.white)
                                     .font(.subheadline)
                                     .fontWeight(.bold)
@@ -197,7 +197,7 @@ struct CockCardView: View {
 
                 HStack(alignment: .bottom) {
                     // タイトル
-                    Text(showPostData.title.limitTextLength(maxLength: 9))
+                    Text(showPostData.title.limitTextLength(maxLength: 8))
                         .fontWeight(.bold)
                         .foregroundStyle(Color.white)
                         .background(
@@ -208,10 +208,30 @@ struct CockCardView: View {
 
                     Spacer()
 
+//                    // シェアボタン
+//                    ShareLink(
+//                        item: PostSharedContent(
+//                            title: showPostData.title,
+//                            image: nil,
+//                            likeCount: showPostData.likeCount
+//                        ),
+//                        preview: SharePreview(
+//                            showPostData.title,
+//                            image: showPostData.postImage?.toImage() ?? Image(systemName: "photo")
+//                        )
+//                    ) {
+//                        Image(systemName: "paperplane")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: cardWidth/8, height: cardWidth/8)
+//                            .foregroundStyle(Color.white)
+//                    }
+
                     // ライクボタン
                     LikeButtonView(
                         isLiked: $showIsLikePost,
                         isButtonDisabled: $isLikeButtonDisabled,
+                        likeCount: $showPostData.likeCount,
                         buttonSize: CGSize(width: cardWidth/8, height: cardWidth/8)
                     ) {
                         // ボタンの無効化
@@ -238,7 +258,7 @@ struct CockCardView: View {
                 }
                 .padding(.horizontal, 3)
             }
-            .padding(3) // 隙間を3に設定
+            .padding(3)
             .frame(width: cardWidth, height: cardHeight)
         }
         .frame(width: cardWidth, height: cardHeight)

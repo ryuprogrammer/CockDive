@@ -53,9 +53,7 @@ struct CockPostView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        withAnimation {
-                            isShowAddPostTutorial = true
-                        }
+                        isShowAddPostTutorial.toggle()
                     } label: {
                         Image(systemName: "questionmark.circle")
                             .resizable()
@@ -179,7 +177,7 @@ struct CockPostView: View {
 
     private var addButton: some View {
         Button(action: {
-            isShowAddPostTutorial.toggle()
+            isShowAddPostTutorial = false
             isShowSheet = true
         }, label: {
             VStack(alignment: .trailing) {
