@@ -120,6 +120,7 @@
 		42DB94A22BF5DB5100ECDD84 /* CockPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */; };
 		42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A32BF662E600ECDD84 /* CameraView.swift */; };
 		42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */; };
+		42E538912C720BCA000B6D49 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 42E538902C720BCA000B6D49 /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -231,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42E538912C720BCA000B6D49 /* FirebaseMessaging in Frameworks */,
 				42DB94702BF3001000ECDD84 /* FirebaseAuth in Frameworks */,
 				42164E272C1F333000510C99 /* FirebaseAnonymousAuthUI in Frameworks */,
 				42DB94752BF3009800ECDD84 /* FirebaseAuthUI in Frameworks */,
@@ -535,6 +537,7 @@
 				42164E322C1F37B400510C99 /* FirebaseAnalyticsSwift */,
 				42164E342C1F37B400510C99 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				42164E362C1F37B400510C99 /* FirebaseAppCheck */,
+				42E538902C720BCA000B6D49 /* FirebaseMessaging */,
 			);
 			productName = CockDive;
 			productReference = 422C69C12BED1C570012FB8F /* CockDive.app */;
@@ -1020,6 +1023,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 42DB946E2BF3001000ECDD84 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		42E538902C720BCA000B6D49 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42DB946E2BF3001000ECDD84 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 
