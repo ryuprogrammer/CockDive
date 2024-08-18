@@ -143,7 +143,7 @@ struct CockCardView: View {
 
                             VStack(alignment: .leading, spacing: 3) {
                                 // ニックネーム
-                                Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "ニックネーム")")
+                                Text("\(showUserData?.nickName.limitTextLength(maxLength: 8) ?? "なまえ")")
                                     .foregroundStyle(Color.white)
                                     .font(.subheadline)
                                     .fontWeight(.bold)
