@@ -121,6 +121,7 @@
 		42DB94A42BF662E600ECDD84 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A32BF662E600ECDD84 /* CameraView.swift */; };
 		42DB94A62BF6E39D00ECDD84 /* StrokeIconButtonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */; };
 		42E538912C720BCA000B6D49 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 42E538902C720BCA000B6D49 /* FirebaseMessaging */; };
+		42E538932C7230AE000B6D49 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E538922C7230AE000B6D49 /* Data+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -225,6 +226,7 @@
 		42DB94A12BF5DB5100ECDD84 /* CockPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CockPostViewModel.swift; sourceTree = "<group>"; };
 		42DB94A32BF662E600ECDD84 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		42DB94A52BF6E39D00ECDD84 /* StrokeIconButtonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeIconButtonUI.swift; sourceTree = "<group>"; };
+		42E538922C7230AE000B6D49 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,6 +360,7 @@
 				423B2A912BFA293C00489BCC /* UIApplication+.swift */,
 				422EFAA92C05C999000DE24C /* PhotosPickerItem+.swift */,
 				422EFAAB2C05CA39000DE24C /* UIImage+.swift */,
+				42E538922C7230AE000B6D49 /* Data+.swift */,
 				422EFABD2C08974E000DE24C /* String+.swift */,
 				42D07BEC2C6239620067450F /* Font+.swift */,
 			);
@@ -612,6 +615,7 @@
 				4298D85A2BF0BD8C005AB08F /* SmallImageView.swift in Sources */,
 				4253F6342C02FAE90067BF14 /* SwipeableTabView.swift in Sources */,
 				4253F62C2C023F8E0067BF14 /* FollowButtonView.swift in Sources */,
+				42E538932C7230AE000B6D49 /* Data+.swift in Sources */,
 				4253F62E2C02422A0067BF14 /* MyPageViewModel.swift in Sources */,
 				422EFAC42C0C8682000DE24C /* ImageView.swift in Sources */,
 				4298D8582BF0A908005AB08F /* Date+.swift in Sources */,
@@ -849,7 +853,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ryuprogrammer.CockDive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -893,7 +897,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ryuprogrammer.CockDive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
