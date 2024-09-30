@@ -27,7 +27,6 @@ struct SectioinTitleView: View {
                             .stroke(lineWidth: 2)
                             .foregroundStyle(Color.pink)
                     )
-                    
             }
             
             Spacer()

@@ -14,11 +14,17 @@ struct StartView: View {
         case .signInRequired:
             // サインイン
             SignInView()
+                .onAppear {
+                    FirebaseLog.shared.logScreenView(.signInView)
+                }
         case .nameRegistrationRequired:
             // 名前登録画面
             NameRegistrationView(nickName: $nickName) {
                 // アイコン設定画面に画面遷移
                 startViewModel.userStatus = .iconRegistrationRequired
+            }
+            .onAppear {
+                FirebaseLog.shared.logScreenView(.nameRegistrationView)
             }
         case .iconRegistrationRequired:
             // アイコン写真登録画面
@@ -29,11 +35,14 @@ struct StartView: View {
                 // メイン画面に画面遷移
                 startViewModel.userStatus = .normalUser
             }
+            .onAppear {
+                FirebaseLog.shared.logScreenView(.iconRegistrationView)
+            }
         case .normalUser:
             // メイン画面
             MainTabView()
         case .bannedUser:
-            Text("垢BANしてるお")
+            Text("垢BANしてます。")
         case .loading:
             Text("Loading...")
         }

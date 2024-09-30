@@ -136,6 +136,7 @@ struct ProfileView: View {
             )
         }
         .onAppear {
+            FirebaseLog.shared.logScreenView(.userDetailView)
             loadInitialData()
         }
         .onChange(of: profileVM.newPostsData) { newPostData in

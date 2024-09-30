@@ -210,6 +210,9 @@ struct MyPageView: View {
         .onChange(of: myPageVM.myPostCount) { myPostCount in
             showMyPostCount = myPostCount
         }
+        .onAppear {
+            FirebaseLog.shared.logScreenView(.myPageView)
+        }
     }
 
     // 自分の投稿リスト
@@ -268,6 +271,7 @@ struct MyPageView: View {
                 }
             }
             .onAppear {
+                FirebaseLog.shared.logScreenView(.myPostView)
                 Task {
                     if myPageVM.loadStatusMyPost == .initial {
                         await myPageVM.fetchMyPostsDataByStatus(lastId: nil)
@@ -340,6 +344,7 @@ struct MyPageView: View {
                 }
             }
             .onAppear {
+                FirebaseLog.shared.logScreenView(.myLikeView)
                 Task {
                     if myPageVM.loadStatusLikePost == .initial {
                         await myPageVM.fetchLikePostsDataByStatus()

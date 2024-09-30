@@ -97,6 +97,7 @@ struct CockPostView: View {
             showPostsData.append(contentsOf: newPostData)
         }
         .onAppear {
+            FirebaseLog.shared.logScreenView(.cockPostView)
             isShowAddPostTutorial = cockPostVM.isShowPostTutorial()
             // 投稿数を取得
             myPostCount = cockPostVM.myPostCount
@@ -177,6 +178,7 @@ struct CockPostView: View {
 
     private var addButton: some View {
         Button(action: {
+            FirebaseLog.shared.logButtonTap(.showAddPostViewButton)
             isShowAddPostTutorial = false
             isShowSheet = true
         }, label: {

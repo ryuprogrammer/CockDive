@@ -190,6 +190,7 @@ struct MyProfileEditView: View {
         }
         .interactiveDismissDisabled(isLoading)
         .onAppear {
+            FirebaseLog.shared.logScreenView(.myProfileEditView)
             if let userData = myProfileEditVM.fetchUserData() {
                 nickName = userData.nickName
                 originalNickName = userData.nickName

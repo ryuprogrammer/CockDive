@@ -234,6 +234,7 @@ struct CockCardView: View {
                         likeCount: $showPostData.likeCount,
                         buttonSize: CGSize(width: cardWidth/8, height: cardWidth/8)
                     ) {
+                        FirebaseLog.shared.logButtonTap(.likeButton)
                         // ボタンの無効化
                         isLikeButtonDisabled = true
                         // haptics

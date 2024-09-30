@@ -336,6 +336,7 @@ struct PostDetailView: View {
             )
         }
         .onAppear {
+            FirebaseLog.shared.logScreenView(.postDetailView)
             // 自分の投稿か確認
             isMyPost = postDetailVM.checkIsMyPost(uid: showPostData.uid)
             Task {

@@ -72,6 +72,7 @@ struct AddPostView: View {
                         }
                     } else {
                         Button {
+                            FirebaseLog.shared.logButtonTap(.albumButton)
                             imagePickerSourceType = .photoLibrary
                             showImagePicker = true
                         } label: {
@@ -87,6 +88,7 @@ struct AddPostView: View {
                         }
 
                         Button {
+                            FirebaseLog.shared.logButtonTap(.photoButton)
                             imagePickerSourceType = .camera
                             isPresentedCameraView = true
                         } label: {
@@ -118,6 +120,9 @@ struct AddPostView: View {
                         .onChange(of: newTitle) { _ in
                             validateTitle()
                         }
+                        .onTapGesture {
+                            FirebaseLog.shared.logButtonTap(.titleButton)
+                        }
 
                     if !titleErrorMessage.isEmpty {
                         Text(titleErrorMessage)
@@ -147,6 +152,7 @@ struct AddPostView: View {
                             validateMemo()
                         }
                         .onTapGesture {
+                            FirebaseLog.shared.logButtonTap(.memoButton)
                             keybordFocuse.toggle()
                         }
 
@@ -210,8 +216,8 @@ struct AddPostView: View {
                             addPostVM.loadStatus != .loading {
                             Task {
                                 guard let dataImage = newImage?.castToData() else { return }
-
                                 if postType == .add {
+                                    FirebaseLog.shared.logButtonTap(.addPostButton)
                                     // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                                     addPostVM.addPost(
                                         uid: addPostVM.fetchUid(),
@@ -221,6 +227,7 @@ struct AddPostView: View {
                                     )
                                 } else if postType == .edit {
                                     guard let editPost else { return }
+                                    FirebaseLog.shared.logButtonTap(.editPostButton)
                                     // firebase（PostDataModelとUserPostDataModel）とCoreDataに更新
                                     addPostVM.upDate(
                                         editPost: editPost,
@@ -271,6 +278,7 @@ struct AddPostView: View {
             }
         }
         .onAppear {
+            FirebaseLog.shared.logScreenView(.addPostView)
             // 編集の場合は初期値挿入
             if let editPost {
                 let title = editPost.title

@@ -134,6 +134,7 @@ struct SettingView: View {
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .onAppear {
+            FirebaseLog.shared.logScreenView(.settingView)
             settingVM.fetchUserData()
         }
         .onChange(of: settingVM.userData) { userData in

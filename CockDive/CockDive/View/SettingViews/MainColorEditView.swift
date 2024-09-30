@@ -88,6 +88,9 @@ struct MainColorEditView: View {
         .toolbarColorScheme(.dark)
         .toolbarBackground(Color.mainColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .onAppear {
+            FirebaseLog.shared.logScreenView(.mainColorEditView)
+        }
     }
 }
 
