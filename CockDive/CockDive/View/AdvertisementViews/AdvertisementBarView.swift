@@ -28,39 +28,45 @@ struct AdvertisementBarView: View {
                 resetTimers()
             }
 
-            HStack {
-                Text(getMessage(for: postCount))
-                    .font(.mainFont(size: 27))
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.white)
+            if let url = URL(string: "https://apps.apple.com/jp/app/id6504010784") {
+                ShareLink(item: url) {
+                    HStack {
+                        Text(getMessage(for: postCount))
+                            .font(.mainFont(size: 27))
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.white)
 
-                if showHeart {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.white)
-                        .scaleEffect(bounce ? 1.5 : 1.2)
-                        .offset(y: bounce ? -10 : 3)
-                        .animation(
-                            .easeInOut(duration: 0.6)
-                            .repeatForever(autoreverses: true),
-                            value: bounce
-                        )
-                        .transition(.scale)
+                        if showHeart {
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(.white)
+                                .scaleEffect(bounce ? 1.5 : 1.2)
+                                .offset(y: bounce ? -10 : 3)
+                                .animation(
+                                    .easeInOut(duration: 0.6)
+                                    .repeatForever(autoreverses: true),
+                                    value: bounce
+                                )
+                                .transition(.scale)
+                        }
+                    }
                 }
             }
         }
     }
 
+    // TODO: - 広告の内容を「アプリシェア」に変更
     private func getMessage(for count: Int) -> String {
-        switch count {
-        case 0:
-            return "投稿していいねをもらおう"
-        case 1...5:
-            return "コメントしてみよう"
-        case 6...10:
-            return "カレンダーを埋め尽くそう"
-        default:
-            return "毎日頑張ってえらすぎる"
-        }
+        return "タップで友達を招待しよう"
+//        switch count {
+//        case 0:
+//            return "投稿していいねをもらおう"
+//        case 1...5:
+//            return "コメントしてみよう"
+//        case 6...10:
+//            return "カレンダーを埋め尽くそう"
+//        default:
+//            return "毎日頑張ってえらすぎる"
+//        }
     }
 
     private func animateColors() {
