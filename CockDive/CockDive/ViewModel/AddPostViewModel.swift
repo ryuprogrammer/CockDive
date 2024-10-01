@@ -22,6 +22,7 @@ class AddPostViewModel: ObservableObject {
     /// firebase（PostDataModelとUserPostDataModel）とCoreData
     func addPost(
         uid: String,
+        date: Date,
         postImage: Data,
         title: String,
         memo: String
@@ -34,7 +35,7 @@ class AddPostViewModel: ObservableObject {
             title: title,
             memo: memo,
             isPrivate: false,
-            createAt: Date(),
+            createAt: date,
             likeCount: 0,
             likedUser: [],
             comment: []
@@ -68,6 +69,7 @@ class AddPostViewModel: ObservableObject {
     /// firebase（PostDataModelとUserPostDataModel）とCoreData
     func upDate(
         editPost: PostElement,
+        newDate: Date,
         newTitle: String,
         newMemo: String,
         newImage: Data?
@@ -81,7 +83,7 @@ class AddPostViewModel: ObservableObject {
             title: newTitle,
             memo: newMemo,
             isPrivate: editPost.isPrivate,
-            createAt: editPost.createAt,
+            createAt: newDate,
             likeCount: editPost.likeCount,
             likedUser: editPost.likedUser,
             comment: editPost.comment

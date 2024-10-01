@@ -22,6 +22,7 @@ struct AddPostView: View {
     /// 編集の場合のみ受け取る
     let editPost: PostElement?
     @StateObject private var addPostVM = AddPostViewModel()
+    @State private var newDate: Date = Date()
     @State private var newTitle: String = ""
     @State private var newMemo: String = ""
     @State private var newImage: UIImage?
@@ -52,6 +53,11 @@ struct AddPostView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .center) {
+                    DatePicker(selection: $newDate, in: ...Date(), displayedComponents: .date) {
+                        SectioinTitleView(text: "いつ食べた？", isRequired: false)
+                    }
+                    .padding(.top)
+                    
                     SectioinTitleView(text: "まずは写真を追加しよう！", isRequired: true)
                         .padding(.top)
 
@@ -221,6 +227,7 @@ struct AddPostView: View {
                                     // firebase（PostDataModelとUserPostDataModel）とCoreDataに保存
                                     addPostVM.addPost(
                                         uid: addPostVM.fetchUid(),
+                                        date: newDate,
                                         postImage: dataImage,
                                         title: newTitle,
                                         memo: newMemo
@@ -231,6 +238,7 @@ struct AddPostView: View {
                                     // firebase（PostDataModelとUserPostDataModel）とCoreDataに更新
                                     addPostVM.upDate(
                                         editPost: editPost,
+                                        newDate: newDate,
                                         newTitle: newTitle,
                                         newMemo: newMemo,
                                         newImage: dataImage
@@ -281,9 +289,11 @@ struct AddPostView: View {
             FirebaseLog.shared.logScreenView(.addPostView)
             // 編集の場合は初期値挿入
             if let editPost {
+                let date = editPost.createAt
                 let title = editPost.title
                 let memo = editPost.memo
                 guard let imageData = editPost.postImage else { return }
+                self.newDate = date
                 self.newTitle = title
                 self.newMemo = memo ?? ""
                 self.newImage = UIImage(data: imageData)
